@@ -45,8 +45,6 @@
 .svc-desc{font-size:13px;color:var(--muted);font-style:italic;line-height:1.6;margin-bottom:16px}
 .svc-price{font-family:'Bebas Neue',sans-serif;font-size:24px;color:var(--fire)}
 .svc-price small{font-size:11px;color:var(--muted);font-family:'Space Mono',monospace;margin-left:4px}
-.tip-coin{position:absolute;width:6px;height:6px;border-radius:50%;background:var(--flame);opacity:0;animation:tcoin 2.2s ease-in-out infinite}
-.tip-coin:nth-child(2){animation-delay:.35s}.tip-coin:nth-child(3){animation-delay:.7s}
 @keyframes tfloat{0%,100%{transform:translateY(0)}50%{transform:translateY(-4px)}}
 @keyframes tcoin{0%{opacity:0;top:50%;left:50%;transform:translate(-50%,-50%) scale(0)}15%{opacity:1;top:20%;left:50%;transform:translate(-50%,-50%) scale(1)}50%{opacity:.7;top:-40%;left:45%;transform:translate(-50%,-50%) scale(.85)}100%{opacity:0;top:-80%;left:55%;transform:translate(-50%,-50%) scale(.4)}}
 .social-section{padding:0 48px 56px}
@@ -70,12 +68,6 @@
 .quote::before{content:'"';position:absolute;top:-80px;left:50%;transform:translateX(-50%);font-family:'Bebas Neue',sans-serif;font-size:380px;color:rgba(200,75,10,.03);pointer-events:none;line-height:1}
 .quote-text{font-family:'Cormorant Garamond',serif;font-size:clamp(20px,4vw,40px);font-style:italic;font-weight:300;color:var(--white);max-width:780px;margin:0 auto 18px;line-height:1.4;position:relative}.quote-text em{color:var(--fire);font-style:normal}
 .quote-attr{font-family:'Space Mono',monospace;font-size:9px;letter-spacing:.4em;color:var(--muted);text-transform:uppercase}
-.tip-hero{display:inline-flex;align-items:center;gap:10px;padding:10px 20px;background:rgba(200,75,10,.08);border:1px solid rgba(200,75,10,.3);text-decoration:none;transition:all .25s;margin-top:16px}
-.tip-hero:hover{background:rgba(200,75,10,.18);border-color:var(--ember);box-shadow:0 0 20px rgba(200,75,10,.3)}
-.tip-hero-jar{font-size:22px;line-height:1;animation:tfloat 3s ease-in-out infinite}
-.tip-hero-txt{font-family:'Space Mono',monospace;font-size:9px;letter-spacing:.28em;color:var(--ember);text-transform:uppercase}
-.tip-coin{width:6px;height:6px;border-radius:50%;background:var(--flame);opacity:0;animation:tcoin 2.2s ease-in-out infinite;display:inline-block}
-.tip-coin:nth-child(2){animation-delay:.35s}.tip-coin:nth-child(3){animation-delay:.7s}
 .credits-section{padding:0 48px 80px}
 .credits-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(220px,1fr));gap:2px;background:var(--border);border:1px solid var(--border)}
 .credit-card{background:var(--card);padding:18px 20px;display:flex;flex-direction:column;gap:4px;transition:background .2s}
@@ -86,12 +78,6 @@
 .credit-year{font-family:'Space Mono',monospace;font-size:8px;color:var(--muted);letter-spacing:.14em}
 .credits-empty{padding:28px;text-align:center;font-size:13px;color:var(--muted);font-style:italic;background:var(--card)}
 @media(max-width:900px){.credits-section{padding:0 24px 60px}}
-.tip-hero{display:inline-flex;align-items:center;gap:10px;padding:10px 20px;background:rgba(200,75,10,.08);border:1px solid rgba(200,75,10,.3);text-decoration:none;transition:all .25s;margin-top:16px}
-.tip-hero:hover{background:rgba(200,75,10,.18);border-color:var(--ember);box-shadow:0 0 20px rgba(200,75,10,.3)}
-.tip-hero-jar{font-size:22px;line-height:1;animation:tfloat 3s ease-in-out infinite}
-.tip-hero-txt{font-family:'Space Mono',monospace;font-size:9px;letter-spacing:.28em;color:var(--ember);text-transform:uppercase}
-.tip-coin{width:6px;height:6px;border-radius:50%;background:var(--flame);opacity:0;animation:tcoin 2.2s ease-in-out infinite;display:inline-block}
-.tip-coin:nth-child(2){animation-delay:.35s}.tip-coin:nth-child(3){animation-delay:.7s}
 .credits-section{padding:0 48px 80px}
 .credits-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(220px,1fr));gap:2px;background:var(--border);border:1px solid var(--border)}
 .credit-card{background:var(--card);padding:18px 20px;display:flex;flex-direction:column;gap:4px;transition:background .2s}
@@ -171,16 +157,7 @@
       <a href="{{ url_for('services.index') }}" class="btn-fire">Book a Session</a>
       <a href="{{ url_for('beats.index') }}" class="btn-ghost">Browse Beats</a>
     </div>
-    <a class="tip-inline" href="#" onclick="openTip(event)">
-      <span class="tip-inline-jar">🫙</span>
-      <span class="tip-inline-coins">
-        <span class="tip-inline-coin"></span>
-        <span class="tip-inline-coin"></span>
-        <span class="tip-inline-coin"></span>
-      </span>
-      <span class="tip-inline-txt">Leave a Tip</span>
-    </a>
-  </div>
+      </div>
 </section>
 
 <section class="about" id="about" data-reveal>

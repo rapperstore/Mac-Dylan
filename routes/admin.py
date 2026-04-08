@@ -245,3 +245,76 @@ def toggle_credit(cid):
     c.is_active = not c.is_active
     db.session.commit()
     return jsonify({'is_active':c.is_active})
+
+@admin_bp.route('/products/list')
+@admin_required
+def list_products():
+    prods = Product.query.order_by(Product.created_at.desc()).all()
+    return jsonify([{
+        'id': p.id, 'name': p.name, 'price': p.price,
+        'product_type': p.product_type, 'is_active': p.is_active,
+        'is_new': p.is_new, 'tags': p.tags
+    } for p in prods])
+
+
+@admin_bp.route('/products/upload', methods=['POST'])
+@admin_required
+def upload_product():
+    import os
+    from werkzeug.utils import secure_filename
+    try:
+        name     = request.form.get('name','').strip()
+        desc     = request.form.get('description','').strip()
+        price    = int(request.form.get('price', 0))
+        ptype    = request.form.get('product_type', 'digital')
+        tags     = request.form.get('tags','').strip()
+        is_new   = request.form.get('is_new','1') == '1'
+
+        if not name or price < 1:
+            return jsonify({'success': False, 'error': 'Name and price required'})
+
+        upload_dir = os.path.join(current_app.root_path, 'static', 'uploads', 'products')
+        os.makedirs(upload_dir, exist_ok=True)
+
+        file_path = None
+        if 'product_file' in request.files:
+            pf = request.files['product_file']
+            if pf.filename:
+                fname = secure_filename(pf.filename)
+                save_path = os.path.join(upload_dir, fname)
+                pf.save(save_path)
+                file_path = f'uploads/products/{fname}'
+
+        cover_path = None
+        if 'cover_image' in request.files:
+            cf = request.files['cover_image']
+            if cf.filename:
+                cname = secure_filename(cf.filename)
+                cf.save(os.path.join(upload_dir, cname))
+                cover_path = f'uploads/products/{cname}'
+
+        product = Product(
+            product_type = ptype,
+            name         = name,
+            description  = desc,
+            price        = price,
+            tags         = tags,
+            file_path    = file_path,
+            image_path   = cover_path,
+            is_active    = True,
+            is_new       = is_new,
+        )
+        db.session.add(product)
+        db.session.commit()
+        return jsonify({'success': True, 'id': product.id})
+    except Exception as e:
+        return jsonify({'success': False, 'error': str(e)})
+
+
+@admin_bp.route('/products/<int:pid>/delete', methods=['POST'])
+@admin_required
+def delete_product(pid):
+    p = Product.query.get_or_404(pid)
+    db.session.delete(p)
+    db.session.commit()
+    return jsonify({'deleted': True})

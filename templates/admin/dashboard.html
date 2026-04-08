@@ -114,6 +114,7 @@ body{display:flex;min-height:100vh;overflow-x:hidden}
     <button class="nav-item" onclick="showPanel('products',this)"><span class="nav-icon">◈</span><span>Products</span></button>
     <button class="nav-item" onclick="showPanel('add-product',this)"><span class="nav-icon">+</span><span>Add Product</span></button>
     <div class="nav-group">Settings</div>
+    <button class="nav-item" onclick="showPanel('digital',this)"><span class="nav-icon">↓</span><span>Digital Products</span></button>
     <button class="nav-item" onclick="showPanel('credits',this)"><span class="nav-icon">★</span><span>Credits</span></button>
     <button class="nav-item" onclick="showPanel('settings',this)"><span class="nav-icon">⚙</span><span>Settings</span></button>
   </nav>
@@ -544,11 +545,11 @@ body{display:flex;min-height:100vh;overflow-x:hidden}
 (function(){
 'use strict';
 
-var PANELS = ['dashboard','orders','beats','upload-beat','products','add-product','credits','settings'];
+var PANELS = ['dashboard','orders','beats','upload-beat','products','add-product','digital','credits','settings'];
 var TITLES = {
   dashboard:'Dashboard', orders:'Orders', beats:'Beats',
   'upload-beat':'Upload Beat', products:'Store Products',
-  'add-product':'Add Product', credits:'Credits', settings:'Settings'
+  'add-product':'Add Product', digital:'Digital Products', credits:'Credits', settings:'Settings'
 };
 
 window.showPanel = function(id, navEl) {
@@ -684,6 +685,92 @@ window.addCredit=function(){var artist=document.getElementById('cr-artist').valu
 window.deleteCredit=function(id,btn){if(!confirm('Delete?'))return;fetch('/admin/credits/'+id+'/delete',{method:'POST'}).then(function(r){return r.json()}).then(function(d){if(d.deleted)btn.closest('tr').remove();});};
 window.toggleCredit=function(id,btn){fetch('/admin/credits/'+id+'/toggle',{method:'POST'}).then(function(r){return r.json()}).then(function(d){btn.textContent=d.is_active?'Hide':'Show';});};
 var _oSP=window.showPanel;window.showPanel=function(id,n){_oSP(id,n);if(id==='credits')loadCredits();};
+
+
+window.uploadDigital = function() {
+  var name = document.getElementById('dp-name').value.trim();
+  var desc = document.getElementById('dp-desc').value.trim();
+  var price = +document.getElementById('dp-price').value;
+  var tags = document.getElementById('dp-tags').value.trim();
+  var isNew = document.getElementById('dp-new').value;
+  var fileInput = document.getElementById('dp-file');
+  var coverInput = document.getElementById('dp-cover');
+
+  if (!name) { showAlert('alert-digital','error','Product name is required'); return; }
+  if (!price || price < 1) { showAlert('alert-digital','error','Valid price is required'); return; }
+  if (!fileInput.files.length) { showAlert('alert-digital','error','Product file is required'); return; }
+
+  var formData = new FormData();
+  formData.append('name', name);
+  formData.append('description', desc);
+  formData.append('price', price);
+  formData.append('product_type', document.getElementById('dp-type').value);
+  formData.append('tags', tags);
+  formData.append('is_new', isNew);
+  formData.append('product_file', fileInput.files[0]);
+  if (coverInput.files.length) formData.append('cover_image', coverInput.files[0]);
+
+  document.getElementById('dp-upload-progress').style.display = 'block';
+  document.getElementById('dp-prog-fill').style.width = '30%';
+
+  fetch('/admin/products/upload', {
+    method: 'POST',
+    body: formData
+  }).then(function(r) { return r.json(); })
+    .then(function(d) {
+      document.getElementById('dp-prog-fill').style.width = '100%';
+      setTimeout(function() { document.getElementById('dp-upload-progress').style.display = 'none'; }, 800);
+      if (d.success) {
+        showAlert('alert-digital', 'success', 'Product uploaded: ' + name);
+        document.getElementById('dp-name').value = '';
+        document.getElementById('dp-desc').value = '';
+        document.getElementById('dp-price').value = '';
+        document.getElementById('dp-tags').value = '';
+        document.getElementById('dp-file').value = '';
+        document.getElementById('dp-cover').value = '';
+        loadDigitalProducts();
+      } else {
+        showAlert('alert-digital', 'error', d.error || 'Upload failed');
+      }
+    }).catch(function(e) {
+      showAlert('alert-digital', 'error', 'Upload failed: ' + e.message);
+      document.getElementById('dp-upload-progress').style.display = 'none';
+    });
+};
+
+window.loadDigitalProducts = function() {
+  fetch('/admin/products/list')
+    .then(function(r){ return r.json(); })
+    .then(function(prods){
+      var tbody = document.getElementById('digital-tbody');
+      if (!prods.length) {
+        tbody.innerHTML = '<tr><td colspan="4" class="empty-state">No products yet</td></tr>';
+        return;
+      }
+      tbody.innerHTML = prods.map(function(p){
+        return '<tr>' +
+          '<td class="td-title" style="font-size:13px">' + p.name + '</td>' +
+          '<td class="td-price">$' + p.price + '</td>' +
+          '<td><span class="badge bd">' + p.product_type + '</span></td>' +
+          '<td class="td-actions">' +
+            '<button class="btn btn-danger btn-sm" onclick="deleteProduct(' + p.id + ',this)">Delete</button>' +
+          '</td></tr>';
+      }).join('');
+    });
+};
+
+window.deleteProduct = function(id, btn) {
+  if (!confirm('Delete this product?')) return;
+  fetch('/admin/products/' + id + '/delete', {method:'POST'})
+    .then(function(r){ return r.json(); })
+    .then(function(d){ if(d.deleted) btn.closest('tr').remove(); });
+};
+
+var _origSP2 = window.showPanel;
+window.showPanel = function(id, n) {
+  _origSP2(id, n);
+  if (id === 'digital') loadDigitalProducts();
+};
 
 })();
 </script>
