@@ -119,16 +119,6 @@
       <a href="{{ url_for('services.index') }}" class="btn-fire">Book a Session</a>
       <a href="{{ url_for('beats.index') }}" class="btn-ghost">Browse Beats</a>
     </div>
-    <a class="tip-hero" href="#" onclick="openTip(event)">
-      <span class="tip-hero-jar">🫙</span>
-      <span class="tip-coin"></span><span class="tip-coin"></span><span class="tip-coin"></span>
-      <span class="tip-hero-txt">Leave a Tip</span>
-    </a>
-    <a class="tip-hero" href="#" onclick="openTip(event)">
-      <span class="tip-hero-jar">🫙</span>
-      <span class="tip-coin"></span><span class="tip-coin"></span><span class="tip-coin"></span>
-      <span class="tip-hero-txt">Leave a Tip</span>
-    </a>
   </div>
 </section>
 
@@ -169,54 +159,16 @@
       </a>
       {% endfor %}
     {% else %}
-      <!-- Placeholder rows shown before any beats are uploaded -->
-      <a href="{{ url_for('beats.index') }}" class="mini-row">
-        <div class="mini-num">01</div><div class="mini-ph">M</div>
-        <div class="mini-info"><div class="mini-title">Midnight Cipher</div><div class="mini-meta">140 BPM · F Min · Trap</div></div>
-        <div class="mini-price green">FREE</div>
-      </a>
-      <a href="{{ url_for('beats.index') }}" class="mini-row">
-        <div class="mini-num">02</div><div class="mini-ph">E</div>
-        <div class="mini-info"><div class="mini-title">Ember Season</div><div class="mini-meta">92 BPM · C Min · R&amp;B</div></div>
-        <div class="mini-price fire">$29</div>
-      </a>
-      <a href="{{ url_for('beats.index') }}" class="mini-row">
-        <div class="mini-num">03</div><div class="mini-ph">C</div>
-        <div class="mini-info"><div class="mini-title">Cinematic Chaos</div><div class="mini-meta">135 BPM · B Min · Cinematic</div></div>
-        <div class="mini-price fire">$29</div>
-      </a>
+      <div style="padding:20px 18px;font-family:Space Mono,monospace;font-size:9px;letter-spacing:.2em;color:var(--muted);text-transform:uppercase">New beats dropping soon</div>
     {% endif %}
   </div>
 </section>
 
 
-<!-- Credits -->
-<section class="credits-section" data-reveal>
-  <div class="sec-hdr">
-    <div class="sec-lbl">Credits</div>
-  </div>
-  {% if credits %}
-    <div class="credits-grid">
-      {% for c in credits %}
-      <div class="credit-card">
-        <div class="credit-artist">{{ c.artist }}</div>
-        <div class="credit-role">{{ c.role }}</div>
-        {% if c.track_name %}<div class="credit-track">{{ c.track_name }}</div>{% endif %}
-        {% if c.year %}<div class="credit-year">{{ c.year }}</div>{% endif %}
-      </div>
-      {% endfor %}
-    </div>
-  {% else %}
-    <div class="credits-empty">Credits will appear here — add them via the admin panel.</div>
-  {% endif %}
-</section>
-
 
 <!-- Credits -->
 <section class="credits-section" data-reveal>
-  <div class="sec-hdr">
-    <div class="sec-lbl">Credits</div>
-  </div>
+  <div class="sec-hdr"><div class="sec-lbl">Credits</div></div>
   {% if credits %}
     <div class="credits-grid">
       {% for c in credits %}
