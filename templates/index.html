@@ -239,7 +239,7 @@ window.subCK = function(e) {
   e.preventDefault();
   var email = document.getElementById('ck-email').value.trim();
   if (!email) return;
-  fetch('https://mac-dylan.kit.com/b5923233e5/subscriptions', {
+  fetch('https://app.convertkit.com/forms/9292507/subscriptions', {
     method: 'POST', headers: {'Content-Type': 'application/x-www-form-urlencoded'},
     body: 'email_address=' + encodeURIComponent(email),
   }).then(function(){}).catch(function(){});
