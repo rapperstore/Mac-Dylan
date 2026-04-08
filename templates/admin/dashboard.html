@@ -1,0 +1,643 @@
+{% extends "base.html" %}
+{% block title %}Admin — Mac Dylan{% endblock %}
+{% block extra_styles %}
+/* Override base nav for admin */
+nav{display:none}
+/* Full admin layout */
+body{display:flex;min-height:100vh;overflow-x:hidden}
+.sidebar{width:220px;min-height:100vh;background:var(--deep);border-right:1px solid var(--border);display:flex;flex-direction:column;position:fixed;top:0;left:0;bottom:0;z-index:100}
+.sidebar-logo{padding:20px;border-bottom:1px solid var(--border);font-family:'Bebas Neue',sans-serif;font-size:18px;letter-spacing:.1em;color:var(--white)}.sidebar-logo span{color:var(--fire)}
+.sidebar-sub{font-family:'Space Mono',monospace;font-size:7px;letter-spacing:.3em;color:var(--muted);text-transform:uppercase;margin-top:2px}
+.sidebar-nav{flex:1;padding:14px 0;overflow-y:auto}
+.nav-group{font-family:'Space Mono',monospace;font-size:7px;letter-spacing:.4em;color:var(--muted);text-transform:uppercase;padding:10px 18px 5px}
+.nav-item{display:flex;align-items:center;gap:9px;padding:9px 18px;font-family:'Space Mono',monospace;font-size:8px;letter-spacing:.2em;text-transform:uppercase;color:var(--muted);text-decoration:none;transition:all .15s;border-left:2px solid transparent;cursor:pointer;background:none;border-right:none;border-top:none;border-bottom:none;width:100%;text-align:left}
+.nav-item:hover{color:var(--white);background:rgba(200,75,10,.05)}
+.nav-item.active{color:var(--fire);border-left-color:var(--ember);background:rgba(200,75,10,.06)}
+.nav-icon{width:14px;text-align:center;font-size:11px;flex-shrink:0}
+.sidebar-footer{padding:14px 18px;border-top:1px solid var(--border)}
+.sidebar-footer a{font-family:'Space Mono',monospace;font-size:8px;letter-spacing:.2em;color:var(--muted);text-decoration:none;text-transform:uppercase;transition:color .2s;display:block;margin-bottom:6px}.sidebar-footer a:hover{color:var(--fire)}
+.main{margin-left:220px;flex:1;display:flex;flex-direction:column;min-height:100vh}
+.topbar{padding:14px 32px;background:var(--deep);border-bottom:1px solid var(--border);display:flex;justify-content:space-between;align-items:center;position:sticky;top:0;z-index:50}
+.topbar-title{font-family:'Bebas Neue',sans-serif;font-size:22px;letter-spacing:.06em;color:var(--white)}
+.topbar-actions{display:flex;gap:8px}
+.content{padding:32px;flex:1}
+/* PANELS */
+.panel{display:none}.panel.active{display:block}
+/* STAT GRID */
+.stat-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:2px;background:var(--border);border:1px solid var(--border);margin-bottom:28px}
+.stat-card{background:var(--card);padding:22px 18px;transition:background .2s}.stat-card:hover{background:var(--card2)}
+.stat-value{font-family:'Bebas Neue',sans-serif;font-size:42px;color:var(--fire);line-height:1;margin-bottom:4px}
+.stat-value.green{color:var(--green)}.stat-value.blue{color:#4a7ac8}.stat-value.white{color:var(--white)}
+.stat-label{font-family:'Space Mono',monospace;font-size:8px;letter-spacing:.28em;color:var(--muted);text-transform:uppercase}
+/* TWO COL */
+.two-col{display:grid;grid-template-columns:1fr 1fr;gap:24px}
+/* SEC LABEL */
+.sec-lbl{font-family:'Space Mono',monospace;font-size:8px;letter-spacing:.5em;color:var(--ember);text-transform:uppercase;margin-bottom:16px;display:flex;align-items:center;gap:10px}
+.sec-lbl::after{content:'';flex:1;height:1px;background:var(--border)}
+/* BUTTONS */
+.btn{font-family:'Space Mono',monospace;font-size:8px;letter-spacing:.22em;text-transform:uppercase;padding:8px 16px;border:none;transition:all .2s;display:inline-flex;align-items:center;gap:6px;cursor:pointer}
+.btn-fire{background:var(--ember);color:var(--white)}.btn-fire:hover{background:var(--fire)}
+.btn-ghost{background:transparent;border:1px solid var(--borderl);color:var(--muted)}.btn-ghost:hover{border-color:var(--ember);color:var(--fire)}
+.btn-danger{background:transparent;border:1px solid #c84a4a;color:#c84a4a}.btn-danger:hover{background:#c84a4a;color:var(--white)}
+.btn-green{background:var(--green);color:var(--white)}.btn-green:hover{background:#2d6e47}
+.btn-sm{padding:5px 10px;font-size:7px;letter-spacing:.18em}
+/* TABLES */
+.tbl-wrap{background:var(--card);border:1px solid var(--border);overflow:auto}
+.admin-tbl{width:100%;border-collapse:collapse}
+.admin-tbl th{font-family:'Space Mono',monospace;font-size:7px;letter-spacing:.28em;color:var(--muted);text-transform:uppercase;padding:10px 14px;text-align:left;border-bottom:1px solid var(--border);background:var(--deep);white-space:nowrap}
+.admin-tbl td{padding:10px 14px;border-bottom:1px solid var(--border);font-size:13px;color:var(--ash);vertical-align:middle}
+.admin-tbl tr:last-child td{border-bottom:none}
+.admin-tbl tr:hover td{background:var(--card2)}
+.td-title{font-family:'Bebas Neue',sans-serif;font-size:15px;color:var(--white);letter-spacing:.04em}
+.td-price{font-family:'Bebas Neue',sans-serif;font-size:17px;color:var(--fire)}
+.td-mono{font-family:'Space Mono',monospace;font-size:9px;letter-spacing:.1em;color:var(--muted)}
+.td-actions{display:flex;gap:5px;align-items:center;flex-wrap:wrap}
+/* BADGES */
+.badge{font-family:'Space Mono',monospace;font-size:7px;letter-spacing:.2em;text-transform:uppercase;padding:3px 7px;border:1px solid;white-space:nowrap}
+.badge-live{color:var(--green);border-color:var(--green);background:rgba(58,138,90,.06)}
+.badge-draft{color:var(--muted);border-color:var(--muted);background:transparent}
+.badge-paid{color:#4a7ac8;border-color:#4a7ac8;background:rgba(74,122,200,.06)}
+.badge-pending{color:var(--ember);border-color:var(--ember);background:rgba(200,75,10,.06)}
+.badge-complete{color:var(--green);border-color:var(--green);background:rgba(58,138,90,.06)}
+.badge-digital{color:var(--flame);border-color:var(--flame);background:rgba(245,166,35,.06)}
+.badge-course{color:#8b8bff;border-color:#8b8bff;background:rgba(139,139,255,.06)}
+.badge-beat{color:var(--fire);border-color:var(--fire);background:rgba(232,114,12,.06)}
+.badge-session{color:var(--muted);border-color:var(--muted)}
+.badge-free{color:var(--green);border-color:var(--green);background:rgba(58,138,90,.06)}
+/* FORMS */
+.form-wrap{background:var(--card);border:1px solid var(--border)}
+.form-grid{display:grid;grid-template-columns:1fr 1fr;gap:0}
+.form-field{padding:16px 20px;border-bottom:1px solid var(--border);border-right:1px solid var(--border)}
+.form-field:nth-child(even){border-right:none}
+.form-field.full{grid-column:1/-1;border-right:none}
+.field-label{font-family:'Space Mono',monospace;font-size:8px;letter-spacing:.38em;color:var(--ember);text-transform:uppercase;display:block;margin-bottom:8px}
+.field-hint{font-size:11px;color:var(--muted);font-style:italic;margin-top:5px}
+.fi,.fs,.fta{width:100%;padding:9px 11px;background:var(--deep);border:1px solid var(--border);color:var(--white);font-family:'Cormorant Garamond',serif;font-size:14px;transition:border-color .2s}
+.fi:focus,.fs:focus,.fta:focus{outline:none;border-color:var(--ember)}
+.fi::placeholder,.fta::placeholder{color:var(--muted);font-style:italic}
+.fs option{background:var(--deep)}
+.fta{height:90px;resize:vertical}
+.file-drop{border:1px dashed var(--borderl);padding:20px 14px;text-align:center;background:var(--deep);transition:border-color .2s,background .2s;cursor:pointer}
+.file-drop:hover{border-color:var(--ember);background:rgba(200,75,10,.03)}
+.file-drop input[type=file]{display:none}
+.file-drop-label{display:block;font-size:12px;color:var(--muted);font-style:italic}
+.file-drop-label strong{color:var(--ember);font-style:normal;font-family:'Space Mono',monospace;font-size:8px;letter-spacing:.2em;display:block;margin-bottom:4px}
+.file-name{font-family:'Space Mono',monospace;font-size:8px;letter-spacing:.14em;color:var(--muted);margin-top:6px}
+.check-label{display:flex;align-items:center;gap:8px;font-size:14px;color:var(--ash);font-style:italic;cursor:pointer}
+.check-label input{accent-color:var(--ember);width:14px;height:14px}
+.checks-row{display:flex;gap:20px;flex-wrap:wrap;margin-top:4px}
+.form-actions{padding:14px 20px;background:var(--card);display:flex;gap:8px;border-top:1px solid var(--border)}
+/* ALERT */
+.alert{padding:10px 14px;border:1px solid;font-family:'Space Mono',monospace;font-size:8px;letter-spacing:.16em;text-transform:uppercase;margin-bottom:14px;display:none}
+.alert.show{display:block}
+.alert-success{color:var(--green);border-color:var(--green);background:rgba(58,138,90,.06)}
+.alert-error{color:#c84a4a;border-color:#c84a4a;background:rgba(200,74,74,.06)}
+/* REVENUE BAR */
+.rev-bar{height:3px;background:var(--border);margin-top:4px;overflow:hidden}
+.rev-fill{height:100%;background:linear-gradient(90deg,var(--ember),var(--flame));transition:width .6s ease}
+/* EMPTY STATE */
+.empty-state{padding:40px;text-align:center;color:var(--muted);font-size:13px;font-style:italic}
+@media(max-width:900px){.sidebar{width:56px}.sidebar-logo .sidebar-sub,.nav-item span,.sidebar-footer a,.nav-group{display:none}.nav-item{padding:12px;justify-content:center}.main{margin-left:56px}.stat-grid{grid-template-columns:1fr 1fr}.two-col{grid-template-columns:1fr}.content{padding:20px}.form-grid{grid-template-columns:1fr}.form-field:nth-child(even){border-right:none}}
+{% endblock %}
+
+{% block content %}
+<aside class="sidebar">
+  <div class="sidebar-logo">Mac<span>Dylan</span><div class="sidebar-sub">Admin</div></div>
+  <nav class="sidebar-nav">
+    <div class="nav-group">Overview</div>
+    <button class="nav-item active" onclick="showPanel('dashboard',this)"><span class="nav-icon">◈</span><span>Dashboard</span></button>
+    <button class="nav-item" onclick="showPanel('orders',this)"><span class="nav-icon">◻</span><span>Orders</span></button>
+    <div class="nav-group">Music</div>
+    <button class="nav-item" onclick="showPanel('beats',this)"><span class="nav-icon">♩</span><span>Beats</span></button>
+    <button class="nav-item" onclick="showPanel('upload-beat',this)"><span class="nav-icon">+</span><span>Upload Beat</span></button>
+    <div class="nav-group">Store</div>
+    <button class="nav-item" onclick="showPanel('products',this)"><span class="nav-icon">◈</span><span>Products</span></button>
+    <button class="nav-item" onclick="showPanel('add-product',this)"><span class="nav-icon">+</span><span>Add Product</span></button>
+    <div class="nav-group">Settings</div>
+    <button class="nav-item" onclick="showPanel('settings',this)"><span class="nav-icon">⚙</span><span>Settings</span></button>
+  </nav>
+  <div class="sidebar-footer">
+    <a href="{{ url_for('main.index') }}" target="_blank">← View Site</a>
+    <a href="{{ url_for('admin.logout') }}">Log Out</a>
+  </div>
+</aside>
+
+<div class="main">
+  <div class="topbar">
+    <div class="topbar-title" id="topbar-title">Dashboard</div>
+    <div class="topbar-actions">
+      <a href="{{ url_for('main.index') }}" target="_blank" class="btn btn-ghost btn-sm">View Site</a>
+      <button class="btn btn-fire btn-sm" onclick="showPanel('upload-beat',document.querySelector('[onclick*=upload-beat]'))">+ Upload Beat</button>
+    </div>
+  </div>
+
+  <div class="content">
+
+    <!-- ═══ DASHBOARD ═══ -->
+    <div class="panel active" id="panel-dashboard">
+      <div class="stat-grid">
+        <div class="stat-card"><div class="stat-value">${{ '%.0f'|format(revenue) }}</div><div class="stat-label">Total Revenue</div></div>
+        <div class="stat-card"><div class="stat-value green">{{ orders_count }}</div><div class="stat-label">Orders</div></div>
+        <div class="stat-card"><div class="stat-value blue">{{ beats_count }}</div><div class="stat-label">Live Beats</div></div>
+        <div class="stat-card"><div class="stat-value white">{{ products_count }}</div><div class="stat-label">Products</div></div>
+      </div>
+      <div class="two-col">
+        <div>
+          <div class="sec-lbl">Recent Orders</div>
+          <div class="tbl-wrap">
+            <table class="admin-tbl">
+              <thead><tr><th>Client</th><th>Type</th><th>Amount</th><th>Status</th></tr></thead>
+              <tbody>
+                {% if recent_orders %}
+                  {% for o in recent_orders %}
+                  <tr>
+                    <td><div class="td-title" style="font-size:13px">{{ o.customer_name or '—' }}</div><div class="td-mono">{{ o.customer_email }}</div></td>
+                    <td><span class="badge badge-{{ o.order_type }}">{{ o.order_type }}</span></td>
+                    <td class="td-price">${{ '%.0f'|format(o.amount_paid/100) }}</td>
+                    <td><span class="badge badge-{{ o.status }}">{{ o.status }}</span></td>
+                  </tr>
+                  {% endfor %}
+                {% else %}
+                  <tr><td colspan="4" class="empty-state">No orders yet</td></tr>
+                {% endif %}
+              </tbody>
+            </table>
+          </div>
+        </div>
+        <div>
+          <div class="sec-lbl">Beat Performance</div>
+          <div class="tbl-wrap">
+            <table class="admin-tbl">
+              <thead><tr><th>Beat</th><th>Plays</th><th>Sales</th></tr></thead>
+              <tbody>
+                {% if beats %}
+                  {% for b in beats %}
+                  <tr>
+                    <td>
+                      <div class="td-title" style="font-size:13px">{{ b.title }}</div>
+                      <div class="rev-bar"><div class="rev-fill" style="width:{{ [b.play_count * 5, 100]|min }}%"></div></div>
+                    </td>
+                    <td class="td-mono">{{ b.play_count }}</td>
+                    <td class="td-mono">{{ b.sale_count }}</td>
+                  </tr>
+                  {% endfor %}
+                {% else %}
+                  <tr><td colspan="3" class="empty-state">Upload beats to see performance</td></tr>
+                {% endif %}
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ═══ ORDERS ═══ -->
+    <div class="panel" id="panel-orders">
+      <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:16px">
+        <div style="display:flex;gap:4px">
+          <button class="btn btn-ghost btn-sm on" onclick="filterOrders('all',this)">All</button>
+          <button class="btn btn-ghost btn-sm" onclick="filterOrders('beat',this)">Beats</button>
+          <button class="btn btn-ghost btn-sm" onclick="filterOrders('session',this)">Sessions</button>
+          <button class="btn btn-ghost btn-sm" onclick="filterOrders('store',this)">Store</button>
+        </div>
+        <a href="/admin/orders/export" class="btn btn-ghost btn-sm">Export CSV</a>
+      </div>
+      <div class="tbl-wrap">
+        <table class="admin-tbl" id="orders-table">
+          <thead><tr><th>#</th><th>Date</th><th>Client</th><th>Product</th><th>Type</th><th>Paid</th><th>Balance</th><th>Status</th><th>Actions</th></tr></thead>
+          <tbody id="orders-body">
+            {% if all_orders %}
+              {% for o in all_orders %}
+              <tr data-type="{{ o.order_type }}">
+                <td class="td-mono">{{ o.id }}</td>
+                <td class="td-mono">{{ o.created_at.strftime('%m/%d') }}</td>
+                <td><div style="font-size:12px;color:var(--white)">{{ o.customer_name or '—' }}</div><div class="td-mono">{{ o.customer_email }}</div></td>
+                <td style="max-width:160px;font-size:12px">{{ o.product_name[:28] }}{% if o.product_name|length > 28 %}…{% endif %}</td>
+                <td><span class="badge badge-{{ o.order_type }}">{{ o.order_type }}</span></td>
+                <td class="td-price">${{ '%.0f'|format(o.amount_paid/100) }}</td>
+                <td class="td-mono">{% if o.amount_balance > 0 %}${{ '%.0f'|format(o.amount_balance/100) }}{% else %}—{% endif %}</td>
+                <td><span class="badge badge-{{ o.status }}">{{ o.status }}</span></td>
+                <td class="td-actions">
+                  {% if o.status == 'paid' %}
+                  <button class="btn btn-green btn-sm" onclick="completeOrder({{ o.id }},this)">Complete</button>
+                  {% endif %}
+                </td>
+              </tr>
+              {% endfor %}
+            {% else %}
+              <tr><td colspan="9" class="empty-state">No orders yet — they appear here after Stripe payments</td></tr>
+            {% endif %}
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <!-- ═══ BEATS LIST ═══ -->
+    <div class="panel" id="panel-beats">
+      <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:16px">
+        <div class="td-mono">{{ beats_count }} beats in catalog</div>
+        <button class="btn btn-fire btn-sm" onclick="showPanel('upload-beat',document.querySelector('[onclick*=upload-beat]'))">+ Upload New Beat</button>
+      </div>
+      <div class="tbl-wrap">
+        <table class="admin-tbl">
+          <thead><tr><th>#</th><th>Title</th><th>BPM</th><th>Key</th><th>Genre</th><th>Basic $</th><th>Plays</th><th>Status</th><th>Actions</th></tr></thead>
+          <tbody>
+            {% if beats %}
+              {% for b in beats %}
+              <tr>
+                <td class="td-mono">{{ '%02d'|format(b.id) }}</td>
+                <td class="td-title">{{ b.title }}</td>
+                <td class="td-mono">{{ b.bpm }}</td>
+                <td class="td-mono">{{ b.key }}</td>
+                <td><span class="badge badge-beat" style="font-size:7px">{{ b.genre }}</span></td>
+                <td class="td-price">{% if b.is_free %}<span style="color:var(--green)">FREE</span>{% else %}${{ b.price_basic }}{% endif %}</td>
+                <td class="td-mono">{{ b.play_count }}</td>
+                <td><span class="badge badge-{{ 'live' if b.is_active else 'draft' }}">{{ 'live' if b.is_active else 'draft' }}</span></td>
+                <td class="td-actions">
+                  <button class="btn btn-ghost btn-sm" onclick="toggleBeat({{ b.id }},this)">{{ 'Hide' if b.is_active else 'Show' }}</button>
+                  <button class="btn btn-danger btn-sm" onclick="deleteBeat({{ b.id }},this)">Delete</button>
+                </td>
+              </tr>
+              {% endfor %}
+            {% else %}
+              <tr><td colspan="9" class="empty-state">No beats uploaded yet — use Upload Beat to add your first beat</td></tr>
+            {% endif %}
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <!-- ═══ UPLOAD BEAT ═══ -->
+    <div class="panel" id="panel-upload-beat">
+      <div id="alert-beat" class="alert"></div>
+      <form id="beat-form" enctype="multipart/form-data">
+        <div class="form-wrap">
+          <div class="form-grid">
+            <div class="form-field full">
+              <label class="field-label">Beat Title *</label>
+              <input class="fi" type="text" name="title" id="bt-title" placeholder="e.g. Midnight Cipher" required>
+            </div>
+            <div class="form-field">
+              <label class="field-label">BPM *</label>
+              <input class="fi" type="number" name="bpm" id="bt-bpm" placeholder="140" required>
+            </div>
+            <div class="form-field">
+              <label class="field-label">Key</label>
+              <input class="fi" type="text" name="key" id="bt-key" placeholder="F Min">
+            </div>
+            <div class="form-field">
+              <label class="field-label">Genre</label>
+              <select class="fs" name="genre" id="bt-genre">
+                <option value="">Select Genre</option>
+                <option>Trap</option><option>Hip-Hop</option><option>Drill</option>
+                <option>R&B</option><option>Cinematic</option><option>Boom Bap</option><option>Pop</option>
+              </select>
+            </div>
+            <div class="form-field">
+              <label class="field-label">Mood</label>
+              <select class="fs" name="mood" id="bt-mood">
+                <option value="">Select Mood</option>
+                <option>Dark</option><option>Hard</option><option>Melodic</option>
+                <option>Smooth</option><option>Aggressive</option><option>Cinematic</option>
+              </select>
+            </div>
+            <div class="form-field">
+              <label class="field-label">Basic Lease Price ($)</label>
+              <input class="fi" type="number" name="price_basic" value="29">
+            </div>
+            <div class="form-field">
+              <label class="field-label">Premium Lease ($)</label>
+              <input class="fi" type="number" name="price_premium" value="49">
+            </div>
+            <div class="form-field">
+              <label class="field-label">Trackout Lease ($)</label>
+              <input class="fi" type="number" name="price_trackout" value="99">
+            </div>
+            <div class="form-field">
+              <label class="field-label">Exclusive Rights ($)</label>
+              <input class="fi" type="number" name="price_exclusive" value="299">
+            </div>
+            <div class="form-field">
+              <label class="field-label">Tags (comma separated)</label>
+              <input class="fi" type="text" name="tags" placeholder="dark, 808s, aggressive">
+            </div>
+            <!-- FILE UPLOADS -->
+            <div class="form-field">
+              <label class="field-label">MP3 Preview *</label>
+              <div class="file-drop" onclick="this.querySelector('input').click()">
+                <input type="file" name="mp3_preview" accept=".mp3,.wav" onchange="showFn(this,'mp3-fn')">
+                <label class="file-drop-label"><strong>Choose MP3 / WAV</strong>Preview file — plays in beat store</label>
+              </div>
+              <div class="file-name" id="mp3-fn">No file selected</div>
+            </div>
+            <div class="form-field">
+              <label class="field-label">WAV File (Premium+)</label>
+              <div class="file-drop" onclick="this.querySelector('input').click()">
+                <input type="file" name="wav_file" accept=".wav,.aiff" onchange="showFn(this,'wav-fn')">
+                <label class="file-drop-label"><strong>Choose WAV</strong>Delivered for Premium &amp; Trackout</label>
+              </div>
+              <div class="file-name" id="wav-fn">No file selected</div>
+            </div>
+            <div class="form-field">
+              <label class="field-label">Stems ZIP (Trackout+)</label>
+              <div class="file-drop" onclick="this.querySelector('input').click()">
+                <input type="file" name="stems_file" accept=".zip" onchange="showFn(this,'stems-fn')">
+                <label class="file-drop-label"><strong>Choose ZIP</strong>Stems for Trackout &amp; Exclusive</label>
+              </div>
+              <div class="file-name" id="stems-fn">No file selected</div>
+            </div>
+            <div class="form-field">
+              <label class="field-label">Cover Art</label>
+              <div class="file-drop" onclick="this.querySelector('input').click()">
+                <input type="file" name="cover_art" accept=".jpg,.jpeg,.png,.webp" onchange="showFn(this,'cover-fn');previewImg(this,'cover-prev')">
+                <label class="file-drop-label"><strong>Choose Image</strong>Square 1:1 ratio recommended</label>
+              </div>
+              <div class="file-name" id="cover-fn">No file selected</div>
+              <img id="cover-prev" style="display:none;width:72px;height:72px;object-fit:cover;margin-top:8px;border:1px solid var(--border)">
+            </div>
+            <div class="form-field full">
+              <div class="checks-row">
+                <label class="check-label"><input type="checkbox" name="active" checked> Live in store immediately</label>
+                <label class="check-label"><input type="checkbox" name="featured"> Mark as Featured</label>
+                <label class="check-label"><input type="checkbox" name="free" onchange="toggleFree(this)"> Free Download</label>
+              </div>
+            </div>
+          </div>
+          <div class="form-actions">
+            <button type="button" class="btn btn-fire" onclick="submitBeat()">Upload Beat</button>
+            <button type="button" class="btn btn-ghost" onclick="document.getElementById('beat-form').reset();['mp3-fn','wav-fn','stems-fn','cover-fn'].forEach(function(id){document.getElementById(id).textContent='No file selected'});document.getElementById('cover-prev').style.display='none'">Clear Form</button>
+          </div>
+        </div>
+      </form>
+    </div>
+
+    <!-- ═══ PRODUCTS LIST ═══ -->
+    <div class="panel" id="panel-products">
+      <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:16px">
+        <div class="td-mono">{{ products_count }} products active</div>
+        <button class="btn btn-fire btn-sm" onclick="showPanel('add-product',document.querySelector('[onclick*=add-product]'))">+ Add Product</button>
+      </div>
+      <div class="tbl-wrap">
+        <table class="admin-tbl">
+          <thead><tr><th>Name</th><th>Type</th><th>Price</th><th>File</th><th>Status</th><th>Actions</th></tr></thead>
+          <tbody>
+            {% if products %}
+              {% for p in products %}
+              <tr>
+                <td class="td-title" style="font-size:14px">{{ p.name }}</td>
+                <td><span class="badge badge-{{ p.product_type }}">{{ p.product_type }}</span></td>
+                <td class="td-price">${{ p.price }}</td>
+                <td class="td-mono">{% if p.file_path %}✓ Uploaded{% else %}<span style="color:#c84a4a">No file</span>{% endif %}</td>
+                <td><span class="badge badge-{{ 'live' if p.is_active else 'draft' }}">{{ 'live' if p.is_active else 'draft' }}</span></td>
+                <td class="td-actions">
+                  <button class="btn btn-danger btn-sm" onclick="deleteProduct({{ p.id }},this)">Delete</button>
+                </td>
+              </tr>
+              {% endfor %}
+            {% else %}
+              <tr><td colspan="6" class="empty-state">No products yet — add digital products above</td></tr>
+            {% endif %}
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <!-- ═══ ADD PRODUCT ═══ -->
+    <div class="panel" id="panel-add-product">
+      <div id="alert-product" class="alert"></div>
+      <form id="product-form" enctype="multipart/form-data">
+        <div class="form-wrap">
+          <div class="form-grid">
+            <div class="form-field">
+              <label class="field-label">Product Type *</label>
+              <select class="fs" name="type" id="prod-type">
+                <option value="digital">Digital Download</option>
+                <option value="course">Course</option>
+              </select>
+            </div>
+            <div class="form-field">
+              <label class="field-label">Product Name *</label>
+              <input class="fi" type="text" name="name" placeholder="e.g. Mixing Preset Pack Vol. 1" required>
+            </div>
+            <div class="form-field full">
+              <label class="field-label">Description</label>
+              <textarea class="fta" name="description" placeholder="What does this include? What will they get?"></textarea>
+            </div>
+            <div class="form-field">
+              <label class="field-label">Price ($) *</label>
+              <input class="fi" type="number" name="price" placeholder="29" step="1" required>
+            </div>
+            <div class="form-field">
+              <label class="field-label">Tags (comma separated)</label>
+              <input class="fi" type="text" name="tags" placeholder="PDF, Template, Strategy">
+            </div>
+            <div class="form-field">
+              <label class="field-label">Digital File *</label>
+              <div class="file-drop" onclick="this.querySelector('input').click()">
+                <input type="file" name="file" onchange="showFn(this,'prod-file-fn')">
+                <label class="file-drop-label"><strong>Choose File</strong>ZIP, PDF, MP3, WAV — delivered after purchase</label>
+              </div>
+              <div class="file-name" id="prod-file-fn">No file selected</div>
+            </div>
+            <div class="form-field">
+              <label class="field-label">Product Image</label>
+              <div class="file-drop" onclick="this.querySelector('input').click()">
+                <input type="file" name="image" accept=".jpg,.jpeg,.png,.webp" onchange="showFn(this,'prod-img-fn');previewImg(this,'prod-img-prev')">
+                <label class="file-drop-label"><strong>Choose Image</strong>Product photo or cover art</label>
+              </div>
+              <div class="file-name" id="prod-img-fn">No file selected</div>
+              <img id="prod-img-prev" style="display:none;width:72px;height:72px;object-fit:cover;margin-top:8px;border:1px solid var(--border)">
+            </div>
+            <div class="form-field full">
+              <div class="checks-row">
+                <label class="check-label"><input type="checkbox" name="active" checked> List in store immediately</label>
+                <label class="check-label"><input type="checkbox" name="is_new"> Mark as New</label>
+              </div>
+            </div>
+          </div>
+          <div class="form-actions">
+            <button type="button" class="btn btn-fire" onclick="submitProduct()">Add Product</button>
+            <button type="button" class="btn btn-ghost" onclick="document.getElementById('product-form').reset();['prod-file-fn','prod-img-fn'].forEach(function(id){document.getElementById(id).textContent='No file selected'});document.getElementById('prod-img-prev').style.display='none'">Clear</button>
+          </div>
+        </div>
+      </form>
+    </div>
+
+    <!-- ═══ SETTINGS ═══ -->
+    <div class="panel" id="panel-settings">
+      <div class="form-wrap" style="padding:0">
+        <div style="padding:24px;border-bottom:1px solid var(--border)">
+          <div class="sec-lbl">Stripe Configuration</div>
+          <div style="font-family:'Space Mono',monospace;font-size:9px;letter-spacing:.16em;color:var(--muted);line-height:2">
+            Keys are set in your <span style="color:var(--ember)">.env</span> file — never enter them here.<br>
+            STRIPE_SECRET_KEY: <span style="color:{% if stripe_ok %}var(--green){% else %}#c84a4a{% endif %}">{% if stripe_ok %}✓ Configured{% else %}✕ Not set or invalid prefix{% endif %}</span><br>
+            STRIPE_WEBHOOK_SECRET: <span style="color:var(--muted)">Get from dashboard.stripe.com → Developers → Webhooks</span>
+          </div>
+        </div>
+        <div style="padding:24px;border-bottom:1px solid var(--border)">
+          <div class="sec-lbl">Site Info</div>
+          <div style="font-family:'Space Mono',monospace;font-size:9px;letter-spacing:.16em;color:var(--muted);line-height:2">
+            Phone: <span style="color:var(--white)">(208) 391-5292</span><br>
+            Calendly: <span style="color:var(--white)">macdylanforever</span><br>
+            SoundCloud: <span style="color:var(--white)">macdylan4ever</span><br>
+            ConvertKit Form ID: <span style="color:var(--white)">9292507</span>
+          </div>
+        </div>
+        <div style="padding:24px">
+          <div class="sec-lbl">Environment</div>
+          <div style="font-family:'Space Mono',monospace;font-size:9px;letter-spacing:.16em;color:var(--muted);line-height:2">
+            Mode: <span style="color:var(--flame)">Development (Local)</span><br>
+            Database: <span style="color:var(--muted)">SQLite → macdylan.db</span><br>
+            Domain: <span style="color:var(--muted)">{{ domain }}</span><br>
+            Deploy: <span style="color:var(--muted)">Railway.app (pending)</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</div>
+{% endblock %}
+
+{% block extra_scripts %}
+<script>
+(function(){
+'use strict';
+
+var PANELS = ['dashboard','orders','beats','upload-beat','products','add-product','settings'];
+var TITLES = {
+  dashboard:'Dashboard', orders:'Orders', beats:'Beats',
+  'upload-beat':'Upload Beat', products:'Store Products',
+  'add-product':'Add Product', settings:'Settings'
+};
+
+window.showPanel = function(id, navEl) {
+  PANELS.forEach(function(p){ document.getElementById('panel-'+p).classList.remove('active') });
+  document.querySelectorAll('.nav-item').forEach(function(n){ n.classList.remove('active') });
+  document.getElementById('panel-' + id).classList.add('active');
+  if (navEl) navEl.classList.add('active');
+  document.getElementById('topbar-title').textContent = TITLES[id] || id;
+};
+
+/* ── FILE HELPERS ── */
+window.showFn = function(input, targetId) {
+  var el = document.getElementById(targetId);
+  if (el && input.files[0]) el.textContent = '✓ ' + input.files[0].name;
+};
+window.previewImg = function(input, targetId) {
+  var el = document.getElementById(targetId);
+  if (!el || !input.files[0]) return;
+  var reader = new FileReader();
+  reader.onload = function(e){ el.src = e.target.result; el.style.display = 'block'; };
+  reader.readAsDataURL(input.files[0]);
+};
+window.toggleFree = function(cb) {
+  var priceFields = document.querySelectorAll('#beat-form input[name^="price_"]');
+  priceFields.forEach(function(f){ f.disabled = cb.checked; });
+};
+
+/* ── BEAT UPLOAD ── */
+window.submitBeat = function() {
+  var title = document.getElementById('bt-title').value.trim();
+  var bpm   = document.getElementById('bt-bpm').value;
+  if (!title || !bpm) { showAlert('alert-beat','error','✕ Title and BPM are required'); return; }
+  var form = document.getElementById('beat-form');
+  var fd   = new FormData(form);
+  showAlert('alert-beat','success','Uploading...');
+  fetch('/admin/beats/upload', { method: 'POST', body: fd })
+    .then(function(r){ return r.json(); })
+    .then(function(d){
+      if (d.success) {
+        showAlert('alert-beat','success','✓ Beat "' + title + '" uploaded successfully! Refresh Beats to see it.');
+        form.reset();
+        ['mp3-fn','wav-fn','stems-fn','cover-fn'].forEach(function(id){ document.getElementById(id).textContent='No file selected'; });
+        document.getElementById('cover-prev').style.display='none';
+      } else {
+        showAlert('alert-beat','error','✕ Upload failed: ' + (d.error || 'Unknown error'));
+      }
+    })
+    .catch(function(err){ showAlert('alert-beat','error','✕ Error: ' + err.message); });
+};
+
+/* ── PRODUCT ADD ── */
+window.submitProduct = function() {
+  var name  = document.querySelector('#product-form [name=name]').value.trim();
+  var price = document.querySelector('#product-form [name=price]').value;
+  if (!name || !price) { showAlert('alert-product','error','✕ Name and price are required'); return; }
+  var fd = new FormData(document.getElementById('product-form'));
+  showAlert('alert-product','success','Saving...');
+  fetch('/admin/products/add', { method: 'POST', body: fd })
+    .then(function(r){ return r.json(); })
+    .then(function(d){
+      if (d.success) {
+        showAlert('alert-product','success','✓ Product "' + name + '" added! Refresh Products to see it.');
+        document.getElementById('product-form').reset();
+        ['prod-file-fn','prod-img-fn'].forEach(function(id){ document.getElementById(id).textContent='No file selected'; });
+        document.getElementById('prod-img-prev').style.display='none';
+      } else {
+        showAlert('alert-product','error','✕ Failed: ' + (d.error || 'Unknown error'));
+      }
+    })
+    .catch(function(err){ showAlert('alert-product','error','✕ Error: ' + err.message); });
+};
+
+/* ── BEAT ACTIONS ── */
+window.toggleBeat = function(id, btn) {
+  fetch('/admin/beats/' + id + '/toggle', { method: 'POST' })
+    .then(function(r){ return r.json(); })
+    .then(function(d){
+      var row = btn.closest('tr');
+      var badge = row.querySelector('.badge');
+      badge.className = 'badge badge-' + (d.is_active ? 'live' : 'draft');
+      badge.textContent = d.is_active ? 'live' : 'draft';
+      btn.textContent = d.is_active ? 'Hide' : 'Show';
+    });
+};
+window.deleteBeat = function(id, btn) {
+  if (!confirm('Delete this beat? This cannot be undone.')) return;
+  fetch('/admin/beats/' + id + '/delete', { method: 'POST' })
+    .then(function(r){ return r.json(); })
+    .then(function(d){ if (d.deleted) btn.closest('tr').remove(); });
+};
+
+/* ── PRODUCT ACTIONS ── */
+window.deleteProduct = function(id, btn) {
+  if (!confirm('Delete this product? This cannot be undone.')) return;
+  fetch('/admin/products/' + id + '/delete', { method: 'POST' })
+    .then(function(r){ return r.json(); })
+    .then(function(d){ if (d.deleted) btn.closest('tr').remove(); });
+};
+
+/* ── ORDER ACTIONS ── */
+window.completeOrder = function(id, btn) {
+  fetch('/admin/orders/' + id + '/complete', { method: 'POST' })
+    .then(function(r){ return r.json(); })
+    .then(function(d){
+      if (d.status === 'complete') {
+        var badge = btn.closest('tr').querySelector('.badge-paid, .badge-pending');
+        if (badge) { badge.className = 'badge badge-complete'; badge.textContent = 'complete'; }
+        btn.remove();
+      }
+    });
+};
+
+window.filterOrders = function(type, btn) {
+  document.querySelectorAll('.btn-ghost').forEach(function(b){ b.classList.remove('on'); });
+  btn.classList.add('on');
+  document.querySelectorAll('#orders-body tr[data-type]').forEach(function(row){
+    row.style.display = (type === 'all' || row.dataset.type === type) ? '' : 'none';
+  });
+};
+
+/* ── ALERT ── */
+function showAlert(id, type, msg) {
+  var el = document.getElementById(id);
+  if (!el) return;
+  el.className = 'alert alert-' + type + ' show';
+  el.textContent = msg;
+  if (type === 'success') setTimeout(function(){ el.classList.remove('show'); }, 5000);
+}
+
+})();
+</script>
+{% endblock %}

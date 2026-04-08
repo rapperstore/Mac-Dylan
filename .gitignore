@@ -1,0 +1,27 @@
+# Environment — NEVER commit this
+.env
+
+# Python
+venv/
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+*.egg-info/
+dist/
+build/
+
+# Database (dev only — Railway uses PostgreSQL in prod)
+*.db
+*.sqlite
+
+# Uploads (store these on S3 or Railway volume in prod)
+static/uploads/
+
+# OS
+.DS_Store
+Thumbs.db
+
+# IDE
+.vscode/
+.idea/

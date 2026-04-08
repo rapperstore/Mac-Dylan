@@ -1,0 +1,304 @@
+{% extends "base.html" %}
+{% block title %}Beats — Mac Dylan{% endblock %}
+
+{% block extra_styles %}
+.hero{padding:88px 48px 52px;border-bottom:1px solid var(--border);position:relative;overflow:hidden}
+.hero::after{content:'BEATS';position:absolute;right:-10px;bottom:-44px;font-family:'Bebas Neue',sans-serif;font-size:220px;color:rgba(200,75,10,.04);pointer-events:none;line-height:1}
+.hero-eyebrow{font-family:'Space Mono',monospace;font-size:9px;letter-spacing:.5em;color:var(--ember);text-transform:uppercase;margin-bottom:14px;opacity:0;animation:burnIn .8s ease forwards .3s}
+.hero-title{font-family:'Bebas Neue',sans-serif;font-size:clamp(52px,10vw,120px);line-height:.88;color:var(--white);opacity:0;animation:burnIn .8s ease forwards .55s}
+.hero-title span{color:transparent;-webkit-text-stroke:1px var(--ember)}
+.hero-sub{font-size:17px;font-style:italic;color:var(--ash);margin-top:14px;max-width:500px;line-height:1.7;opacity:0;animation:burnIn .8s ease forwards .8s}
+.filter-bar{background:rgba(8,6,4,.97);border-bottom:1px solid var(--border);padding:11px 48px;display:flex;align-items:center;gap:8px;flex-wrap:wrap;position:sticky;top:57px;z-index:100;backdrop-filter:blur(8px)}
+.flbl{font-family:'Space Mono',monospace;font-size:8px;letter-spacing:.4em;color:var(--muted);text-transform:uppercase;flex-shrink:0}
+.fb{font-family:'Space Mono',monospace;font-size:8px;letter-spacing:.18em;text-transform:uppercase;padding:5px 12px;background:transparent;border:1px solid var(--border);color:var(--muted);transition:all .15s}
+.fb:hover,.fb.on{border-color:var(--ember);color:var(--fire);background:rgba(200,75,10,.06)}
+.fb.free-f.on{border-color:var(--green);color:var(--green);background:rgba(58,138,90,.06)}
+.fdiv{width:1px;height:16px;background:var(--border);margin:0 2px;flex-shrink:0}
+.main{max-width:1300px;margin:0 auto;padding:36px 48px 140px;display:grid;grid-template-columns:1fr 400px;gap:28px;align-items:start}
+.playlist-panel{background:var(--card);border:1px solid var(--border)}
+.playlist-hdr{padding:14px 20px;border-bottom:1px solid var(--border);display:flex;justify-content:space-between;align-items:center}
+.ph-title{font-family:'Bebas Neue',sans-serif;font-size:19px;letter-spacing:.06em;color:var(--white)}
+.ph-count{font-family:'Space Mono',monospace;font-size:8px;letter-spacing:.28em;color:var(--muted)}
+.free-hdr{padding:8px 16px;background:linear-gradient(135deg,#061a0e,#0a2214);border-bottom:1px solid var(--green);display:flex;align-items:center;gap:8px}
+.free-dot{width:7px;height:7px;background:var(--green);border-radius:50%;animation:pulse 2s ease infinite;flex-shrink:0}
+.free-hdr-txt{font-family:'Space Mono',monospace;font-size:8px;letter-spacing:.28em;color:var(--green);text-transform:uppercase}
+.beat-row{display:flex;align-items:center;padding:10px 14px;border-bottom:1px solid var(--border);gap:11px;transition:background .2s;position:relative;overflow:hidden}
+.beat-row:last-child{border-bottom:none}.beat-row:hover{background:var(--card2)}.beat-row.active{background:#120a04}
+.beat-row.active::before{content:'';position:absolute;left:0;top:0;bottom:0;width:2px;background:var(--ember);box-shadow:0 0 8px var(--ember)}
+.row-num{font-family:'Space Mono',monospace;font-size:9px;color:var(--muted);width:18px;text-align:center;flex-shrink:0}
+.row-play-wrap{display:none;width:18px;align-items:center;justify-content:center;flex-shrink:0}
+.beat-row:hover .row-num,.beat-row.active .row-num{display:none}
+.beat-row:hover .row-play-wrap,.beat-row.active .row-play-wrap{display:flex}
+.row-play-btn{background:none;border:none;padding:0;line-height:1;display:flex;align-items:center;justify-content:center}
+.row-play-btn svg{width:11px;height:11px;fill:var(--fire)}
+.row-cover{width:34px;height:34px;flex-shrink:0;position:relative;overflow:hidden;background:linear-gradient(135deg,#0d0a07,#1e1208)}
+.row-cover-ph{width:100%;height:100%;display:flex;align-items:center;justify-content:center;font-family:'Bebas Neue',sans-serif;font-size:15px;color:rgba(200,75,10,.22)}
+.row-cover img{width:100%;height:100%;object-fit:cover}
+.row-cover-eq{position:absolute;inset:0;display:none;align-items:center;justify-content:center;background:rgba(5,4,3,.65);gap:2px}
+.beat-row.active .row-cover-eq{display:flex}
+.eq-b{width:3px;border-radius:1px;animation:eqAnim .65s ease infinite}
+.eq-b:nth-child(1){height:75%;background:var(--fire)}.eq-b:nth-child(2){height:50%;background:var(--flame);animation-delay:.1s}
+.eq-b:nth-child(3){height:85%;background:var(--fire);animation-delay:.2s}.eq-b:nth-child(4){height:45%;background:var(--flame);animation-delay:.05s}
+.row-info{flex:1;min-width:0}
+.row-title{font-family:'Bebas Neue',sans-serif;font-size:15px;color:var(--white);letter-spacing:.04em;line-height:1;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.beat-row.active .row-title{color:var(--fire)}
+.row-tags{display:flex;gap:7px;margin-top:3px;flex-wrap:wrap}
+.row-tag{font-family:'Space Mono',monospace;font-size:7px;letter-spacing:.14em;color:var(--muted);text-transform:uppercase}
+.row-tag.free-tag{color:var(--green)}
+.row-wf{width:80px;height:24px;display:flex;align-items:center;gap:1px;flex-shrink:0}
+.rwb{flex:1;background:var(--border);border-radius:1px;transition:background .3s}
+.beat-row:hover .rwb{background:rgba(107,90,80,.45)}.beat-row.active .rwb{background:rgba(200,75,10,.4)}
+.row-price{font-family:'Bebas Neue',sans-serif;font-size:17px;flex-shrink:0;min-width:44px;text-align:right}
+.row-price.paid{color:var(--fire)}.row-price.free{color:var(--green)}
+.row-btns{display:flex;gap:5px;flex-shrink:0}
+.rbtn{font-family:'Space Mono',monospace;font-size:7px;letter-spacing:.16em;text-transform:uppercase;padding:6px 9px;background:transparent;border:1px solid var(--borderl);color:var(--muted);transition:all .15s;white-space:nowrap}
+.rbtn:hover{border-color:var(--ember);color:var(--ember)}
+.rbtn.buy{background:var(--ember);border-color:var(--ember);color:var(--white)}.rbtn.buy:hover{background:var(--fire)}
+.rbtn.dl{background:var(--green);border-color:var(--green);color:var(--white)}.rbtn.dl:hover{background:#2d6e47}
+.right-col{display:flex;flex-direction:column;gap:14px}
+.np-panel{background:var(--card);border:1px solid var(--border);overflow:hidden}
+.np-fire-area{height:154px;position:relative;overflow:hidden;border-bottom:1px solid var(--border)}
+.np-fire-canvas{position:absolute;inset:0;width:100%;height:100%}
+.np-overlay{position:absolute;inset:0;background:linear-gradient(to bottom,rgba(5,4,3,.2) 0%,rgba(5,4,3,.9) 100%);display:flex;flex-direction:column;justify-content:flex-end;padding:13px 17px}
+.np-now-tag{font-family:'Space Mono',monospace;font-size:7px;letter-spacing:.4em;color:var(--ember);text-transform:uppercase;margin-bottom:4px}
+.np-track-name{font-family:'Bebas Neue',sans-serif;font-size:27px;line-height:1;color:var(--white);letter-spacing:.04em}
+.np-track-sub{font-family:'Space Mono',monospace;font-size:8px;letter-spacing:.16em;color:var(--muted);margin-top:3px}
+.np-wf-area{padding:12px 17px 0;background:var(--deep)}
+.np-static-wf{height:48px;display:flex;align-items:center;gap:1px}
+.np-times{display:flex;justify-content:space-between;padding:4px 17px 0;background:var(--deep)}
+.np-time{font-family:'Space Mono',monospace;font-size:9px;color:var(--muted)}
+.np-controls{display:flex;align-items:center;justify-content:center;gap:14px;padding:12px 17px;border-top:1px solid var(--border)}
+.ctrl{background:none;border:none;color:var(--muted);display:flex;align-items:center;justify-content:center;transition:color .2s;padding:3px}.ctrl:hover{color:var(--fire)}
+.ctrl svg{width:15px;height:15px;fill:currentColor}
+.ctrl-play-btn{width:42px;height:42px;background:var(--ember);border:none;color:var(--white);display:flex;align-items:center;justify-content:center;transition:background .2s,box-shadow .2s}
+.ctrl-play-btn:hover{background:var(--fire);box-shadow:0 0 20px rgba(200,75,10,.5)}
+.ctrl-play-btn svg{width:13px;height:13px;fill:var(--white)}
+.np-vol{display:flex;align-items:center;gap:8px;padding:0 17px 11px}
+.np-vol svg{width:13px;height:13px;fill:var(--muted);flex-shrink:0}
+.vol-sl{flex:1;-webkit-appearance:none;height:2px;background:var(--border);outline:none}
+.vol-sl::-webkit-slider-thumb{-webkit-appearance:none;width:10px;height:10px;background:var(--ember);border-radius:50%}
+.np-lic-section{border-top:1px solid var(--border)}
+.np-lic-hdr{padding:9px 17px;font-family:'Space Mono',monospace;font-size:8px;letter-spacing:.36em;color:var(--muted);text-transform:uppercase;background:var(--deep);display:flex;justify-content:space-between;align-items:center}
+.np-free-badge{color:var(--green);font-size:7px;letter-spacing:.2em;display:none}
+.lic-row{display:flex;align-items:center;justify-content:space-between;padding:10px 17px;border-bottom:1px solid var(--border);gap:10px;transition:background .2s}
+.lic-row:last-child{border-bottom:none}.lic-row:hover{background:var(--card2)}
+.lic-left{flex:1}
+.lic-name{font-family:'Space Mono',monospace;font-size:8px;letter-spacing:.2em;color:var(--white);text-transform:uppercase;margin-bottom:2px}
+.lic-detail{font-size:11px;color:var(--muted);font-style:italic;line-height:1.4}
+.lic-right{display:flex;align-items:center;gap:7px;flex-shrink:0}
+.lic-price{font-family:'Bebas Neue',sans-serif;font-size:18px;color:var(--fire)}.lic-price.free{color:var(--green)}
+.lic-buy{font-family:'Space Mono',monospace;font-size:7px;letter-spacing:.16em;text-transform:uppercase;padding:6px 11px;background:var(--ember);border:none;color:var(--white);transition:background .2s}.lic-buy:hover{background:var(--fire)}
+.lic-buy.free{background:var(--green)}.lic-buy.free:hover{background:#2d6e47}
+.np-empty{padding:24px 17px;text-align:center;font-size:13px;color:var(--muted);font-style:italic}
+@keyframes eqAnim{0%,100%{transform:scaleY(1)}50%{transform:scaleY(1.9)}}
+@keyframes pulse{0%,100%{opacity:1;box-shadow:0 0 5px var(--green)}50%{opacity:.4}}
+@media(max-width:1000px){.hero{padding:72px 24px 44px}.filter-bar{padding:10px 24px;top:53px}.main{grid-template-columns:1fr;padding:28px 24px 80px}.row-wf{display:none}}
+{% endblock %}
+
+{% block content %}
+<div class="hero">
+  <div class="hero-eyebrow">Mac Dylan · Beat Store</div>
+  <h1 class="hero-title">Find Your <span>Sound</span></h1>
+  <p class="hero-sub">Every beat built from scratch. Click any row to preview — choose the license that fits your project.</p>
+</div>
+
+<div class="filter-bar">
+  <span class="flbl">Filter</span>
+  <div style="display:flex;gap:4px;flex-wrap:wrap">
+    <button class="fb on" onclick="filt('genre',null,this)">All Genres</button>
+    <button class="fb" onclick="filt('genre','Trap',this)">Trap</button>
+    <button class="fb" onclick="filt('genre','Hip-Hop',this)">Hip-Hop</button>
+    <button class="fb" onclick="filt('genre','Drill',this)">Drill</button>
+    <button class="fb" onclick="filt('genre','R&B',this)">R&B</button>
+    <button class="fb" onclick="filt('genre','Cinematic',this)">Cinematic</button>
+  </div>
+  <div class="fdiv"></div>
+  <div style="display:flex;gap:4px;flex-wrap:wrap">
+    <button class="fb on" onclick="filt('mood',null,this)">All Moods</button>
+    <button class="fb" onclick="filt('mood','Dark',this)">Dark</button>
+    <button class="fb" onclick="filt('mood','Hard',this)">Hard</button>
+    <button class="fb" onclick="filt('mood','Melodic',this)">Melodic</button>
+    <button class="fb" onclick="filt('mood','Smooth',this)">Smooth</button>
+  </div>
+  <div class="fdiv"></div>
+  <button class="fb free-f" onclick="filtFree(this)">Free Only</button>
+</div>
+
+<div class="main">
+  <div>
+    <div class="playlist-panel" id="playlist-panel">
+      <div class="playlist-hdr">
+        <div class="ph-title">Beat Catalog</div>
+        <div class="ph-count" id="beat-count">Loading...</div>
+      </div>
+    </div>
+  </div>
+  <div class="right-col">
+    <div class="np-panel">
+      <div class="np-fire-area">
+        <canvas id="np-canvas" class="np-fire-canvas"></canvas>
+        <div class="np-overlay">
+          <div class="np-now-tag" id="np-tag">Beat Store</div>
+          <div class="np-track-name" id="np-name">Mac Dylan</div>
+          <div class="np-track-sub" id="np-sub">Select a beat to preview</div>
+        </div>
+      </div>
+      <div class="np-wf-area"><div id="np-ws-wrap"><div class="np-static-wf" id="np-static-bars"></div></div></div>
+      <div class="np-times"><span class="np-time" id="np-cur">0:00</span><span class="np-time" id="np-dur">0:00</span></div>
+      <div class="np-controls">
+        <button class="ctrl" onclick="prevTrack()"><svg viewBox="0 0 24 24"><path d="M6 6h2v12H6zm3.5 6L20 18V6z"/></svg></button>
+        <button class="ctrl ctrl-play-btn" id="np-play" onclick="playPause()">
+          <svg id="np-pi" viewBox="0 0 24 24"><polygon points="5,3 19,12 5,21"/></svg>
+          <svg id="np-pai" viewBox="0 0 24 24" style="display:none"><rect x="6" y="4" width="4" height="16"/><rect x="14" y="4" width="4" height="16"/></svg>
+        </button>
+        <button class="ctrl" onclick="nextTrack()"><svg viewBox="0 0 24 24"><path d="M6 18l8.5-6L6 6v12zm8.5-6L21 6v12z"/></svg></button>
+      </div>
+      <div class="np-vol">
+        <svg viewBox="0 0 24 24"><path d="M3 9v6h4l5 5V4L7 9H3zm13.5 3c0-1.77-1.02-3.29-2.5-4.03v8.05c1.48-.73 2.5-2.25 2.5-4.02z"/></svg>
+        <input class="vol-sl" type="range" id="vol" min="0" max="1" step="0.01" value="0.85" oninput="setVol(this.value)">
+      </div>
+      <div class="np-lic-section">
+        <div class="np-lic-hdr"><span>License Options</span><span class="np-free-badge" id="np-free-bdg">FREE DOWNLOAD</span></div>
+        <div id="np-lic"><div class="np-empty">Select a beat to see licensing options</div></div>
+      </div>
+    </div>
+  </div>
+</div>
+{% endblock %}
+
+{% block extra_scripts %}
+<!-- Beats data from Flask/DB injected as JSON -->
+<script>
+var BEATS = {{ beats | tojson | safe }};
+</script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/wavesurfer.js/7.7.3/wavesurfer.min.js"></script>
+<script>
+(function(){
+'use strict';
+// All player JS identical to standalone beats.html
+// BEATS array is injected above from Flask/SQLAlchemy via tojson filter
+// Reformat for player compatibility
+BEATS = BEATS.map(function(b){
+  return {
+    id: b.id, title: b.title, bpm: b.bpm, key: b.key,
+    genre: b.genre, mood: b.mood, free: b.is_free,
+    mp3: b.mp3_path ? '/static/' + b.mp3_path : '',
+    lics: b.is_free ? [
+      {n:'Free Download',d:'MP3 · Non-commercial · Demo & freestyle only',p:'FREE',a:0,t:'free'}
+    ] : [
+      {n:'Basic Lease',   d:'MP3 · 2,500 streams · Non-exclusive · 1 year',            p:'$'+b.price_basic,    a:b.price_basic,    t:'basic'},
+      {n:'Premium Lease', d:'WAV+MP3 · Unlimited streams · Non-exclusive · 2 years',   p:'$'+b.price_premium,  a:b.price_premium,  t:'premium'},
+      {n:'Trackout Lease',d:'WAV+Stems · Unlimited · Non-exclusive · Lifetime',        p:'$'+b.price_trackout, a:b.price_trackout, t:'trackout'},
+      {n:'Exclusive',     d:'WAV+Stems · Full ownership · Removed from store',         p:'$'+b.price_exclusive,a:b.price_exclusive,t:'exclusive'},
+    ]
+  };
+});
+
+var currentId=null,ws=null,activeGenre=null,activeMood=null,freeOnly=false,npRaf=null;
+
+function render(){
+  var panel=document.getElementById('playlist-panel');
+  panel.querySelectorAll('.beat-row,.free-hdr').forEach(function(e){e.remove()});
+  var free=BEATS.filter(function(b){return b.free&&vis(b)});
+  var paid=BEATS.filter(function(b){return!b.free&&vis(b)});
+  document.getElementById('beat-count').textContent=(free.length+paid.length)+' Beats';
+  if(free.length){var fh=document.createElement('div');fh.className='free-hdr';fh.innerHTML='<div class="free-dot"></div><div class="free-hdr-txt">Free Downloads ('+free.length+')</div>';panel.appendChild(fh);free.forEach(function(b,i){panel.appendChild(makeRow(b,i+1))})}
+  paid.forEach(function(b,i){panel.appendChild(makeRow(b,free.length+i+1))});
+}
+
+function makeRow(beat,num){
+  var div=document.createElement('div');div.className='beat-row'+(currentId===beat.id?' active':'');div.id='row-'+beat.id;
+  var bars='';for(var i=0;i<18;i++){var h=((Math.sin(beat.id*80+i*1.6)*.5+.5)*.72+.15)*100;bars+='<div class="rwb" style="height:'+h.toFixed(0)+'%;flex:1"></div>'}
+  var baseP=beat.free?'FREE':beat.lics[0].p;
+  div.innerHTML='<div class="row-num">'+String(num).padStart(2,'0')+'</div><div class="row-play-wrap"><button class="row-play-btn" onclick="selectBeat('+beat.id+')"><svg viewBox="0 0 24 24"><polygon points="5,3 19,12 5,21"/></svg></button></div><div class="row-cover">'+
+    (beat.mp3?'<img src="/static/'+beat.mp3+'" alt="">' : '<div class="row-cover-ph">'+beat.title[0]+'</div>')+
+    '<div class="row-cover-eq"><div class="eq-b"></div><div class="eq-b"></div><div class="eq-b"></div><div class="eq-b"></div></div></div>'+
+    '<div class="row-info"><div class="row-title">'+beat.title+'</div><div class="row-tags"><span class="row-tag">'+beat.bpm+' BPM</span><span class="row-tag">'+beat.key+'</span><span class="row-tag">'+beat.genre+'</span>'+(beat.free?'<span class="row-tag free-tag">FREE</span>':'')+'</div></div>'+
+    '<div class="row-wf">'+bars+'</div><div class="row-price '+(beat.free?'free':'paid')+'">'+baseP+'</div>'+
+    '<div class="row-btns"><button class="rbtn" onclick="selectBeat('+beat.id+')">Preview</button><button class="rbtn '+(beat.free?'dl':'buy')+'" onclick="'+(beat.free?'dlFree('+beat.id+')':'selectBeat('+beat.id+')')+'">'+(beat.free?'Free DL':'License')+'</button></div>';
+  return div;
+}
+
+window.selectBeat=function(id){
+  var beat=BEATS.find(function(b){return b.id===id});if(!beat)return;
+  if(currentId){var old=document.getElementById('row-'+currentId);if(old)old.classList.remove('active')}
+  currentId=id;var row=document.getElementById('row-'+id);if(row)row.classList.add('active');
+  document.getElementById('np-name').textContent=beat.title;
+  document.getElementById('np-sub').textContent=beat.bpm+' BPM · '+beat.key+' · '+beat.genre;
+  document.getElementById('np-tag').textContent=beat.free?'Free Beat':'Now Playing';
+  renderLics(beat);initNpFire();
+  if(ws){ws.destroy();ws=null}
+  document.getElementById('np-cur').textContent='0:00';document.getElementById('np-dur').textContent='0:00';setPI(false);
+  if(beat.mp3){
+    document.getElementById('np-ws-wrap').innerHTML='<div id="np-ws"></div>';
+    ws=WaveSurfer.create({container:'#np-ws',waveColor:beat.free?'rgba(58,138,90,.5)':'rgba(107,90,80,.5)',progressColor:beat.free?'rgba(58,138,90,.85)':'rgba(200,75,10,.85)',height:48,barWidth:2,barGap:1,barRadius:1,interact:true,url:beat.mp3});
+    ws.setVolume(+document.getElementById('vol').value);
+    ws.on('ready',function(){document.getElementById('np-dur').textContent=fmt(ws.getDuration());ws.play();setPI(true)});
+    ws.on('audioprocess',function(){document.getElementById('np-cur').textContent=fmt(ws.getCurrentTime())});
+    ws.on('finish',function(){nextTrack()});
+    // Track play
+    fetch('/beats/api/play/'+id, {method:'POST'});
+  } else {
+    document.getElementById('np-ws-wrap').innerHTML='<div class="np-static-wf" id="np-static-bars"></div>';
+    var c=document.getElementById('np-static-bars');
+    for(var i=0;i<60;i++){var h=((Math.sin(id*80+i*.8)*.5+.5)*.7+.15)*100,b=document.createElement('div');b.className='np-swb';b.style.cssText='height:'+h.toFixed(0)+'%;flex:1;border-radius:1px;background:rgba(107,90,80,.4)';c.appendChild(b)}
+  }
+  document.querySelector('.right-col').scrollIntoView({behavior:'smooth',block:'nearest'});
+};
+
+window.playPause=function(){if(!ws){if(currentId)selectBeat(currentId);return}if(ws.isPlaying()){ws.pause();setPI(false)}else{ws.play();setPI(true)}};
+window.prevTrack=function(){var v=BEATS.filter(vis),i=v.findIndex(function(b){return b.id===currentId});if(i>0)selectBeat(v[i-1].id);else if(v.length)selectBeat(v[v.length-1].id)};
+window.nextTrack=function(){var v=BEATS.filter(vis),i=v.findIndex(function(b){return b.id===currentId});if(i<v.length-1)selectBeat(v[i+1].id);else if(v.length)selectBeat(v[0].id)};
+window.setVol=function(v){if(ws)ws.setVolume(+v)};
+function setPI(p){document.getElementById('np-pi').style.display=p?'none':'block';document.getElementById('np-pai').style.display=p?'block':'none'}
+function fmt(s){s=Math.floor(s||0);return Math.floor(s/60)+':'+String(s%60).padStart(2,'0')}
+
+function renderLics(beat){
+  document.getElementById('np-free-bdg').style.display=beat.free?'inline':'none';
+  document.getElementById('np-lic').innerHTML=beat.lics.map(function(l){
+    return '<div class="lic-row"><div class="lic-left"><div class="lic-name">'+l.n+'</div><div class="lic-detail">'+l.d+'</div></div><div class="lic-right"><div class="lic-price '+(l.t==='free'?'free':'')+'" >'+l.p+'</div><button class="lic-buy '+(l.t==='free'?'free':'')+'" onclick="'+(l.t==='free'?'dlFree('+beat.id+')':'buyLic('+beat.id+',"'+l.t+'","'+l.p+'",'+l.a+')')+'">'+( l.t==='free'?'Download':'Buy')+'</button></div></div>';
+  }).join('');
+}
+
+window.buyLic=function(id,type,price,amt){
+  var beat=BEATS.find(function(b){return b.id===id});
+  var email=prompt('Email to purchase "'+beat.title+'" — '+type+' ('+price+'):');
+  if(!email)return;
+  fetch('/payments/beat-checkout',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({beat_id:id,license:type,email:email,price:amt})})
+  .then(function(r){return r.json()}).then(function(d){if(d.checkout_url)window.location.href=d.checkout_url});
+};
+window.dlFree=function(id){
+  var beat=BEATS.find(function(b){return b.id===id});
+  if(beat&&beat.mp3){var a=document.createElement('a');a.href='/static/'+beat.mp3;a.download=beat.title+'.mp3';a.click()}
+  else alert('Free download available once the beat file is uploaded in the admin panel.');
+};
+
+function vis(b){return(!activeGenre||b.genre===activeGenre)&&(!activeMood||b.mood===activeMood)&&(!freeOnly||b.free)}
+window.filt=function(type,val,btn){btn.closest('div').querySelectorAll('.fb').forEach(function(b){b.classList.remove('on')});btn.classList.add('on');if(type==='genre')activeGenre=val;if(type==='mood')activeMood=val;render()};
+window.filtFree=function(btn){freeOnly=!freeOnly;btn.classList.toggle('on',freeOnly);render()};
+
+function initNpFire(){
+  var c=document.getElementById('np-canvas');if(!c)return;
+  if(npRaf){cancelAnimationFrame(npRaf);npRaf=null}
+  var ctx=c.getContext('2d'),W=c.offsetWidth,H=c.offsetHeight;
+  c.width=W*devicePixelRatio;c.height=H*devicePixelRatio;ctx.scale(devicePixelRatio,devicePixelRatio);
+  var N=55,pool=new Float32Array(N*5);
+  for(var i=0;i<N;i++){var b=i*5;pool[b]=Math.random()*W;pool[b+1]=Math.random()*H;pool[b+2]=(Math.random()-.5)*.8;pool[b+3]=-(Math.random()*2.2+.9);pool[b+4]=Math.random()}
+  var PI2=Math.PI*2,last=0;
+  function f(ts){if(ts-last<16){npRaf=requestAnimationFrame(f);return}last=ts;ctx.clearRect(0,0,W,H);var t=ts*.001;
+    for(var i=0;i<N;i++){var b=i*5,x=pool[b],y=pool[b+1],vx=pool[b+2],life=pool[b+4];
+      vx+=Math.sin(t+x*.012)*.1;x+=vx;y+=pool[b+3];life-=.006+Math.random()*.003;
+      if(life<=0||y<-12){pool[b]=Math.random()*W;pool[b+1]=H+8;pool[b+2]=(Math.random()-.5)*.8;pool[b+4]=.75+Math.random()*.25;continue}
+      pool[b]=x;pool[b+1]=y;pool[b+2]=vx;pool[b+4]=life;
+      var r=3+(1-life)*11,g=ctx.createRadialGradient(x,y,0,x,y,r);
+      g.addColorStop(0,'rgba(245,166,35,'+(life*.9)+')');g.addColorStop(.5,'rgba(232,114,12,'+(life*.5)+')');g.addColorStop(1,'transparent');
+      ctx.fillStyle=g;ctx.beginPath();ctx.arc(x,y,r,0,PI2);ctx.fill();}
+    npRaf=requestAnimationFrame(f)}
+  npRaf=requestAnimationFrame(f);
+}
+initNpFire();
+render();
+(function(){var c=document.getElementById('np-static-bars');if(!c)return;for(var i=0;i<60;i++){var h=((Math.sin(i*.8)*.5+.5)*.7+.15)*100,b=document.createElement('div');b.className='np-swb';b.style.cssText='height:'+h.toFixed(0)+'%;flex:1;border-radius:1px;background:rgba(107,90,80,.3)';c.appendChild(b)}})();
+})();
+</script>
+{% endblock %}

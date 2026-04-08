@@ -1,0 +1,26 @@
+{% extends "base.html" %}
+{% block title %}Payment Confirmed — Mac Dylan{% endblock %}
+{% block content %}
+<div style="min-height:80vh;display:flex;align-items:center;justify-content:center;padding:80px 48px 60px;text-align:center">
+  <div>
+    <div style="font-family:'Bebas Neue',sans-serif;font-size:80px;color:var(--fire);line-height:1;margin-bottom:16px">✓</div>
+    <h1 style="font-family:'Bebas Neue',sans-serif;font-size:clamp(40px,8vw,80px);line-height:.9;margin-bottom:16px">Payment <span style="color:var(--fire)">Confirmed</span></h1>
+    {% if session %}
+    <p style="font-size:17px;font-style:italic;color:var(--ash);margin-bottom:8px">
+      Confirmation sent to <strong style="color:var(--white)">{{ session.customer_email }}</strong>
+    </p>
+    {% endif %}
+    <p style="font-size:15px;color:var(--muted);font-style:italic;max-width:480px;margin:0 auto 36px;line-height:1.7">
+      Thank you for supporting independent music. Your download link has been sent to your email. 
+      If you ordered merch, you'll receive a tracking number once your order ships.
+    </p>
+    <div style="display:flex;gap:12px;justify-content:center;flex-wrap:wrap">
+      <a href="{{ url_for('beats.index') }}" style="font-family:'Space Mono',monospace;font-size:9px;letter-spacing:.3em;text-transform:uppercase;padding:13px 28px;background:var(--ember);color:var(--white);text-decoration:none;transition:background .2s">Browse More Beats</a>
+      <a href="{{ url_for('main.index') }}" style="font-family:'Space Mono',monospace;font-size:9px;letter-spacing:.3em;text-transform:uppercase;padding:13px 28px;background:transparent;border:1px solid var(--border);color:var(--muted);text-decoration:none;transition:all .2s">Back to Home</a>
+    </div>
+    <p style="font-family:'Space Mono',monospace;font-size:8px;letter-spacing:.2em;color:var(--muted);margin-top:32px">
+      Questions? <a href="tel:2083915292" style="color:var(--ember);text-decoration:none">(208) 391-5292</a>
+    </p>
+  </div>
+</div>
+{% endblock %}

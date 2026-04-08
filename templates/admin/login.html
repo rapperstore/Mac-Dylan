@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Admin Login — Mac Dylan</title>
+<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{--black:#050403;--deep:#080604;--ember:#c84b0a;--fire:#e8720c;--white:#f5f0e8;--muted:#7a6a5a;--card:#0f0c09;--border:#1e1a16}
+body{background:var(--black);color:var(--white);font-family:'Space Mono',monospace;min-height:100vh;display:flex;align-items:center;justify-content:center}
+.box{width:100%;max-width:380px;padding:20px}
+.logo{font-family:'Bebas Neue',sans-serif;font-size:28px;letter-spacing:.1em;text-align:center;margin-bottom:40px}.logo span{color:var(--fire)}
+.lbl{font-size:8px;letter-spacing:.4em;color:var(--ember);text-transform:uppercase;display:block;margin-bottom:8px}
+.inp{width:100%;padding:13px 14px;background:var(--card);border:1px solid var(--border);color:var(--white);font-family:'Space Mono',monospace;font-size:14px;transition:border-color .2s}.inp:focus{outline:none;border-color:var(--ember)}
+.btn{display:block;width:100%;padding:14px;background:var(--ember);border:none;color:var(--white);font-family:'Space Mono',monospace;font-size:9px;letter-spacing:.3em;text-transform:uppercase;margin-top:10px;transition:background .2s}.btn:hover{background:var(--fire)}
+.err{font-size:8px;letter-spacing:.2em;color:#c84a4a;text-transform:uppercase;margin-top:10px;text-align:center}
+</style>
+</head>
+<body>
+<div class="box">
+  <div class="logo">Mac<span>Dylan</span> <span style="font-size:14px;color:var(--muted)">Admin</span></div>
+  <form method="POST">
+    <label class="lbl">Admin Password</label>
+    <input class="inp" type="password" name="password" placeholder="Enter password" autofocus>
+    <button class="btn" type="submit">Sign In</button>
+    {% if error %}<div class="err">{{ error }}</div>{% endif %}
+  </form>
+</div>
+</body>
+</html>
