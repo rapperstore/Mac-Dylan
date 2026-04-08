@@ -64,8 +64,67 @@
 .no-products{grid-column:1/-1;padding:52px;text-align:center;font-size:15px;color:var(--muted);font-style:italic;background:var(--card)}
 @media(max-width:900px){.page-header{padding:72px 24px 44px}.store-wrap{padding:32px 24px}.cart-panel{width:100%}.product-grid{grid-template-columns:1fr 1fr}}
 @media(max-width:500px){.product-grid{grid-template-columns:1fr}}
+
+.ebook-spotlight{display:grid;grid-template-columns:1fr 380px;gap:60px;align-items:center;background:linear-gradient(135deg,rgba(200,75,10,.07),rgba(200,75,10,.02));border:1px solid var(--border);padding:52px 48px}
+.ebook-badge{display:inline-block;font-family:'Space Mono',monospace;font-size:7px;letter-spacing:.4em;color:var(--ember);text-transform:uppercase;border:1px solid rgba(200,75,10,.35);padding:4px 12px;margin-bottom:18px}
+.ebook-title{font-family:'Bebas Neue',sans-serif;font-size:clamp(44px,7vw,72px);line-height:.9;letter-spacing:.02em;color:var(--white);margin-bottom:18px}
+.ebook-sub{font-size:17px;font-style:italic;color:var(--ash);line-height:1.7;margin-bottom:22px;max-width:480px}
+.ebook-features{list-style:none;margin-bottom:28px}
+.ebook-features li{font-family:'Space Mono',monospace;font-size:9px;letter-spacing:.16em;color:var(--muted);text-transform:uppercase;padding:7px 0;border-bottom:1px solid rgba(200,75,10,.08);display:flex;gap:10px}
+.ebook-features li::before{content:'→';color:var(--ember)}
+.ebook-price-row{display:flex;align-items:baseline;gap:14px;margin-bottom:28px}
+.ebook-price{font-family:'Bebas Neue',sans-serif;font-size:52px;color:var(--fire);line-height:1}
+.ebook-price-note{font-family:'Space Mono',monospace;font-size:8px;letter-spacing:.14em;color:var(--muted);text-transform:uppercase}
+.ebook-cover{background:linear-gradient(135deg,#0d0a07,#1a0f05);border:1px solid var(--border);aspect-ratio:3/4;display:flex;align-items:center;justify-content:center;position:relative;overflow:hidden}
+.ebook-cover::before{content:'';position:absolute;inset:0;background:radial-gradient(ellipse 80% 70% at 50% 40%,rgba(200,75,10,.18),transparent)}
+.ebook-cover-inner{position:relative;z-index:1;text-align:center;padding:32px}
+.ebook-cover-the{font-family:'Space Mono',monospace;font-size:10px;letter-spacing:.5em;color:var(--ash);text-transform:uppercase;margin-bottom:8px}
+.ebook-cover-artist{font-family:'Bebas Neue',sans-serif;font-size:clamp(52px,8vw,80px);line-height:.88;color:var(--white);letter-spacing:.02em;text-shadow:0 0 60px rgba(200,75,10,.3)}
+.ebook-cover-is{font-family:'Cormorant Garamond',serif;font-size:18px;font-style:italic;color:var(--ash);letter-spacing:.3em;margin:10px 0}
+.ebook-cover-biz{font-family:'Bebas Neue',sans-serif;font-size:clamp(52px,8vw,80px);line-height:.88;color:var(--fire);letter-spacing:.02em;text-shadow:0 0 60px rgba(232,114,12,.4)}
+.ebook-cover-author{font-family:'Space Mono',monospace;font-size:9px;letter-spacing:.4em;color:var(--muted);text-transform:uppercase;margin-top:24px}
+@media(max-width:900px){.ebook-spotlight{grid-template-columns:1fr;padding:32px 24px}.ebook-right{display:none}}
+
 {% endblock %}
 {% block content %}
+
+<!-- EBOOK SPOTLIGHT -->
+{% set ebook = products | selectattr('name', 'equalto', 'The Artist Is The Business') | first | default(none) %}
+{% if ebook %}
+<section class="section" style="padding-bottom:0" data-reveal>
+  <div class="ebook-spotlight">
+    <div class="ebook-left">
+      <div class="ebook-badge">New Release</div>
+      <h2 class="ebook-title">The Artist Is<br>The Business</h2>
+      <p class="ebook-sub">The complete independent artist blueprint — branding, income streams, organic growth, AI leverage, and a 90-day execution plan. Interactive digital e-book.</p>
+      <ul class="ebook-features">
+        <li>9 chapters of real-world strategy</li>
+        <li>Interactive chapter navigation</li>
+        <li>Built-in 90-day action checklist</li>
+        <li>Animated visuals and frameworks</li>
+        <li>Instant digital download</li>
+      </ul>
+      <div class="ebook-price-row">
+        <span class="ebook-price">${{ ebook.price }}</span>
+        <span class="ebook-price-note">One-time · Instant download · Yours forever</span>
+      </div>
+      <button class="btn-fire" onclick="addToCart({{ ebook.id }}, '{{ ebook.name }}', {{ ebook.price }}, 'ebook')">Get the Blueprint →</button>
+    </div>
+    <div class="ebook-right">
+      <div class="ebook-cover">
+        <div class="ebook-cover-inner">
+          <div class="ebook-cover-the">The</div>
+          <div class="ebook-cover-artist">Artist</div>
+          <div class="ebook-cover-is">is the</div>
+          <div class="ebook-cover-biz">Business</div>
+          <div class="ebook-cover-author">Mac Dylan</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+{% endif %}
+
 <div class="cart-overlay" id="cart-overlay" onclick="closeCart()"></div>
 <div class="cart-panel" id="cart-panel">
   <div class="cart-hdr">
