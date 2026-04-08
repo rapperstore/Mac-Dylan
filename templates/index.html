@@ -90,6 +90,22 @@
 .credit-year{font-family:'Space Mono',monospace;font-size:8px;color:var(--muted);letter-spacing:.14em}
 .credits-empty{padding:28px;text-align:center;font-size:13px;color:var(--muted);font-style:italic;background:var(--card)}
 @media(max-width:900px){.credits-section{padding:0 24px 60px}}
+.tip-hero{display:inline-flex;align-items:center;gap:10px;padding:10px 20px;background:rgba(200,75,10,.08);border:1px solid rgba(200,75,10,.3);text-decoration:none;transition:all .25s;margin-top:16px}
+.tip-hero:hover{background:rgba(200,75,10,.18);border-color:var(--ember);box-shadow:0 0 20px rgba(200,75,10,.3)}
+.tip-hero-jar{font-size:22px;line-height:1;animation:tfloat 3s ease-in-out infinite}
+.tip-hero-txt{font-family:'Space Mono',monospace;font-size:9px;letter-spacing:.28em;color:var(--ember);text-transform:uppercase}
+.tip-coin{width:6px;height:6px;border-radius:50%;background:var(--flame);opacity:0;animation:tcoin 2.2s ease-in-out infinite;display:inline-block}
+.tip-coin:nth-child(2){animation-delay:.35s}.tip-coin:nth-child(3){animation-delay:.7s}
+.credits-section{padding:0 48px 80px}
+.credits-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(220px,1fr));gap:2px;background:var(--border);border:1px solid var(--border)}
+.credit-card{background:var(--card);padding:18px 20px;display:flex;flex-direction:column;gap:4px;transition:background .2s}
+.credit-card:hover{background:var(--card2)}
+.credit-artist{font-family:'Bebas Neue',sans-serif;font-size:17px;color:var(--white);letter-spacing:.04em;line-height:1}
+.credit-role{font-family:'Space Mono',monospace;font-size:7px;letter-spacing:.28em;color:var(--ember);text-transform:uppercase}
+.credit-track{font-size:12px;color:var(--muted);font-style:italic;margin-top:2px}
+.credit-year{font-family:'Space Mono',monospace;font-size:8px;color:var(--muted);letter-spacing:.14em}
+.credits-empty{padding:28px;text-align:center;font-size:13px;color:var(--muted);font-style:italic;background:var(--card)}
+@media(max-width:900px){.credits-section{padding:0 24px 60px}}
 @media(max-width:900px){.hero{padding:0 24px 64px}.about{grid-template-columns:1fr;padding:80px 24px;gap:44px}.section,.social-section{padding-left:24px;padding-right:24px}.svc-grid{grid-template-columns:1fr}.newsletter{grid-template-columns:1fr;padding:56px 24px;gap:28px}.nl-form-wrap{flex-direction:column}.quote{padding:68px 24px}.tip-float{top:62px;right:10px}}
 {% endblock %}
 
@@ -103,6 +119,11 @@
       <a href="{{ url_for('services.index') }}" class="btn-fire">Book a Session</a>
       <a href="{{ url_for('beats.index') }}" class="btn-ghost">Browse Beats</a>
     </div>
+    <a class="tip-hero" href="#" onclick="openTip(event)">
+      <span class="tip-hero-jar">🫙</span>
+      <span class="tip-coin"></span><span class="tip-coin"></span><span class="tip-coin"></span>
+      <span class="tip-hero-txt">Leave a Tip</span>
+    </a>
     <a class="tip-hero" href="#" onclick="openTip(event)">
       <span class="tip-hero-jar">🫙</span>
       <span class="tip-coin"></span><span class="tip-coin"></span><span class="tip-coin"></span>
@@ -190,6 +211,28 @@
   {% endif %}
 </section>
 
+
+<!-- Credits -->
+<section class="credits-section" data-reveal>
+  <div class="sec-hdr">
+    <div class="sec-lbl">Credits</div>
+  </div>
+  {% if credits %}
+    <div class="credits-grid">
+      {% for c in credits %}
+      <div class="credit-card">
+        <div class="credit-artist">{{ c.artist }}</div>
+        <div class="credit-role">{{ c.role }}</div>
+        {% if c.track_name %}<div class="credit-track">{{ c.track_name }}</div>{% endif %}
+        {% if c.year %}<div class="credit-year">{{ c.year }}</div>{% endif %}
+      </div>
+      {% endfor %}
+    </div>
+  {% else %}
+    <div class="credits-empty">Credits will appear here — add them via the admin panel.</div>
+  {% endif %}
+</section>
+
 <section class="section" data-reveal>
   <div class="sec-hdr"><div class="sec-lbl">Services</div><a href="{{ url_for('services.index') }}" class="sec-link">Book Now →</a></div>
   <div class="svc-grid">
@@ -239,7 +282,7 @@ window.subCK = function(e) {
   e.preventDefault();
   var email = document.getElementById('ck-email').value.trim();
   if (!email) return;
-  fetch('https://app.convertkit.com/forms/9292507/subscriptions', {
+  fetch('https://mac-dylan.kit.com/b5923233e5/subscriptions', {
     method: 'POST', headers: {'Content-Type': 'application/x-www-form-urlencoded'},
     body: 'email_address=' + encodeURIComponent(email),
   }).then(function(){}).catch(function(){});
