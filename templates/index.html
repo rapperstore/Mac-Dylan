@@ -5,7 +5,7 @@
 .hero{min-height:100vh;display:flex;flex-direction:column;justify-content:flex-end;padding:0 48px 88px;position:relative}
 .hero-eyebrow{font-family:'Space Mono',monospace;font-size:9px;letter-spacing:.5em;color:var(--ember);text-transform:uppercase;margin-bottom:20px;opacity:0;animation:burnIn 1s ease forwards .4s}
 .hero-title{font-family:'Bebas Neue',sans-serif;font-size:clamp(80px,16vw,210px);line-height:.84;letter-spacing:.01em;opacity:0;animation:burnIn 1s ease forwards .7s}
-.hero-title .outline{color:transparent;-webkit-text-stroke:1px var(--ember);display:block}
+.hero-title .outline{color:var(--fire);display:block;text-shadow:0 0 60px rgba(200,75,10,.4),0 0 120px rgba(200,75,10,.15)}
 .hero-desc{font-size:clamp(15px,2vw,21px);font-style:italic;color:var(--ash);margin-top:24px;max-width:520px;line-height:1.7;opacity:0;animation:burnIn 1s ease forwards 1s}
 .hero-cta{display:flex;gap:14px;margin-top:44px;flex-wrap:wrap;opacity:0;animation:burnIn 1s ease forwards 1.3s}
 .btn-fire{display:inline-block;padding:15px 36px;background:var(--ember);color:var(--white);font-family:'Space Mono',monospace;font-size:10px;letter-spacing:.3em;text-transform:uppercase;text-decoration:none;transition:background .25s,box-shadow .25s;border:none}
@@ -162,7 +162,7 @@
 .pc-time{font-family:'Space Mono',monospace;font-size:8px;color:var(--muted);flex-shrink:0}
 @media(max-width:900px){.tip-section{padding:0 24px 44px}.player-section{padding:0 24px 60px}.tip-banner{flex-direction:column;align-items:flex-start;gap:16px}}
 
-@media(max-width:900px){.hero{padding:0 24px 64px}.about{grid-template-columns:1fr;padding:80px 24px;gap:44px}.section,.social-section{padding-left:24px;padding-right:24px}.svc-grid{grid-template-columns:1fr}.newsletter{grid-template-columns:1fr;padding:56px 24px;gap:28px}.nl-form-wrap{flex-direction:column}.quote{padding:68px 24px}.tip-float{top:62px;right:10px}}
+@media(max-width:900px){.hero{padding:0 24px 64px;min-height:100svh}.about{grid-template-columns:1fr;padding:60px 24px;gap:36px}.section,.social-section{padding-left:24px;padding-right:24px}.svc-grid{grid-template-columns:1fr}.newsletter{grid-template-columns:1fr;padding:44px 24px;gap:22px}.nl-form-wrap{flex-direction:column}.quote{padding:52px 24px}.hero-title{font-size:clamp(72px,20vw,210px)}.hero-desc{font-size:15px}.stats{grid-template-columns:1fr 1fr}.tip-banner{gap:14px;padding:22px 20px}.tip-amounts{gap:5px}.ta-btn{padding:7px 11px;font-size:8px}.player-section{padding:0 24px 52px}.credits-section{padding:0 24px 52px}.tip-section{padding:0 24px 40px}.tip-float{top:62px;right:10px}}
 {% endblock %}
 
 {% block content %}
@@ -322,7 +322,7 @@
 
 <div class="quote" data-reveal>
   <p class="quote-text">Your music already has the <em>fire.</em><br>Let's make sure the world can hear it.</p>
-  <div class="quote-attr">Mac Dylan · (208) 391-5292 · Boise, Idaho</div>
+
 </div>
 
 <!-- Social — bottom of page -->
