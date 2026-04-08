@@ -6,7 +6,7 @@ from flask import (Blueprint, render_template, request, redirect,
                    url_for, session, jsonify, current_app, Response)
 from werkzeug.utils import secure_filename
 from database import db
-from models import Beat, Order, Product, Content
+from models import Beat, Order, Product, Content, Credit
 
 admin_bp = Blueprint('admin', __name__)
 
@@ -214,3 +214,34 @@ def delete_product(product_id):
     db.session.delete(p)
     db.session.commit()
     return jsonify({'deleted': True})
+
+@admin_bp.route('/credits')
+@admin_required
+def credits_list():
+    all_credits = Credit.query.order_by(Credit.sort_order.asc(), Credit.created_at.desc()).all()
+    return jsonify([{'id':c.id,'artist':c.artist,'role':c.role,'track_name':c.track_name,'year':c.year,'is_active':c.is_active,'sort_order':c.sort_order} for c in all_credits])
+
+@admin_bp.route('/credits/add', methods=['POST'])
+@admin_required
+def add_credit():
+    data = request.get_json() or {}
+    c = Credit(artist=data.get('artist','').strip(), role=data.get('role','').strip(), track_name=data.get('track_name','').strip(), year=data.get('year','').strip(), is_active=data.get('is_active',True), sort_order=int(data.get('sort_order',0)))
+    db.session.add(c)
+    db.session.commit()
+    return jsonify({'success':True,'id':c.id})
+
+@admin_bp.route('/credits/<int:cid>/delete', methods=['POST'])
+@admin_required
+def delete_credit(cid):
+    c = Credit.query.get_or_404(cid)
+    db.session.delete(c)
+    db.session.commit()
+    return jsonify({'deleted':True})
+
+@admin_bp.route('/credits/<int:cid>/toggle', methods=['POST'])
+@admin_required
+def toggle_credit(cid):
+    c = Credit.query.get_or_404(cid)
+    c.is_active = not c.is_active
+    db.session.commit()
+    return jsonify({'is_active':c.is_active})

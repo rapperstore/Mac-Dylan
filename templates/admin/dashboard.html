@@ -114,6 +114,7 @@ body{display:flex;min-height:100vh;overflow-x:hidden}
     <button class="nav-item" onclick="showPanel('products',this)"><span class="nav-icon">◈</span><span>Products</span></button>
     <button class="nav-item" onclick="showPanel('add-product',this)"><span class="nav-icon">+</span><span>Add Product</span></button>
     <div class="nav-group">Settings</div>
+    <button class="nav-item" onclick="showPanel('credits',this)"><span class="nav-icon">★</span><span>Credits</span></button>
     <button class="nav-item" onclick="showPanel('settings',this)"><span class="nav-icon">⚙</span><span>Settings</span></button>
   </nav>
   <div class="sidebar-footer">
@@ -463,6 +464,45 @@ body{display:flex;min-height:100vh;overflow-x:hidden}
       </form>
     </div>
 
+    
+    <!-- CREDITS PANEL -->
+    <div class="panel" id="panel-credits">
+      <div id="alert-credits" class="alert"></div>
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:24px">
+        <div>
+          <div class="sec-lbl">Add Credit</div>
+          <div class="form-wrap">
+            <div class="form-grid">
+              <div class="form-field full"><label class="field-label">Artist Name *</label><input class="fi" type="text" id="cr-artist" placeholder="e.g. Young Dolph"></div>
+              <div class="form-field full">
+                <label class="field-label">Your Role</label>
+                <select class="fs" id="cr-role">
+                  <option>Mix Engineer</option><option>Producer</option>
+                  <option>Recording Engineer</option><option>Executive Producer</option>
+                  <option>Co-Producer</option><option>Mixing &amp; Mastering</option>
+                </select>
+              </div>
+              <div class="form-field"><label class="field-label">Track / Project</label><input class="fi" type="text" id="cr-track" placeholder="e.g. Back to Back"></div>
+              <div class="form-field"><label class="field-label">Year</label><input class="fi" type="text" id="cr-year" placeholder="2024"></div>
+            </div>
+            <div class="form-actions">
+              <button class="btn btn-fire" onclick="addCredit()">Add Credit</button>
+              <button class="btn btn-ghost" onclick="loadCredits()">Refresh</button>
+            </div>
+          </div>
+        </div>
+        <div>
+          <div class="sec-lbl">Current Credits</div>
+          <div class="tbl-wrap">
+            <table class="admin-tbl">
+              <thead><tr><th>Artist</th><th>Role</th><th>Track</th><th>Year</th><th>Actions</th></tr></thead>
+              <tbody id="credits-tbody"><tr><td colspan="5" class="empty-state">Click Refresh to load</td></tr></tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+    </div>
+
     <!-- ═══ SETTINGS ═══ -->
     <div class="panel" id="panel-settings">
       <div class="form-wrap" style="padding:0">
@@ -504,11 +544,11 @@ body{display:flex;min-height:100vh;overflow-x:hidden}
 (function(){
 'use strict';
 
-var PANELS = ['dashboard','orders','beats','upload-beat','products','add-product','settings'];
+var PANELS = ['dashboard','orders','beats','upload-beat','products','add-product','credits','settings'];
 var TITLES = {
   dashboard:'Dashboard', orders:'Orders', beats:'Beats',
   'upload-beat':'Upload Beat', products:'Store Products',
-  'add-product':'Add Product', settings:'Settings'
+  'add-product':'Add Product', credits:'Credits', settings:'Settings'
 };
 
 window.showPanel = function(id, navEl) {
@@ -637,6 +677,13 @@ function showAlert(id, type, msg) {
   el.textContent = msg;
   if (type === 'success') setTimeout(function(){ el.classList.remove('show'); }, 5000);
 }
+
+
+window.loadCredits=function(){fetch('/admin/credits').then(function(r){return r.json()}).then(function(credits){var t=document.getElementById('credits-tbody');if(!credits.length){t.innerHTML='<tr><td colspan="5" class="empty-state">No credits yet</td></tr>';return;}t.innerHTML=credits.map(function(c){return '<tr><td class="td-title" style="font-size:14px">'+c.artist+'</td><td><span class="badge bd">'+c.role+'</span></td><td style="font-size:12px;color:var(--muted);font-style:italic">'+(c.track_name||'—')+'</td><td class="td-mono">'+(c.year||'—')+'</td><td class="td-actions"><button class="btn btn-ghost btn-sm" onclick="toggleCredit('+c.id+',this)">'+(c.is_active?'Hide':'Show')+'</button><button class="btn btn-danger btn-sm" onclick="deleteCredit('+c.id+',this)">Delete</button></td></tr>';}).join('');});};
+window.addCredit=function(){var artist=document.getElementById('cr-artist').value.trim();if(!artist){showAlert('alert-credits','error','Artist name required');return;}fetch('/admin/credits/add',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({artist:artist,role:document.getElementById('cr-role').value,track_name:document.getElementById('cr-track').value.trim(),year:document.getElementById('cr-year').value.trim(),is_active:true,sort_order:0})}).then(function(r){return r.json()}).then(function(d){if(d.success){showAlert('alert-credits','success','Credit added');document.getElementById('cr-artist').value='';document.getElementById('cr-track').value='';document.getElementById('cr-year').value='';loadCredits();}});};
+window.deleteCredit=function(id,btn){if(!confirm('Delete?'))return;fetch('/admin/credits/'+id+'/delete',{method:'POST'}).then(function(r){return r.json()}).then(function(d){if(d.deleted)btn.closest('tr').remove();});};
+window.toggleCredit=function(id,btn){fetch('/admin/credits/'+id+'/toggle',{method:'POST'}).then(function(r){return r.json()}).then(function(d){btn.textContent=d.is_active?'Hide':'Show';});};
+var _oSP=window.showPanel;window.showPanel=function(id,n){_oSP(id,n);if(id==='credits')loadCredits();};
 
 })();
 </script>

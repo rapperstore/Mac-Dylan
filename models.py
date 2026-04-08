@@ -140,3 +140,14 @@ class Content(db.Model):
     is_published = db.Column(db.Boolean, default=True)
     is_featured  = db.Column(db.Boolean, default=False)
     created_at   = db.Column(db.DateTime, default=datetime.utcnow)
+
+class Credit(db.Model):
+    __tablename__ = 'credits'
+    id         = db.Column(db.Integer, primary_key=True)
+    artist     = db.Column(db.String(200), nullable=False)
+    role       = db.Column(db.String(100))
+    track_name = db.Column(db.String(200))
+    year       = db.Column(db.String(10))
+    is_active  = db.Column(db.Boolean, default=True)
+    sort_order = db.Column(db.Integer, default=0)
+    created_at = db.Column(db.DateTime, default=datetime.utcnow)
