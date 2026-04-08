@@ -25,3 +25,8 @@ Thumbs.db
 # IDE
 .vscode/
 .idea/
+*.py
+fix_*.py
+update_*.py
+fix_*.py
+update_*.py
