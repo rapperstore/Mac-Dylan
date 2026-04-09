@@ -313,7 +313,7 @@ def upload_product():
 
 @admin_bp.route('/products/<int:pid>/delete', methods=['POST'])
 @admin_required
-def delete_product(pid):
+def delete_product_digital(pid):
     p = Product.query.get_or_404(pid)
     db.session.delete(p)
     db.session.commit()
