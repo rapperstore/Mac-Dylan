@@ -150,11 +150,27 @@
     <div class="hero-eyebrow">Boise, Idaho · Mix · Record · Develop</div>
     <h1 class="hero-title">Mac<span class="outline">Dylan</span></h1>
     <p class="hero-desc">Where independent artists come to sound like they mean it. Mix engineering, production, and artist development from someone who built from nothing.</p>
-    <div class="hero-cta">
-      <a href="{{ url_for('services.index') }}" class="btn-fire">Book a Session</a>
-      <a href="{{ url_for('beats.index') }}" class="btn-ghost">Browse Beats</a>
+    <div style="margin-top:44px;opacity:0;animation:burnIn 1s ease forwards 1.3s">
+      <div style="display:flex;gap:12px;flex-wrap:wrap;margin-bottom:14px">
+        <a href="{{ url_for('services.index') }}" style="display:inline-block;padding:15px 36px;background:#c84b0a;color:#f5f0e8;font-family:'Space Mono',monospace;font-size:10px;letter-spacing:.3em;text-transform:uppercase;text-decoration:none">Book a Session</a>
+        <a href="{{ url_for('beats.index') }}" style="display:inline-block;padding:14px 36px;background:transparent;color:#b8a898;font-family:'Space Mono',monospace;font-size:10px;letter-spacing:.3em;text-transform:uppercase;text-decoration:none;border:1px solid rgba(200,75,10,.3)">Browse Beats</a>
+      </div>
+      <div style="display:flex;align-items:center;gap:10px;flex-wrap:wrap;margin-bottom:28px">
+        <a href="#" onclick="openTip(event)" style="display:inline-flex;align-items:center;gap:8px;padding:9px 18px;background:rgba(200,75,10,.07);border:1px solid rgba(200,75,10,.24);text-decoration:none;color:#c84b0a;font-family:'Space Mono',monospace;font-size:8px;letter-spacing:.28em;text-transform:uppercase">&#x1F9AB; Leave a Tip</a>
+        <span style="width:1px;height:16px;background:rgba(200,75,10,.2);display:inline-block"></span>
+        <a href="{{ url_for('store.index') }}" style="display:inline-block;padding:9px 18px;background:transparent;color:#6b5a4a;font-family:'Space Mono',monospace;font-size:8px;letter-spacing:.2em;text-transform:uppercase;text-decoration:none;border:1px solid rgba(200,75,10,.15)">The Blueprint $27 &#x2192;</a>
+      </div>
+      <div style="display:flex;align-items:center;gap:20px;padding-top:20px;border-top:1px solid rgba(200,75,10,.1);flex-wrap:wrap">
+        <div><div style="font-family:'Bebas Neue',sans-serif;font-size:26px;color:#e8720c;line-height:1">10+</div><div style="font-family:'Space Mono',monospace;font-size:7px;letter-spacing:.2em;color:#6b5a4a;text-transform:uppercase;margin-top:2px">Years</div></div>
+        <span style="width:1px;height:28px;background:rgba(200,75,10,.15);display:inline-block"></span>
+        <div><div style="font-family:'Bebas Neue',sans-serif;font-size:26px;color:#e8720c;line-height:1">500+</div><div style="font-family:'Space Mono',monospace;font-size:7px;letter-spacing:.2em;color:#6b5a4a;text-transform:uppercase;margin-top:2px">Records Mixed</div></div>
+        <span style="width:1px;height:28px;background:rgba(200,75,10,.15);display:inline-block"></span>
+        <div><div style="font-family:'Bebas Neue',sans-serif;font-size:26px;color:#e8720c;line-height:1">100%</div><div style="font-family:'Space Mono',monospace;font-size:7px;letter-spacing:.2em;color:#6b5a4a;text-transform:uppercase;margin-top:2px">Independent</div></div>
+        <span style="width:1px;height:28px;background:rgba(200,75,10,.15);display:inline-block"></span>
+        <div><div style="font-family:'Bebas Neue',sans-serif;font-size:26px;color:#e8720c;line-height:1">&#x221E;</div><div style="font-family:'Space Mono',monospace;font-size:7px;letter-spacing:.2em;color:#6b5a4a;text-transform:uppercase;margin-top:2px">Artist First</div></div>
+      </div>
     </div>
-          </div>
+  </div>
 </section>
 
 <section class="about" id="about" data-reveal>
