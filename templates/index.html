@@ -182,8 +182,6 @@
         <a href="{{ url_for('services.index') }}" class="btn-fire">Book a Session</a>
         <a href="{{ url_for('beats.index') }}" class="btn-ghost">Browse Beats</a>
       </div>
-      <div class="hero-stat-l">Years</div></div><div class="hero-stat"><div class="hero-stat-n">500+</div><div class="hero-stat-l">Records Mixed</div></div><div class="hero-stat"><div class="hero-stat-n">100%</div><div class="hero-stat-l">Independent</div></div><div class="hero-stat"><div class="hero-stat-n">&#x221E;</div><div class="hero-stat-l">Artist First</div></div>
-      </div>
     </div>
   </div>
 </section>
@@ -266,7 +264,7 @@
 <section class="tip-section" data-reveal>
   <div class="tip-banner">
     <div class="tip-left">
-      <span class="tip-jar-big">&#x1F9AB;</span>
+      <span class="tip-jar-big">🦫</span>
       <div class="tip-copy">
         <h3>Support Independent Music</h3>
         <p>Every tip goes directly into making more — beats, sessions, and content.</p>
@@ -319,150 +317,86 @@
 
 {% block extra_scripts %}
 <script>
-
-// TIP JAR
-});
-  btn.classList.add('on');
-  document.getElementById('tip-amt').value = amt;
-};
-  if (!amt || amt < 1) return;
-  fetch('/payments/tip', {
-    method: 'POST', headers: {'Content-Type': 'application/json'},
-    body: JSON.stringify({amount: amt, email: ''})
-  }).then(function(r){ return r.json(); })
-    .then(function(d){ if (d.checkout_url) window.location.href = d.checkout_url; });
-};
-window.openTip = window.sendTipAmt;
-
-// MUSIC PLAYER
-var pTracks = [], pIdx = 0, pAudio = null, pPlaying = false;
-
-function pFmt(s) { s=Math.floor(s||0); return Math.floor(s/60)+':'+(s%60<10?'0':'')+s%60; }
-function pSetPI(playing) {
-  document.getElementById('pc-pi').style.display = playing ? 'none' : 'block';
-  document.getElementById('pc-pa').style.display = playing ? 'block' : 'none';
-}
-function pLoadTrack(i) {
-  if (!pTracks.length) return;
-  pIdx = i;
-  var t = pTracks[i];
-  document.getElementById('pc-title').textContent = t.title;
-  document.getElementById('pc-meta').textContent = t.artist + (t.role ? ' · ' + t.role : '');
-  document.querySelectorAll('.player-track').forEach(function(r,j){ r.classList.toggle('active', j===i); });
-  if (pAudio) { pAudio.pause(); pAudio.src = ''; }
-  if (t.url) {
-    pAudio = new Audio(t.url);
-    pAudio.ontimeupdate = function() {
-      if (!pAudio.duration) return;
-      document.getElementById('pc-fill').style.width = (pAudio.currentTime/pAudio.duration*100)+'%';
-      document.getElementById('pc-time').textContent = pFmt(pAudio.currentTime);
-    };
-    pAudio.onended = function() { nextTrackP(); };
-    pAudio.play(); pPlaying = true; pSetPI(true);
-  }
-}
-window.togglePlayP = function() {
-  if (!pAudio || !pTracks.length) return;
-  if (pPlaying) { pAudio.pause(); pPlaying=false; pSetPI(false); }
-  else { pAudio.play(); pPlaying=true; pSetPI(true); }
-};
-window.prevTrackP = function() { if (pTracks.length) pLoadTrack((pIdx-1+pTracks.length)%pTracks.length); };
-window.nextTrackP = function() { if (pTracks.length) pLoadTrack((pIdx+1)%pTracks.length); };
-window.seekP = function(e) {
-  if (!pAudio || !pAudio.duration) return;
-  var rect=e.currentTarget.getBoundingClientRect();
-  pAudio.currentTime = ((e.clientX-rect.left)/rect.width)*pAudio.duration;
-};
-window.playTrackP = function(i) { pLoadTrack(i); };
-
-// Load tracks from admin content entries
-fetch('/admin/api/stats').catch(function(){});
-// Tracks are added via admin panel Content section with embed_url as the audio src
-(function loadPlayerTracks(){
-  // For now shows placeholder — tracks added via Admin > Content
-  pTracks = [];
-  var list = document.getElementById('track-list');
-  if (!list || pTracks.length) return;
-})();
-
-
-  document.body.style.overflow = 'hidden';
-};
-  document.getElementById('ebook-modal').classList.remove('open');
-  document.body.style.overflow = '';
-};
-document.addEventListener('keydown', function(e) {
-  if (e.key === 'Escape') window.closeEbookModal();
-});
-
-
-// ── EBOOK MODAL ───────────────────────────────────────────────
-window.closeModal = function() {
-  document.getElementById('ebook-modal').classList.remove('open');
-  document.body.style.overflow = '';
-  try { sessionStorage.setItem('ebookSeen','1'); } catch(e){}
-};
-document.getElementById('ebook-modal').addEventListener('click', function(e) {
-  if (e.target === this) window.closeModal();
-});
-document.addEventListener('keydown', function(e) {
-  if (e.key === 'Escape') window.closeModal();
-});
-// Auto-open once per session
-try {
-  if (!sessionStorage.getItem('ebookSeen')) {
-    setTimeout(function() {
-      document.getElementById('ebook-modal').classList.add('open');
-      document.body.style.overflow = 'hidden';
-    }, 1200);
-  }
-} catch(e) {
-  setTimeout(function() {
-    document.getElementById('ebook-modal').classList.add('open');
-    document.body.style.overflow = 'hidden';
-  }, 1200);
-}
-
-// ── TIP JAR ───────────────────────────────────────────────────
-window.selTip = function(amt, btn) {
-  document.querySelectorAll('.ta-btn').forEach(function(b){ b.classList.remove('active'); });
-  btn.classList.add('active');
-  document.getElementById('tip-amt').value = amt;
-};
-window.sendTipAmt = function() {
-  var amt = +document.getElementById('tip-amt').value;
-  if (!amt || amt < 1) { alert('Please enter a tip amount.'); return; }
-  fetch('/payments/tip', {
-    method: 'POST', headers: {'Content-Type': 'application/json'},
-    body: JSON.stringify({amount: amt, email: ''})
-  }).then(function(r){ return r.json(); })
-    .then(function(d){ if (d.checkout_url) window.location.href = d.checkout_url; })
-    .catch(function(){ alert('Checkout unavailable. Try again shortly.'); });
-};
-
+// ── NEWSLETTER ─────────────────────────────────────────────────
 window.subCK = function(e) {
   e.preventDefault();
   var email = document.getElementById('ck-email').value.trim();
   if (!email) return;
   fetch('https://mac-dylan.kit.com/b5923233e5/subscriptions', {
-    method: 'POST', headers: {'Content-Type': 'application/x-www-form-urlencoded'},
+    method: 'POST',
+    headers: {'Content-Type': 'application/x-www-form-urlencoded'},
     body: 'email_address=' + encodeURIComponent(email),
   }).then(function(){}).catch(function(){});
   document.getElementById('ck-form').style.display = 'none';
   document.getElementById('nl-ok').style.display = 'block';
   document.getElementById('nl-note').style.display = 'none';
 };
+
+// ── TIP JAR ─────────────────────────────────────────────────────
 window.openTip = function(e) {
-  e.preventDefault();
+  if (e) e.preventDefault();
   var amt = prompt('How much would you like to tip Mac Dylan?', '10');
   if (!amt || isNaN(+amt) || +amt < 1) return;
   fetch('/payments/tip', {
     method: 'POST',
     headers: {'Content-Type': 'application/json'},
     body: JSON.stringify({amount: +amt, email: ''})
-  }).then(function(r){return r.json()})
-    .then(function(d){if(d.checkout_url) window.location.href = d.checkout_url;})
-    .catch(function(){alert('Checkout unavailable. Try again shortly.');});
+  }).then(function(r){ return r.json(); })
+    .then(function(d){ if (d.checkout_url) window.location.href = d.checkout_url; })
+    .catch(function(){ alert('Checkout unavailable. Try again shortly.'); });
 };
+
+window.selTip = function(amt, btn) {
+  document.querySelectorAll('.ta-btn').forEach(function(b){ b.classList.remove('active'); });
+  btn.classList.add('active');
+  var input = document.getElementById('tip-amt');
+  if (input) input.value = amt;
+};
+
+window.sendTipAmt = function() {
+  var input = document.getElementById('tip-amt');
+  var amt = input ? +input.value : 0;
+  if (!amt || amt < 1) { alert('Please enter a tip amount.'); return; }
+  fetch('/payments/tip', {
+    method: 'POST',
+    headers: {'Content-Type': 'application/json'},
+    body: JSON.stringify({amount: amt, email: ''})
+  }).then(function(r){ return r.json(); })
+    .then(function(d){ if (d.checkout_url) window.location.href = d.checkout_url; })
+    .catch(function(){ alert('Checkout unavailable. Try again shortly.'); });
+};
+
+// ── EBOOK MODAL ─────────────────────────────────────────────────
+window.closeModal = function() {
+  var m = document.getElementById('ebook-modal');
+  if (m) { m.classList.remove('open'); document.body.style.overflow = ''; }
+  try { sessionStorage.setItem('ebookSeen', '1'); } catch(e) {}
+};
+
+var modal = document.getElementById('ebook-modal');
+if (modal) {
+  modal.addEventListener('click', function(e) {
+    if (e.target === modal) window.closeModal();
+  });
+}
+
+document.addEventListener('keydown', function(e) {
+  if (e.key === 'Escape') window.closeModal();
+});
+
+// Auto-open modal once per session after 1.5s
+try {
+  if (!sessionStorage.getItem('ebookSeen')) {
+    setTimeout(function() {
+      var m = document.getElementById('ebook-modal');
+      if (m) { m.classList.add('open'); document.body.style.overflow = 'hidden'; }
+    }, 1500);
+  }
+} catch(e) {
+  setTimeout(function() {
+    var m = document.getElementById('ebook-modal');
+    if (m) { m.classList.add('open'); document.body.style.overflow = 'hidden'; }
+  }, 1500);
+}
 </script>
 {% endblock %}
