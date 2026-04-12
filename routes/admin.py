@@ -389,3 +389,36 @@ def edit_product(pid):
         return jsonify({'success': True})
     except Exception as e:
         return jsonify({'success': False, 'error': str(e)})
+
+
+@admin_bp.route('/beats/api/list')
+@admin_required
+def beats_api_list():
+    beats = Beat.query.order_by(Beat.created_at.desc()).all()
+    return jsonify([{
+        'id': b.id, 'title': b.title, 'bpm': b.bpm, 'key': b.key,
+        'genre': b.genre, 'mood': b.mood, 'tags': b.tags,
+        'price_basic': b.price_basic, 'price_premium': b.price_premium,
+        'price_trackout': b.price_trackout, 'price_exclusive': b.price_exclusive,
+        'is_active': b.is_active, 'is_featured': b.is_featured,
+        'mp3_path': b.mp3_path or '', 'wav_path': b.wav_path or '',
+    } for b in beats])
+
+
+@admin_bp.route('/content/list')
+@admin_required
+def content_list():
+    items = Content.query.order_by(Content.created_at.desc()).all()
+    return jsonify([{
+        'id': c.id, 'title': c.title, 'content_type': c.content_type,
+        'is_published': c.is_published, 'is_featured': c.is_featured,
+    } for c in items])
+
+
+@admin_bp.route('/content/<int:cid>/delete', methods=['POST'])
+@admin_required
+def delete_content(cid):
+    c = Content.query.get_or_404(cid)
+    db.session.delete(c)
+    db.session.commit()
+    return jsonify({'deleted': True})

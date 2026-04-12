@@ -1,0 +1,197 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Beats — Mac Dylan Admin</title>
+<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Space+Mono:wght@400;700&family=Cormorant+Garamond:ital,wght@0,300;0,400&display=swap" rel="stylesheet">
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{--black:#050403;--deep:#080604;--ember:#c84b0a;--fire:#e8720c;--flame:#f5a623;--ash:#b8a898;--white:#f5f0e8;--muted:#7a6a5a;--card:#0f0c09;--card2:#160f0b;--border:#1e1a16;--borderl:#2a231e;--green:#3a8a5a;--red:#c84a4a;--blue:#4a7ac8}
+body{background:var(--black);color:var(--white);font-family:'Cormorant Garamond',serif;display:flex;min-height:100vh}
+a{color:inherit;text-decoration:none}
+button{cursor:pointer}
+.sidebar{width:220px;min-height:100vh;background:var(--deep);border-right:1px solid var(--border);display:flex;flex-direction:column;position:fixed;top:0;left:0;bottom:0;z-index:100;overflow-y:auto}
+.sidebar-logo{padding:22px 20px;border-bottom:1px solid var(--border);font-family:'Bebas Neue',sans-serif;font-size:18px;letter-spacing:.1em}.sidebar-logo span{color:var(--fire)}
+.sidebar-sub{font-family:'Space Mono',monospace;font-size:7px;letter-spacing:.3em;color:var(--muted);text-transform:uppercase;margin-top:2px}
+.sidebar-nav{flex:1;padding:16px 0}
+.nav-group{font-family:'Space Mono',monospace;font-size:7px;letter-spacing:.4em;color:var(--muted);text-transform:uppercase;padding:12px 20px 6px}
+.nav-item{display:flex;align-items:center;gap:10px;padding:10px 20px;font-family:'Space Mono',monospace;font-size:9px;letter-spacing:.22em;text-transform:uppercase;color:var(--muted);transition:all .15s;border-left:2px solid transparent}
+.nav-item:hover{color:var(--white);background:rgba(200,75,10,.05)}
+.nav-item.active{color:var(--fire);border-left-color:var(--ember);background:rgba(200,75,10,.06)}
+.nav-icon{width:16px;text-align:center;font-size:12px;flex-shrink:0}
+.sidebar-foot{padding:16px 20px;border-top:1px solid var(--border)}
+.sidebar-foot a{font-family:'Space Mono',monospace;font-size:8px;letter-spacing:.2em;color:var(--muted);text-transform:uppercase;transition:color .2s}.sidebar-foot a:hover{color:var(--fire)}
+.main{margin-left:220px;flex:1;display:flex;flex-direction:column;min-height:100vh}
+.topbar{padding:16px 32px;background:var(--deep);border-bottom:1px solid var(--border);display:flex;justify-content:space-between;align-items:center;position:sticky;top:0;z-index:50}
+.topbar-title{font-family:'Bebas Neue',sans-serif;font-size:22px;letter-spacing:.06em}
+.content{padding:32px;flex:1}
+table{width:100%;border-collapse:collapse;background:var(--card);border:1px solid var(--border)}
+th{font-family:'Space Mono',monospace;font-size:8px;letter-spacing:.25em;color:var(--muted);text-transform:uppercase;padding:10px 14px;text-align:left;border-bottom:1px solid var(--border);background:var(--deep)}
+td{padding:11px 14px;border-bottom:1px solid var(--border);font-size:13px;color:var(--ash);vertical-align:middle}
+tr:last-child td{border-bottom:none}tr:hover td{background:var(--card2)}
+.td-title{font-family:'Bebas Neue',sans-serif;font-size:15px;color:var(--white);letter-spacing:.04em}
+.td-mono{font-family:'Space Mono',monospace;font-size:9px;letter-spacing:.1em;color:var(--muted)}
+.badge{font-family:'Space Mono',monospace;font-size:7px;letter-spacing:.2em;text-transform:uppercase;padding:3px 8px;border:1px solid}
+.badge-paid{color:var(--blue);border-color:var(--blue);background:rgba(74,122,200,.06)}
+.badge-pending{color:var(--ember);border-color:var(--ember);background:rgba(200,75,10,.06)}
+.badge-complete{color:var(--green);border-color:var(--green);background:rgba(58,138,90,.06)}
+.badge-active{color:var(--green);border-color:var(--green);background:rgba(58,138,90,.06)}
+.badge-inactive{color:var(--muted);border-color:var(--borderl);background:transparent}
+.btn{font-family:'Space Mono',monospace;font-size:8px;letter-spacing:.22em;text-transform:uppercase;padding:7px 14px;border:none;transition:all .2s;cursor:pointer}
+.btn-fire{background:var(--ember);color:var(--white)}.btn-fire:hover{background:var(--fire)}
+.btn-ghost{background:transparent;border:1px solid var(--borderl);color:var(--muted)}.btn-ghost:hover{border-color:var(--ember);color:var(--fire)}
+.btn-danger{background:transparent;border:1px solid rgba(200,74,74,.3);color:var(--red)}.btn-danger:hover{background:var(--red);color:var(--white)}
+.btn-sm{padding:5px 10px;font-size:7px}
+.sec-lbl{font-family:'Space Mono',monospace;font-size:8px;letter-spacing:.5em;color:var(--ember);text-transform:uppercase;margin-bottom:16px;display:flex;align-items:center;gap:10px}.sec-lbl::after{content:'';flex:1;height:1px;background:var(--border)}
+.form-card{background:var(--card);border:1px solid var(--border);padding:24px;margin-bottom:24px}
+.fi{width:100%;padding:9px 12px;background:var(--deep);border:1px solid var(--border);color:var(--white);font-family:'Space Mono',monospace;font-size:11px;transition:border-color .2s;margin-bottom:12px}
+.fi:focus{outline:none;border-color:var(--ember)}
+.fi-label{font-family:'Space Mono',monospace;font-size:8px;letter-spacing:.3em;color:var(--muted);text-transform:uppercase;margin-bottom:4px;display:block}
+.fi-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+.alert{padding:10px 14px;font-family:'Space Mono',monospace;font-size:9px;letter-spacing:.15em;margin-bottom:16px;display:none}
+.alert.success{background:rgba(58,138,90,.1);border:1px solid var(--green);color:var(--green);display:block}
+.alert.error{background:rgba(200,74,74,.1);border:1px solid var(--red);color:var(--red);display:block}
+.two-col{display:grid;grid-template-columns:1fr 1fr;gap:24px}
+.empty-state{text-align:center;padding:32px;color:var(--muted);font-style:italic}
+@media(max-width:900px){.sidebar{display:none}.main{margin-left:0}.content{padding:16px}.two-col{grid-template-columns:1fr}.fi-grid{grid-template-columns:1fr}}
+
+</style>
+</head>
+<body>
+<aside class="sidebar">
+  <div class="sidebar-logo">Mac<span>Dylan</span><div class="sidebar-sub">Admin Panel</div></div>
+  <nav class="sidebar-nav">
+    <div class="nav-group">Overview</div>
+    <a href="/admin/" class="nav-item"><span class="nav-icon">◈</span>Dashboard</a>
+    <a href="/admin/orders" class="nav-item"><span class="nav-icon">◻</span>Orders</a>
+    <div class="nav-group">Music</div>
+    <a href="/admin/beats" class="nav-item"><span class="nav-icon">♩</span>Beats</a>
+    <div class="nav-group">Store</div>
+    <a href="/admin/products" class="nav-item"><span class="nav-icon">◈</span>Products</a>
+    <a href="/admin/content" class="nav-item"><span class="nav-icon">▶</span>Content</a>
+    <div class="nav-group">Account</div>
+    <a href="/admin/logout" class="nav-item"><span class="nav-icon">→</span>Log Out</a>
+  </nav>
+  <div class="sidebar-foot"><a href="/" target="_blank">← View Site</a></div>
+</aside>
+<div class="main">
+  <div class="topbar">
+    <div class="topbar-title">Beats</div>
+    <div style="display:flex;gap:8px">
+      <a href="/" target="_blank" class="btn btn-ghost">View Site</a>
+    </div>
+  </div>
+  <div class="content">
+    <div id="alert-beats" class="alert"></div>
+    <div class="two-col">
+      <div>
+        <div class="sec-lbl">Upload New Beat</div>
+        <div class="form-card">
+          <div class="fi-grid">
+            <div><label class="fi-label">Title *</label><input class="fi" id="b-title" type="text" placeholder="Beat title"></div>
+            <div><label class="fi-label">BPM</label><input class="fi" id="b-bpm" type="number" placeholder="140"></div>
+          </div>
+          <div class="fi-grid">
+            <div><label class="fi-label">Key</label><input class="fi" id="b-key" type="text" placeholder="F Min"></div>
+            <div><label class="fi-label">Genre</label><input class="fi" id="b-genre" type="text" placeholder="Hip-Hop"></div>
+          </div>
+          <div><label class="fi-label">Mood</label><input class="fi" id="b-mood" type="text" placeholder="Dark, Melodic..."></div>
+          <div><label class="fi-label">Tags</label><input class="fi" id="b-tags" type="text" placeholder="trap, dark, 808s"></div>
+          <div class="fi-grid">
+            <div><label class="fi-label">Basic Price ($)</label><input class="fi" id="b-basic" type="number" value="29"></div>
+            <div><label class="fi-label">Premium Price ($)</label><input class="fi" id="b-premium" type="number" value="49"></div>
+          </div>
+          <div class="fi-grid">
+            <div><label class="fi-label">Trackout Price ($)</label><input class="fi" id="b-trackout" type="number" value="99"></div>
+            <div><label class="fi-label">Exclusive Price ($)</label><input class="fi" id="b-exclusive" type="number" value="299"></div>
+          </div>
+          <div><label class="fi-label">MP3 Preview</label><input class="fi" type="file" id="b-mp3" accept=".mp3,.wav" style="padding:8px"></div>
+          <div><label class="fi-label">WAV File</label><input class="fi" type="file" id="b-wav" accept=".wav,.aiff" style="padding:8px"></div>
+          <div class="fi-grid">
+            <div><label class="fi-label">Featured</label>
+              <select class="fi" id="b-featured"><option value="1">Yes</option><option value="0" selected>No</option></select></div>
+            <div><label class="fi-label">Active</label>
+              <select class="fi" id="b-active"><option value="1" selected>Yes</option><option value="0">No</option></select></div>
+          </div>
+          <button class="btn btn-fire" onclick="uploadBeat()" style="width:100%;margin-top:8px">Upload Beat</button>
+        </div>
+      </div>
+      <div>
+        <div class="sec-lbl">All Beats (<span id="beat-ct">...</span>)</div>
+        <div style="overflow-x:auto">
+          <table id="beats-tbl">
+            <thead><tr><th>Title</th><th>BPM</th><th>Key</th><th>Genre</th><th>Price</th><th>Status</th><th>Actions</th></tr></thead>
+            <tbody id="beats-tbody"><tr><td colspan="7" class="empty-state">Loading...</td></tr></tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<script>
+function loadBeats() {
+  fetch('/admin/beats/api/list').then(r=>r.json()).then(function(beats) {
+    document.getElementById('beat-ct').textContent = beats.length;
+    var tbody = document.getElementById('beats-tbody');
+    if (!beats.length) { tbody.innerHTML='<tr><td colspan="7" class="empty-state">No beats yet</td></tr>'; return; }
+    tbody.innerHTML = beats.map(function(b) {
+      return '<tr><td class="td-title">'+b.title+'</td><td class="td-mono">'+b.bpm+'</td><td class="td-mono">'+b.key+'</td><td class="td-mono">'+(b.genre||'-')+'</td><td class="td-mono">$'+b.price_basic+'</td>' +
+        '<td><span class="badge badge-'+(b.is_active?'active':'inactive')+'">'+(b.is_active?'Live':'Hidden')+'</span></td>' +
+        '<td style="display:flex;gap:6px;flex-wrap:wrap">' +
+        '<button class="btn btn-ghost btn-sm" onclick="toggleBeat('+b.id+',this)">'+(b.is_active?'Hide':'Show')+'</button>' +
+        '<button class="btn btn-ghost btn-sm" onclick="featBeat('+b.id+','+b.is_featured+')">'+(b.is_featured?'Unfeat':'Feature')+'</button>' +
+        '<button class="btn btn-danger btn-sm" onclick="delBeat('+b.id+',this)">Delete</button>' +
+        '</td></tr>';
+    }).join('');
+  });
+}
+function uploadBeat() {
+  var title = document.getElementById('b-title').value.trim();
+  if (!title) { showAlert('error','Title is required'); return; }
+  var fd = new FormData();
+  fd.append('title', title);
+  fd.append('bpm', document.getElementById('b-bpm').value);
+  fd.append('key', document.getElementById('b-key').value);
+  fd.append('genre', document.getElementById('b-genre').value);
+  fd.append('mood', document.getElementById('b-mood').value);
+  fd.append('tags', document.getElementById('b-tags').value);
+  fd.append('price_basic', document.getElementById('b-basic').value);
+  fd.append('price_premium', document.getElementById('b-premium').value);
+  fd.append('price_trackout', document.getElementById('b-trackout').value);
+  fd.append('price_exclusive', document.getElementById('b-exclusive').value);
+  fd.append('active', document.getElementById('b-active').value);
+  fd.append('featured', document.getElementById('b-featured').value);
+  var mp3 = document.getElementById('b-mp3').files[0];
+  var wav = document.getElementById('b-wav').files[0];
+  if (mp3) fd.append('mp3_preview', mp3);
+  if (wav) fd.append('wav_file', wav);
+  fetch('/admin/beats/upload', {method:'POST', body:fd})
+    .then(r=>r.json()).then(function(d) {
+      if (d.success) { showAlert('success','Beat uploaded!'); loadBeats(); }
+      else showAlert('error', d.error||'Upload failed');
+    });
+}
+function toggleBeat(id, btn) {
+  fetch('/admin/beats/'+id+'/toggle', {method:'POST'}).then(r=>r.json()).then(function(d) {
+    btn.textContent = d.is_active ? 'Hide' : 'Show'; loadBeats();
+  });
+}
+function featBeat(id, cur) {
+  fetch('/admin/beats/'+id+'/edit', {method:'POST', headers:{'Content-Type':'application/json'},
+    body:JSON.stringify({is_featured: !cur})}).then(function(){ loadBeats(); });
+}
+function delBeat(id, btn) {
+  if (!confirm('Delete this beat?')) return;
+  fetch('/admin/beats/'+id+'/delete', {method:'POST'}).then(r=>r.json()).then(function(d) {
+    if (d.deleted) { btn.closest('tr').remove(); }
+  });
+}
+function showAlert(type, msg) {
+  var a = document.getElementById('alert-beats');
+  a.className = 'alert '+type; a.textContent = msg;
+  setTimeout(function(){ a.className='alert'; }, 4000);
+}
+loadBeats();
+</script>
+</body>
+</html>
