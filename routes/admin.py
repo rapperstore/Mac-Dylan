@@ -34,7 +34,6 @@ def logout():
     return redirect(url_for("admin.login"))
 
 @admin_bp.route("/")
-@admin_bp.route("/dashboard")
 @admin_required
 def dashboard():
     rev=db.session.query(db.func.sum(Order.amount_paid)).filter_by(status="paid").scalar() or 0
