@@ -182,7 +182,7 @@ BEATS = BEATS.map(function(b){
   return {
     id: b.id, title: b.title, bpm: b.bpm, key: b.key,
     genre: b.genre, mood: b.mood, free: b.is_free,
-    mp3: b.mp3_path ? '/static/' + b.mp3_path : '',
+    mp3: b.mp3_path ? '/static/' + b.mp3_path : null,
     lics: b.is_free ? [
       {n:'Free Download',d:'MP3 · Non-commercial · Demo & freestyle only',p:'FREE',a:0,t:'free'}
     ] : [
@@ -211,7 +211,7 @@ function makeRow(beat,num){
   var bars='';for(var i=0;i<18;i++){var h=((Math.sin(beat.id*80+i*1.6)*.5+.5)*.72+.15)*100;bars+='<div class="rwb" style="height:'+h.toFixed(0)+'%;flex:1"></div>'}
   var baseP=beat.free?'FREE':beat.lics[0].p;
   div.innerHTML='<div class="row-num">'+String(num).padStart(2,'0')+'</div><div class="row-play-wrap"><button class="row-play-btn" onclick="selectBeat('+beat.id+')"><svg viewBox="0 0 24 24"><polygon points="5,3 19,12 5,21"/></svg></button></div><div class="row-cover">'+
-    (beat.mp3?'<img src="/static/'+beat.mp3+'" alt="">' : '<div class="row-cover-ph">'+beat.title[0]+'</div>')+
+    '<div class="row-cover-ph">'+beat.title[0]+'</div>'+
     '<div class="row-cover-eq"><div class="eq-b"></div><div class="eq-b"></div><div class="eq-b"></div><div class="eq-b"></div></div></div>'+
     '<div class="row-info"><div class="row-title">'+beat.title+'</div><div class="row-tags"><span class="row-tag">'+beat.bpm+' BPM</span><span class="row-tag">'+beat.key+'</span><span class="row-tag">'+beat.genre+'</span>'+(beat.free?'<span class="row-tag free-tag">FREE</span>':'')+'</div></div>'+
     '<div class="row-wf">'+bars+'</div><div class="row-price '+(beat.free?'free':'paid')+'">'+baseP+'</div>'+

@@ -318,3 +318,74 @@ def delete_product_digital(pid):
     db.session.delete(p)
     db.session.commit()
     return jsonify({'deleted': True})
+
+
+# ─── BEAT EDIT ROUTES ─────────────────────────────────────────
+@admin_bp.route('/beats/<int:beat_id>/data')
+@admin_required
+def beat_data(beat_id):
+    b = Beat.query.get_or_404(beat_id)
+    return jsonify({
+        'id': b.id, 'title': b.title, 'bpm': b.bpm, 'key': b.key,
+        'genre': b.genre, 'mood': b.mood, 'tags': b.tags,
+        'price_basic': b.price_basic, 'price_premium': b.price_premium,
+        'price_trackout': b.price_trackout, 'price_exclusive': b.price_exclusive,
+        'is_featured': b.is_featured, 'is_active': b.is_active,
+        'mp3_path': b.mp3_path, 'wav_path': b.wav_path,
+    })
+
+
+@admin_bp.route('/beats/<int:beat_id>/edit', methods=['POST'])
+@admin_required
+def edit_beat(beat_id):
+    b = Beat.query.get_or_404(beat_id)
+    data = request.get_json() or {}
+    try:
+        b.title         = data.get('title', b.title).strip()
+        b.bpm           = int(data.get('bpm', b.bpm) or 0)
+        b.key           = data.get('key', b.key or '').strip()
+        b.genre         = data.get('genre', b.genre or '').strip()
+        b.mood          = data.get('mood', b.mood or '').strip()
+        b.tags          = data.get('tags', b.tags or '').strip()
+        b.price_basic   = int(data.get('price_basic', b.price_basic) or 29)
+        b.price_premium = int(data.get('price_premium', b.price_premium) or 49)
+        b.price_trackout= int(data.get('price_trackout', b.price_trackout) or 99)
+        b.price_exclusive=int(data.get('price_exclusive', b.price_exclusive) or 299)
+        b.is_featured   = bool(data.get('is_featured', b.is_featured))
+        b.is_active     = bool(data.get('is_active', b.is_active))
+        db.session.commit()
+        return jsonify({'success': True})
+    except Exception as e:
+        return jsonify({'success': False, 'error': str(e)})
+
+
+# ─── PRODUCT EDIT ROUTES ──────────────────────────────────────
+@admin_bp.route('/products/<int:pid>/data')
+@admin_required
+def product_data(pid):
+    p = Product.query.get_or_404(pid)
+    return jsonify({
+        'id': p.id, 'name': p.name, 'description': p.description,
+        'price': p.price, 'product_type': p.product_type,
+        'tags': p.tags, 'is_active': p.is_active, 'is_new': p.is_new,
+        'file_path': p.file_path, 'image_path': p.image_path,
+    })
+
+
+@admin_bp.route('/products/<int:pid>/edit', methods=['POST'])
+@admin_required
+def edit_product(pid):
+    p = Product.query.get_or_404(pid)
+    data = request.get_json() or {}
+    try:
+        p.name         = data.get('name', p.name).strip()
+        p.description  = data.get('description', p.description or '').strip()
+        p.price        = int(data.get('price', p.price) or 0)
+        p.product_type = data.get('product_type', p.product_type)
+        p.tags         = data.get('tags', p.tags or '').strip()
+        p.is_active    = bool(data.get('is_active', p.is_active))
+        p.is_new       = bool(data.get('is_new', p.is_new))
+        db.session.commit()
+        return jsonify({'success': True})
+    except Exception as e:
+        return jsonify({'success': False, 'error': str(e)})
