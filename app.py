@@ -1,15 +1,17 @@
 import os
 import stripe
 from flask import Flask
+from flask_sqlalchemy import SQLAlchemy
 from config import Config
+
+db = SQLAlchemy()
+
 
 def create_app():
     app = Flask(__name__)
     app.config.from_object(Config)
 
-    from database import db
     db.init_app(app)
-
     stripe.api_key = app.config['STRIPE_SECRET_KEY']
 
     for folder in [app.config['UPLOAD_FOLDER'],
@@ -35,45 +37,40 @@ def create_app():
 
     with app.app_context():
         db.create_all()
+        _seed_products()
 
-        seed_default_products(app)
     return app
+
+
+def _seed_products():
+    """Runs on every startup — ensures default products always exist."""
+    try:
+        from models import Product
+        ebook = Product.query.filter_by(name="The Artist Is The Business").first()
+        if not ebook:
+            p = Product(
+                product_type="digital",
+                name="The Artist Is The Business",
+                description="The complete independent artist blueprint. 9 chapters covering branding, income streams, organic growth, AI leverage, and a 90-day execution plan. Interactive e-book with animated visuals and built-in action checklist.",
+                price=27,
+                tags="ebook,artist development,branding,income,strategy",
+                file_path="uploads/products/artist-is-the-business-v2.html",
+                is_active=True,
+                is_new=True,
+            )
+            db.session.add(p)
+            db.session.commit()
+            print("[startup] Ebook product seeded OK")
+        else:
+            if not ebook.is_active:
+                ebook.is_active = True
+                db.session.commit()
+            print(f"[startup] Ebook exists ID:{ebook.id} active:{ebook.is_active}")
+    except Exception as e:
+        print(f"[startup] Seed skipped: {e}")
 
 
 app = create_app()
 
 if __name__ == '__main__':
-    port = int(os.environ.get('PORT', 5000))
-    app.run(debug=True, host='0.0.0.0', port=port)
-
-
-def seed_default_products(app):
-    """Seeds default products on every startup if they dont exist."""
-    import os
-    with app.app_context():
-        try:
-            from models import Product
-            db.create_all()
-            ebook = Product.query.filter_by(name="The Artist Is The Business").first()
-            if not ebook:
-                p = Product(
-                    product_type="digital",
-                    name="The Artist Is The Business",
-                    description="The complete independent artist blueprint. 9 chapters covering branding, income streams, organic growth, AI leverage, and a 90-day execution plan. Interactive e-book with animated visuals and built-in action checklist.",
-                    price=27,
-                    tags="ebook,artist development,branding,income,strategy",
-                    file_path="uploads/products/artist-is-the-business-v2.html",
-                    is_active=True,
-                    is_new=True,
-                )
-                db.session.add(p)
-                db.session.commit()
-                print("[startup] Ebook product seeded")
-            else:
-                # Always ensure it's active
-                if not ebook.is_active:
-                    ebook.is_active = True
-                    db.session.commit()
-                print(f"[startup] Ebook product exists ID:{ebook.id} active:{ebook.is_active}")
-        except Exception as e:
-            print(f"[startup] Seed error: {e}")
+    app.run(debug=True, port=5000)
