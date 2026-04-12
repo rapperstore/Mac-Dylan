@@ -6,7 +6,7 @@
 .svc-heading{font-family:'Bebas Neue',sans-serif;font-size:clamp(52px,10vw,110px);line-height:.88;color:var(--white);margin-bottom:16px}
 .svc-heading em{color:var(--fire);font-style:normal}
 .svc-sub{font-size:16px;color:var(--ash);font-style:italic;line-height:1.7;max-width:520px}
-.services-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(320px,1fr));gap:2px;background:var(--border);border:1px solid var(--border);margin:60px 48px}
+.svc-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(300px,1fr));gap:2px;background:var(--border);border:1px solid var(--border);margin:60px 48px}
 .svc-card{background:var(--card);padding:36px 32px;position:relative;overflow:hidden;transition:background .25s}
 .svc-card:hover{background:var(--card2)}
 .svc-card::before{content:'';position:absolute;top:0;left:0;right:0;height:2px;background:linear-gradient(90deg,var(--ember),var(--flame));transform:scaleX(0);transform-origin:left;transition:transform .4s}
@@ -18,40 +18,40 @@
 .svc-price small{font-size:12px;color:var(--muted);font-family:'Space Mono',monospace;margin-left:4px}
 .svc-book{display:inline-block;padding:11px 28px;background:var(--ember);color:#f5f0e8;font-family:'Space Mono',monospace;font-size:8px;letter-spacing:.3em;text-transform:uppercase;text-decoration:none;transition:all .25s}
 .svc-book:hover{background:var(--fire);box-shadow:0 0 24px rgba(200,75,10,.4);color:#f5f0e8}
-@media(max-width:900px){.svc-hero,.services-grid{padding-left:24px;padding-right:24px;margin-left:0;margin-right:0}.services-grid{grid-template-columns:1fr}}
+@media(max-width:900px){.svc-hero{padding:60px 24px 36px}.svc-grid{margin:40px 0;grid-template-columns:1fr}}
 {% endblock %}
 {% block content %}
 <div class="svc-hero">
   <div class="svc-eyebrow">Professional Services</div>
   <h1 class="svc-heading">Work With <em>Mac Dylan</em></h1>
-  <p class="svc-sub">From mobile recording to full artist development — everything you need to go from idea to release-ready.</p>
+  <p class="svc-sub">From mobile recording to full artist development. Everything you need to go from idea to release-ready.</p>
 </div>
-<div class="services-grid">
+<div class="svc-grid">
   <div class="svc-card">
     <div class="svc-n">01</div>
     <div class="svc-name">Recording Session</div>
-    <p class="svc-desc">Mobile engineering — I come to you, fully equipped. Studio-quality sound wherever you create. Includes editing and rough mix.</p>
+    <p class="svc-desc">Mobile engineering — I come to you, fully equipped. Studio quality wherever you create.</p>
     <div class="svc-price">$75 <small>/ hr &middot; 50% deposit</small></div>
     <a href="https://calendly.com/macdylanforever/30min" target="_blank" class="svc-book">Book Session &rarr;</a>
   </div>
   <div class="svc-card">
     <div class="svc-n">02</div>
     <div class="svc-name">Mix &amp; Master</div>
-    <p class="svc-desc">One seamless process. Radio and streaming ready. Stems, revisions, and delivery in all major formats. Professional sound guaranteed.</p>
+    <p class="svc-desc">One seamless process. Radio and streaming ready. Delivery in all major formats.</p>
     <div class="svc-price">$150 <small>/ single</small></div>
-    <a href="https://calendly.com/macdylanforever/30min" target="_blank" class="svc-book">Get a Quote &rarr;</a>
+    <a href="https://calendly.com/macdylanforever/30min" target="_blank" class="svc-book">Get Quote &rarr;</a>
   </div>
   <div class="svc-card">
     <div class="svc-n">03</div>
     <div class="svc-name">Artist Development</div>
-    <p class="svc-desc">Monthly creative partnership. Sessions, mixing, strategy, brand direction, and content planning. Built for artists ready to level up.</p>
+    <p class="svc-desc">Monthly creative partnership. Sessions, mixing, strategy, brand direction and content planning.</p>
     <div class="svc-price">$300 <small>/ mo</small></div>
     <a href="https://calendly.com/macdylanforever/1-hr-paid-strategy-meeting" target="_blank" class="svc-book">Strategy Call &rarr;</a>
   </div>
   <div class="svc-card">
     <div class="svc-n">04</div>
     <div class="svc-name">Beat Licensing</div>
-    <p class="svc-desc">Basic, Premium, Trackout, and Exclusive licenses available. Instant delivery. All beats produced and engineered by Mac Dylan.</p>
+    <p class="svc-desc">Basic, Premium, Trackout, and Exclusive licenses. Instant delivery. 145 beats in catalog.</p>
     <div class="svc-price">From $29</div>
     <a href="/beats/" class="svc-book">Browse Beats &rarr;</a>
   </div>

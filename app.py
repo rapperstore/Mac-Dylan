@@ -37,17 +37,17 @@ def create_app():
 
     with app.app_context():
         db.create_all()
-        _seed_products()
+        _seed_defaults()
 
     return app
 
 
-def _seed_products():
-    """Runs on every startup — ensures default products always exist."""
+def _seed_defaults():
+    """Seeds default data on startup so Railway DB always has it."""
     try:
         from models import Product
-        ebook = Product.query.filter_by(name="The Artist Is The Business").first()
-        if not ebook:
+        e = Product.query.filter_by(name="The Artist Is The Business").first()
+        if not e:
             p = Product(
                 product_type="digital",
                 name="The Artist Is The Business",
@@ -60,14 +60,13 @@ def _seed_products():
             )
             db.session.add(p)
             db.session.commit()
-            print("[startup] Ebook product seeded OK")
-        else:
-            if not ebook.is_active:
-                ebook.is_active = True
-                db.session.commit()
-            print(f"[startup] Ebook exists ID:{ebook.id} active:{ebook.is_active}")
-    except Exception as e:
-        print(f"[startup] Seed skipped: {e}")
+            print("[startup] Ebook seeded")
+        elif not e.is_active:
+            e.is_active = True
+            db.session.commit()
+            print("[startup] Ebook re-activated")
+    except Exception as ex:
+        print(f"[startup] seed skipped: {ex}")
 
 
 app = create_app()

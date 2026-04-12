@@ -269,7 +269,7 @@ window.buyLic=function(id,type,price,amt){
 };
 window.dlFree=function(id){
   var beat=BEATS.find(function(b){return b.id===id});
-  if(beat&&beat.mp3){var a=document.createElement('a');a.href='/static/'+beat.mp3;a.download=beat.title+'.mp3';a.click()}
+  if(beat&&beat.mp3){var a=document.createElement('a');a.href=beat.mp3;a.download=beat.title+'.mp3';a.click()}
   else alert('Free download available once the beat file is uploaded in the admin panel.');
 };
 

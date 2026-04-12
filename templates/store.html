@@ -2,31 +2,31 @@
 {% block title %}Store — Mac Dylan{% endblock %}
 {% block extra_styles %}
 .store-hero{padding:80px 48px 48px;border-bottom:1px solid var(--border)}
-.store-eyebrow{font-family:'Space Mono',monospace;font-size:9px;letter-spacing:.5em;color:var(--ember);text-transform:uppercase;margin-bottom:16px}
-.store-heading{font-family:'Bebas Neue',sans-serif;font-size:clamp(48px,8vw,96px);line-height:.9;color:var(--white);margin-bottom:16px}
+.store-eyebrow{font-family:'Space Mono',monospace;font-size:9px;letter-spacing:.5em;color:var(--ember);text-transform:uppercase;margin-bottom:14px}
+.store-heading{font-family:'Bebas Neue',sans-serif;font-size:clamp(48px,8vw,96px);line-height:.9;color:var(--white);margin-bottom:14px}
 .store-heading em{color:var(--fire);font-style:normal}
-.store-sub{font-size:16px;color:var(--ash);font-style:italic;line-height:1.7;max-width:520px}
-.store-section{padding:60px 48px}
-.store-section+.store-section{border-top:1px solid var(--border)}
-.sec-lbl{font-family:'Space Mono',monospace;font-size:8px;letter-spacing:.5em;color:var(--ember);text-transform:uppercase;margin-bottom:28px;display:flex;align-items:center;gap:12px}
+.store-sub{font-size:15px;color:var(--ash);font-style:italic;line-height:1.7;max-width:480px}
+.store-sec{padding:56px 48px}
+.store-sec+.store-sec{border-top:1px solid var(--border)}
+.sec-lbl{font-family:'Space Mono',monospace;font-size:8px;letter-spacing:.5em;color:var(--ember);text-transform:uppercase;margin-bottom:24px;display:flex;align-items:center;gap:10px}
 .sec-lbl::after{content:'';flex:1;height:1px;background:var(--border)}
-.product-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(300px,1fr));gap:2px;background:var(--border);border:1px solid var(--border)}
-.product-card{background:var(--card);padding:32px 28px;position:relative;overflow:hidden;transition:background .25s;display:flex;flex-direction:column}
-.product-card:hover{background:var(--card2)}
-.product-card::before{content:'';position:absolute;top:0;left:0;right:0;height:2px;background:linear-gradient(90deg,var(--ember),var(--flame));transform:scaleX(0);transform-origin:left;transition:transform .4s}
-.product-card:hover::before{transform:scaleX(1)}
-.product-tag{display:inline-block;font-family:'Space Mono',monospace;font-size:7px;letter-spacing:.3em;color:var(--ember);border:1px solid rgba(200,75,10,.3);padding:3px 8px;text-transform:uppercase;margin-bottom:16px;align-self:flex-start}
-.product-name{font-family:'Bebas Neue',sans-serif;font-size:28px;color:var(--white);letter-spacing:.03em;line-height:1;margin-bottom:12px}
-.product-desc{font-size:14px;color:var(--ash);font-style:italic;line-height:1.7;margin-bottom:24px;flex:1}
-.product-footer{display:flex;align-items:center;justify-content:space-between;padding-top:20px;border-top:1px solid rgba(200,75,10,.1)}
-.product-price{font-family:'Bebas Neue',sans-serif;font-size:40px;color:var(--fire);line-height:1}
-.product-price-note{font-family:'Space Mono',monospace;font-size:7px;letter-spacing:.18em;color:var(--muted);text-transform:uppercase;margin-top:4px}
-.btn-buy{display:inline-block;padding:11px 24px;background:var(--ember);color:#f5f0e8;font-family:'Space Mono',monospace;font-size:8px;letter-spacing:.28em;text-transform:uppercase;text-decoration:none;border:none;cursor:pointer;transition:all .22s}
-.btn-buy:hover{background:var(--fire);box-shadow:0 0 24px rgba(200,75,10,.4);color:#f5f0e8}
-.store-empty{padding:60px;text-align:center;background:var(--card);border:1px solid var(--border)}
-.store-empty-icon{font-size:40px;margin-bottom:16px;opacity:.4}
-.store-empty-text{font-family:'Space Mono',monospace;font-size:9px;letter-spacing:.3em;color:var(--muted);text-transform:uppercase}
-@media(max-width:900px){.store-hero,.store-section{padding-left:24px;padding-right:24px}.product-grid{grid-template-columns:1fr}}
+.prod-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));gap:2px;background:var(--border);border:1px solid var(--border)}
+.prod-card{background:var(--card);padding:28px 24px;display:flex;flex-direction:column;position:relative;overflow:hidden;transition:background .25s}
+.prod-card:hover{background:var(--card2)}
+.prod-card::before{content:'';position:absolute;top:0;left:0;right:0;height:2px;background:linear-gradient(90deg,var(--ember),var(--flame));transform:scaleX(0);transform-origin:left;transition:transform .4s}
+.prod-card:hover::before{transform:scaleX(1)}
+.prod-tag{display:inline-block;font-family:'Space Mono',monospace;font-size:7px;letter-spacing:.3em;color:var(--ember);border:1px solid rgba(200,75,10,.3);padding:2px 8px;text-transform:uppercase;margin-bottom:14px;align-self:flex-start}
+.prod-name{font-family:'Bebas Neue',sans-serif;font-size:26px;color:var(--white);letter-spacing:.03em;line-height:1;margin-bottom:10px}
+.prod-desc{font-size:13px;color:var(--ash);font-style:italic;line-height:1.7;margin-bottom:20px;flex:1}
+.prod-footer{display:flex;align-items:center;justify-content:space-between;padding-top:16px;border-top:1px solid rgba(200,75,10,.1)}
+.prod-price{font-family:'Bebas Neue',sans-serif;font-size:38px;color:var(--fire);line-height:1}
+.prod-note{font-family:'Space Mono',monospace;font-size:7px;letter-spacing:.15em;color:var(--muted);text-transform:uppercase;margin-top:3px}
+.btn-buy{display:inline-block;padding:10px 22px;background:var(--ember);color:#f5f0e8;font-family:'Space Mono',monospace;font-size:8px;letter-spacing:.25em;text-transform:uppercase;text-decoration:none;transition:all .22s}
+.btn-buy:hover{background:var(--fire);box-shadow:0 0 20px rgba(200,75,10,.4);color:#f5f0e8}
+.store-empty{padding:48px;text-align:center;background:var(--card);border:1px solid var(--border)}
+.store-empty-icon{font-size:36px;margin-bottom:12px;opacity:.4}
+.store-empty-txt{font-family:'Space Mono',monospace;font-size:8px;letter-spacing:.3em;color:var(--muted);text-transform:uppercase}
+@media(max-width:900px){.store-hero,.store-sec{padding-left:24px;padding-right:24px}.prod-grid{grid-template-columns:1fr}}
 {% endblock %}
 {% block content %}
 <div class="store-hero">
@@ -34,43 +34,43 @@
   <h1 class="store-heading">The <em>Blueprint</em></h1>
   <p class="store-sub">Tools, knowledge, and resources built for independent artists who are done waiting for permission.</p>
 </div>
-<section class="store-section">
+<section class="store-sec">
   <div class="sec-lbl">Digital Products</div>
   {% if digital %}
-    <div class="product-grid">
-      {% for p in digital %}
-      <div class="product-card">
-        <span class="product-tag">{% if p.is_new %}New &mdash; {% endif %}Digital</span>
-        <div class="product-name">{{ p.name }}</div>
-        <p class="product-desc">{{ p.description }}</p>
-        <div class="product-footer">
-          <div>
-            <div class="product-price">${{ p.price }}</div>
-            <div class="product-price-note">Instant download &middot; Yours forever</div>
-          </div>
-          <a href="/payments/checkout-product/{{ p.id }}" class="btn-buy">Get Access &rarr;</a>
+  <div class="prod-grid">
+    {% for p in digital %}
+    <div class="prod-card">
+      <span class="prod-tag">{% if p.is_new %}New &mdash; {% endif %}Digital</span>
+      <div class="prod-name">{{ p.name }}</div>
+      <p class="prod-desc">{{ p.description }}</p>
+      <div class="prod-footer">
+        <div>
+          <div class="prod-price">${{ p.price }}</div>
+          <div class="prod-note">Instant download &middot; Yours forever</div>
         </div>
+        <a href="/payments/checkout-product/{{ p.id }}" class="btn-buy">Get Access &rarr;</a>
       </div>
-      {% endfor %}
     </div>
+    {% endfor %}
+  </div>
   {% else %}
-    <div class="store-empty">
-      <div class="store-empty-icon">&#x1F4D6;</div>
-      <div class="store-empty-text">Products coming soon</div>
-    </div>
+  <div class="store-empty">
+    <div class="store-empty-icon">&#x1F4D6;</div>
+    <div class="store-empty-txt">Products coming soon</div>
+  </div>
   {% endif %}
 </section>
 {% if courses %}
-<section class="store-section">
+<section class="store-sec">
   <div class="sec-lbl">Courses</div>
-  <div class="product-grid">
+  <div class="prod-grid">
     {% for p in courses %}
-    <div class="product-card">
-      <span class="product-tag">Course</span>
-      <div class="product-name">{{ p.name }}</div>
-      <p class="product-desc">{{ p.description }}</p>
-      <div class="product-footer">
-        <div><div class="product-price">${{ p.price }}</div></div>
+    <div class="prod-card">
+      <span class="prod-tag">Course</span>
+      <div class="prod-name">{{ p.name }}</div>
+      <p class="prod-desc">{{ p.description }}</p>
+      <div class="prod-footer">
+        <div><div class="prod-price">${{ p.price }}</div></div>
         <a href="/payments/checkout-product/{{ p.id }}" class="btn-buy">Enroll &rarr;</a>
       </div>
     </div>
@@ -79,16 +79,16 @@
 </section>
 {% endif %}
 {% if merch %}
-<section class="store-section">
+<section class="store-sec">
   <div class="sec-lbl">Merch</div>
-  <div class="product-grid">
+  <div class="prod-grid">
     {% for p in merch %}
-    <div class="product-card">
-      <span class="product-tag">Merch</span>
-      <div class="product-name">{{ p.name }}</div>
-      <p class="product-desc">{{ p.description }}</p>
-      <div class="product-footer">
-        <div><div class="product-price">${{ p.price }}</div></div>
+    <div class="prod-card">
+      <span class="prod-tag">Merch</span>
+      <div class="prod-name">{{ p.name }}</div>
+      <p class="prod-desc">{{ p.description }}</p>
+      <div class="prod-footer">
+        <div><div class="prod-price">${{ p.price }}</div></div>
         <a href="/payments/checkout-product/{{ p.id }}" class="btn-buy">Order &rarr;</a>
       </div>
     </div>

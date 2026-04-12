@@ -2,150 +2,138 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1">
-<title>Content — Mac Dylan Admin</title>
+<title>Content — Admin</title>
 <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Space+Mono:wght@400;700&family=Cormorant+Garamond:ital,wght@0,300;0,400&display=swap" rel="stylesheet">
 <style>
 *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
 :root{--black:#050403;--deep:#080604;--ember:#c84b0a;--fire:#e8720c;--flame:#f5a623;--ash:#b8a898;--white:#f5f0e8;--muted:#7a6a5a;--card:#0f0c09;--card2:#160f0b;--border:#1e1a16;--borderl:#2a231e;--green:#3a8a5a;--red:#c84a4a;--blue:#4a7ac8}
 body{background:var(--black);color:var(--white);font-family:'Cormorant Garamond',serif;display:flex;min-height:100vh}
-a{color:inherit;text-decoration:none}
-button{cursor:pointer}
-.sidebar{width:220px;min-height:100vh;background:var(--deep);border-right:1px solid var(--border);display:flex;flex-direction:column;position:fixed;top:0;left:0;bottom:0;z-index:100;overflow-y:auto}
-.sidebar-logo{padding:22px 20px;border-bottom:1px solid var(--border);font-family:'Bebas Neue',sans-serif;font-size:18px;letter-spacing:.1em}.sidebar-logo span{color:var(--fire)}
-.sidebar-sub{font-family:'Space Mono',monospace;font-size:7px;letter-spacing:.3em;color:var(--muted);text-transform:uppercase;margin-top:2px}
-.sidebar-nav{flex:1;padding:16px 0}
-.nav-group{font-family:'Space Mono',monospace;font-size:7px;letter-spacing:.4em;color:var(--muted);text-transform:uppercase;padding:12px 20px 6px}
-.nav-item{display:flex;align-items:center;gap:10px;padding:10px 20px;font-family:'Space Mono',monospace;font-size:9px;letter-spacing:.22em;text-transform:uppercase;color:var(--muted);transition:all .15s;border-left:2px solid transparent}
-.nav-item:hover{color:var(--white);background:rgba(200,75,10,.05)}
-.nav-item.active{color:var(--fire);border-left-color:var(--ember);background:rgba(200,75,10,.06)}
-.nav-icon{width:16px;text-align:center;font-size:12px;flex-shrink:0}
-.sidebar-foot{padding:16px 20px;border-top:1px solid var(--border)}
-.sidebar-foot a{font-family:'Space Mono',monospace;font-size:8px;letter-spacing:.2em;color:var(--muted);text-transform:uppercase;transition:color .2s}.sidebar-foot a:hover{color:var(--fire)}
-.main{margin-left:220px;flex:1;display:flex;flex-direction:column;min-height:100vh}
-.topbar{padding:16px 32px;background:var(--deep);border-bottom:1px solid var(--border);display:flex;justify-content:space-between;align-items:center;position:sticky;top:0;z-index:50}
-.topbar-title{font-family:'Bebas Neue',sans-serif;font-size:22px;letter-spacing:.06em}
-.content{padding:32px;flex:1}
+a{color:inherit;text-decoration:none} button{cursor:pointer}
+.sb{width:200px;min-height:100vh;background:var(--deep);border-right:1px solid var(--border);position:fixed;top:0;left:0;bottom:0;z-index:100;display:flex;flex-direction:column;overflow-y:auto}
+.sb-logo{padding:20px;border-bottom:1px solid var(--border);font-family:'Bebas Neue',sans-serif;font-size:17px;letter-spacing:.1em}.sb-logo span{color:var(--fire)}
+.sb-sub{font-family:'Space Mono',monospace;font-size:7px;letter-spacing:.3em;color:var(--muted);text-transform:uppercase;margin-top:2px}
+.sb-nav{flex:1;padding:12px 0}
+.sb-grp{font-family:'Space Mono',monospace;font-size:7px;letter-spacing:.4em;color:var(--muted);text-transform:uppercase;padding:10px 18px 4px}
+.sb-item{display:flex;align-items:center;gap:8px;padding:9px 18px;font-family:'Space Mono',monospace;font-size:8px;letter-spacing:.2em;text-transform:uppercase;color:var(--muted);transition:all .15s;border-left:2px solid transparent}
+.sb-item:hover{color:var(--white);background:rgba(200,75,10,.05)}
+.sb-item.on{color:var(--fire);border-left-color:var(--ember);background:rgba(200,75,10,.06)}
+.sb-foot{padding:14px 18px;border-top:1px solid var(--border)}
+.sb-foot a{font-family:'Space Mono',monospace;font-size:7px;letter-spacing:.2em;color:var(--muted);text-transform:uppercase;transition:color .2s}.sb-foot a:hover{color:var(--fire)}
+.main{margin-left:200px;flex:1;display:flex;flex-direction:column}
+.topbar{padding:14px 28px;background:var(--deep);border-bottom:1px solid var(--border);display:flex;justify-content:space-between;align-items:center;position:sticky;top:0;z-index:50}
+.topbar-title{font-family:'Bebas Neue',sans-serif;font-size:20px;letter-spacing:.06em}
+.content{padding:28px;flex:1}
 table{width:100%;border-collapse:collapse;background:var(--card);border:1px solid var(--border)}
-th{font-family:'Space Mono',monospace;font-size:8px;letter-spacing:.25em;color:var(--muted);text-transform:uppercase;padding:10px 14px;text-align:left;border-bottom:1px solid var(--border);background:var(--deep)}
-td{padding:11px 14px;border-bottom:1px solid var(--border);font-size:13px;color:var(--ash);vertical-align:middle}
-tr:last-child td{border-bottom:none}tr:hover td{background:var(--card2)}
-.td-title{font-family:'Bebas Neue',sans-serif;font-size:15px;color:var(--white);letter-spacing:.04em}
-.td-mono{font-family:'Space Mono',monospace;font-size:9px;letter-spacing:.1em;color:var(--muted)}
-.badge{font-family:'Space Mono',monospace;font-size:7px;letter-spacing:.2em;text-transform:uppercase;padding:3px 8px;border:1px solid}
-.badge-paid{color:var(--blue);border-color:var(--blue);background:rgba(74,122,200,.06)}
-.badge-pending{color:var(--ember);border-color:var(--ember);background:rgba(200,75,10,.06)}
-.badge-complete{color:var(--green);border-color:var(--green);background:rgba(58,138,90,.06)}
-.badge-active{color:var(--green);border-color:var(--green);background:rgba(58,138,90,.06)}
-.badge-inactive{color:var(--muted);border-color:var(--borderl);background:transparent}
-.btn{font-family:'Space Mono',monospace;font-size:8px;letter-spacing:.22em;text-transform:uppercase;padding:7px 14px;border:none;transition:all .2s;cursor:pointer}
-.btn-fire{background:var(--ember);color:var(--white)}.btn-fire:hover{background:var(--fire)}
-.btn-ghost{background:transparent;border:1px solid var(--borderl);color:var(--muted)}.btn-ghost:hover{border-color:var(--ember);color:var(--fire)}
-.btn-danger{background:transparent;border:1px solid rgba(200,74,74,.3);color:var(--red)}.btn-danger:hover{background:var(--red);color:var(--white)}
-.btn-sm{padding:5px 10px;font-size:7px}
-.sec-lbl{font-family:'Space Mono',monospace;font-size:8px;letter-spacing:.5em;color:var(--ember);text-transform:uppercase;margin-bottom:16px;display:flex;align-items:center;gap:10px}.sec-lbl::after{content:'';flex:1;height:1px;background:var(--border)}
-.form-card{background:var(--card);border:1px solid var(--border);padding:24px;margin-bottom:24px}
-.fi{width:100%;padding:9px 12px;background:var(--deep);border:1px solid var(--border);color:var(--white);font-family:'Space Mono',monospace;font-size:11px;transition:border-color .2s;margin-bottom:12px}
+th{font-family:'Space Mono',monospace;font-size:7px;letter-spacing:.25em;color:var(--muted);text-transform:uppercase;padding:9px 12px;text-align:left;border-bottom:1px solid var(--border);background:var(--deep)}
+td{padding:10px 12px;border-bottom:1px solid var(--border);font-size:13px;color:var(--ash);vertical-align:middle}
+tr:last-child td{border-bottom:none} tr:hover td{background:var(--card2)}
+.td-t{font-family:'Bebas Neue',sans-serif;font-size:14px;color:var(--white);letter-spacing:.04em}
+.td-m{font-family:'Space Mono',monospace;font-size:8px;color:var(--muted)}
+.badge{font-family:'Space Mono',monospace;font-size:7px;letter-spacing:.2em;text-transform:uppercase;padding:2px 7px;border:1px solid}
+.b-paid{color:var(--blue);border-color:var(--blue);background:rgba(74,122,200,.06)}
+.b-pending{color:var(--ember);border-color:var(--ember);background:rgba(200,75,10,.06)}
+.b-complete{color:var(--green);border-color:var(--green);background:rgba(58,138,90,.06)}
+.b-on{color:var(--green);border-color:var(--green);background:rgba(58,138,90,.06)}
+.b-off{color:var(--muted);border-color:var(--borderl)}
+.btn{font-family:'Space Mono',monospace;font-size:7px;letter-spacing:.2em;text-transform:uppercase;padding:6px 12px;border:none;transition:all .2s;cursor:pointer}
+.btn-f{background:var(--ember);color:var(--white)}.btn-f:hover{background:var(--fire)}
+.btn-g{background:transparent;border:1px solid var(--borderl);color:var(--muted)}.btn-g:hover{border-color:var(--ember);color:var(--fire)}
+.btn-d{background:transparent;border:1px solid rgba(200,74,74,.3);color:var(--red)}.btn-d:hover{background:var(--red);color:var(--white)}
+.btn-sm{padding:4px 8px;font-size:7px}
+.lbl{font-family:'Space Mono',monospace;font-size:7px;letter-spacing:.3em;color:var(--muted);text-transform:uppercase;margin-bottom:4px;display:block}
+.fi{width:100%;padding:8px 10px;background:var(--deep);border:1px solid var(--border);color:var(--white);font-family:'Space Mono',monospace;font-size:11px;margin-bottom:10px;transition:border-color .2s}
 .fi:focus{outline:none;border-color:var(--ember)}
-.fi-label{font-family:'Space Mono',monospace;font-size:8px;letter-spacing:.3em;color:var(--muted);text-transform:uppercase;margin-bottom:4px;display:block}
-.fi-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px}
-.alert{padding:10px 14px;font-family:'Space Mono',monospace;font-size:9px;letter-spacing:.15em;margin-bottom:16px;display:none}
-.alert.success{background:rgba(58,138,90,.1);border:1px solid var(--green);color:var(--green);display:block}
-.alert.error{background:rgba(200,74,74,.1);border:1px solid var(--red);color:var(--red);display:block}
-.two-col{display:grid;grid-template-columns:1fr 1fr;gap:24px}
-.empty-state{text-align:center;padding:32px;color:var(--muted);font-style:italic}
-@media(max-width:900px){.sidebar{display:none}.main{margin-left:0}.content{padding:16px}.two-col{grid-template-columns:1fr}.fi-grid{grid-template-columns:1fr}}
+.fi-2{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.fi-4{display:grid;grid-template-columns:1fr 1fr 1fr 1fr;gap:10px}
+.card{background:var(--card);border:1px solid var(--border);padding:20px;margin-bottom:20px}
+.sec{font-family:'Space Mono',monospace;font-size:7px;letter-spacing:.5em;color:var(--ember);text-transform:uppercase;margin-bottom:14px;display:flex;align-items:center;gap:8px}.sec::after{content:'';flex:1;height:1px;background:var(--border)}
+.two{display:grid;grid-template-columns:1fr 1fr;gap:20px}
+.alert{padding:8px 12px;font-family:'Space Mono',monospace;font-size:8px;letter-spacing:.15em;margin-bottom:12px;display:none;border-radius:0}
+.a-ok{background:rgba(58,138,90,.1);border:1px solid var(--green);color:var(--green);display:block}
+.a-err{background:rgba(200,74,74,.1);border:1px solid var(--red);color:var(--red);display:block}
+.empty{text-align:center;padding:24px;color:var(--muted);font-style:italic;font-size:13px}
+@media(max-width:900px){.sb{display:none}.main{margin-left:0}.content{padding:14px}.two{grid-template-columns:1fr}.fi-2,.fi-4{grid-template-columns:1fr}}
 
 </style>
 </head>
 <body>
-<aside class="sidebar">
-  <div class="sidebar-logo">Mac<span>Dylan</span><div class="sidebar-sub">Admin Panel</div></div>
-  <nav class="sidebar-nav">
-    <div class="nav-group">Overview</div>
-    <a href="/admin/" class="nav-item"><span class="nav-icon">◈</span>Dashboard</a>
-    <a href="/admin/orders" class="nav-item"><span class="nav-icon">◻</span>Orders</a>
-    <div class="nav-group">Music</div>
-    <a href="/admin/beats" class="nav-item"><span class="nav-icon">♩</span>Beats</a>
-    <div class="nav-group">Store</div>
-    <a href="/admin/products" class="nav-item"><span class="nav-icon">◈</span>Products</a>
-    <a href="/admin/content" class="nav-item"><span class="nav-icon">▶</span>Content</a>
-    <div class="nav-group">Account</div>
-    <a href="/admin/logout" class="nav-item"><span class="nav-icon">→</span>Log Out</a>
+<aside class="sb">
+  <div class="sb-logo">Mac<span>Dylan</span><div class="sb-sub">Admin</div></div>
+  <nav class="sb-nav">
+    <div class="sb-grp">Overview</div>
+    <a href="/admin/" class="sb-item"><span>◈</span>Dashboard</a>
+    <a href="/admin/orders" class="sb-item"><span>◻</span>Orders</a>
+    <div class="sb-grp">Music</div>
+    <a href="/admin/beats" class="sb-item"><span>♩</span>Beats</a>
+    <div class="sb-grp">Store</div>
+    <a href="/admin/products" class="sb-item"><span>◈</span>Products</a>
+    <a href="/admin/content" class="sb-item"><span>▶</span>Content</a>
+    <div class="sb-grp">Account</div>
+    <a href="/admin/logout" class="sb-item"><span>→</span>Log Out</a>
   </nav>
-  <div class="sidebar-foot"><a href="/" target="_blank">← View Site</a></div>
+  <div class="sb-foot"><a href="/" target="_blank">← View Site</a></div>
 </aside>
 <div class="main">
   <div class="topbar">
     <div class="topbar-title">Content</div>
     <div style="display:flex;gap:8px">
-      <a href="/" target="_blank" class="btn btn-ghost">View Site</a>
+      <a href="/" target="_blank" class="btn btn-g">View Site</a>
     </div>
   </div>
   <div class="content">
-    <div id="alert-content" class="alert"></div>
-    <div class="two-col">
+    <div id="a-cont" class="alert"></div>
+    <div class="two">
       <div>
-        <div class="sec-lbl">Add Content</div>
-        <div class="form-card">
-          <div><label class="fi-label">Title *</label><input class="fi" id="c-title" type="text" placeholder="Content title"></div>
-          <div><label class="fi-label">Type</label>
-            <select class="fi" id="c-type"><option value="video">Video</option><option value="post">Post</option><option value="announcement">Announcement</option></select></div>
-          <div><label class="fi-label">Body / Description</label><textarea class="fi" id="c-body" rows="4" style="resize:vertical;font-family:inherit;font-size:13px"></textarea></div>
-          <div><label class="fi-label">Embed URL (YouTube etc.)</label><input class="fi" id="c-embed" type="text" placeholder="https://youtube.com/embed/..."></div>
-          <div class="fi-grid">
-            <div><label class="fi-label">Published</label><select class="fi" id="c-pub"><option value="on">Yes</option><option value="">No</option></select></div>
-            <div><label class="fi-label">Featured</label><select class="fi" id="c-feat"><option value="on">Yes</option><option value="">No</option></select></div>
+        <div class="sec">Add Content</div>
+        <div class="card">
+          <div><label class="lbl">Title *</label><input class="fi" id="cn" placeholder="Title"></div>
+          <div><label class="lbl">Type</label><select class="fi" id="ct"><option value="video">Video</option><option value="post">Post</option><option value="announcement">Announcement</option></select></div>
+          <div><label class="lbl">Body</label><textarea class="fi" id="cb" rows="3" style="resize:vertical;font-family:inherit;font-size:13px"></textarea></div>
+          <div><label class="lbl">Embed URL</label><input class="fi" id="ce" placeholder="https://youtube.com/embed/..."></div>
+          <div class="fi-2">
+            <div><label class="lbl">Published</label><select class="fi" id="cpub"><option value="on">Yes</option><option value="">No</option></select></div>
+            <div><label class="lbl">Featured</label><select class="fi" id="cfeat"><option value="">No</option><option value="on">Yes</option></select></div>
           </div>
-          <button class="btn btn-fire" onclick="addContent()" style="width:100%;margin-top:8px">Add Content</button>
+          <button class="btn btn-f" onclick="addContent()" style="width:100%">Add Content</button>
         </div>
       </div>
       <div>
-        <div class="sec-lbl">All Content</div>
+        <div class="sec">All Content</div>
         <table>
           <thead><tr><th>Title</th><th>Type</th><th>Status</th><th>Actions</th></tr></thead>
-          <tbody id="content-tbody"><tr><td colspan="4" class="empty-state">Loading...</td></tr></tbody>
+          <tbody id="ctbody"><tr><td colspan="4" class="empty">Loading...</td></tr></tbody>
         </table>
       </div>
     </div>
   </div>
 </div>
 <script>
-function loadContent() {
-  fetch('/admin/content/list').then(r=>r.json()).then(function(items) {
-    var tbody = document.getElementById('content-tbody');
-    if (!items || !items.length) { tbody.innerHTML='<tr><td colspan="4" class="empty-state">No content yet</td></tr>'; return; }
-    tbody.innerHTML = items.map(function(c) {
-      return '<tr><td class="td-title" style="font-size:13px">'+c.title+'</td><td class="td-mono">'+c.content_type+'</td>' +
-        '<td><span class="badge badge-'+(c.is_published?'active':'inactive')+'">'+(c.is_published?'Live':'Draft')+'</span></td>' +
-        '<td><button class="btn btn-danger btn-sm" onclick="delContent('+c.id+',this)">Delete</button></td></tr>';
+function ca(t,m){var a=document.getElementById('a-cont');a.textContent=m;a.className='alert '+(t==='ok'?'a-ok':'a-err');setTimeout(function(){a.className='alert';},4000)}
+function loadContent(){
+  fetch('/admin/content/list').then(r=>r.json()).then(function(cs){
+    var tb=document.getElementById('ctbody');
+    if(!cs||!cs.length){tb.innerHTML='<tr><td colspan="4" class="empty">No content yet</td></tr>';return;}
+    tb.innerHTML=cs.map(function(c){
+      return '<tr><td class="td-t" style="font-size:13px">'+c.title+'</td><td class="td-m">'+c.content_type+'</td>'+
+      '<td><span class="badge '+(c.is_published?'b-on':'b-off')+'">'+(c.is_published?'Live':'Draft')+'</span></td>'+
+      '<td><button class="btn btn-d btn-sm" onclick="delContent('+c.id+',this)">Delete</button></td></tr>';
     }).join('');
-  }).catch(function(){ document.getElementById('content-tbody').innerHTML='<tr><td colspan="4" class="empty-state">No content yet</td></tr>'; });
+  }).catch(function(){document.getElementById('ctbody').innerHTML='<tr><td colspan="4" class="empty">No content yet</td></tr>';});
 }
-function addContent() {
-  var title = document.getElementById('c-title').value.trim();
-  if (!title) { alert('Title required'); return; }
-  var fd = new FormData();
-  fd.append('title', title);
-  fd.append('type', document.getElementById('c-type').value);
-  fd.append('body', document.getElementById('c-body').value);
-  fd.append('embed_url', document.getElementById('c-embed').value);
-  fd.append('published', document.getElementById('c-pub').value);
-  fd.append('featured', document.getElementById('c-feat').value);
-  fetch('/admin/content/add', {method:'POST', body:fd})
-    .then(r=>r.json()).then(function(d) {
-      if (d.success) {
-        var a = document.getElementById('alert-content');
-        a.className='alert success'; a.textContent='Content added!';
-        setTimeout(function(){ a.className='alert'; }, 3000);
-        loadContent();
-      }
-    });
-}
-function delContent(id, btn) {
-  if (!confirm('Delete?')) return;
-  fetch('/admin/content/'+id+'/delete', {method:'POST'}).then(r=>r.json()).then(function(d) {
-    if (d.deleted) btn.closest('tr').remove();
+function addContent(){
+  var n=document.getElementById('cn').value.trim();
+  if(!n){ca('err','Title required');return;}
+  var fd=new FormData();
+  fd.append('title',n);fd.append('type',document.getElementById('ct').value);
+  fd.append('body',document.getElementById('cb').value);fd.append('embed_url',document.getElementById('ce').value);
+  fd.append('published',document.getElementById('cpub').value);fd.append('featured',document.getElementById('cfeat').value);
+  fetch('/admin/content/add',{method:'POST',body:fd}).then(r=>r.json()).then(function(d){
+    if(d.success){ca('ok','Added!');loadContent();}
   });
+}
+function delContent(id,btn){
+  if(!confirm('Delete?'))return;
+  fetch('/admin/content/'+id+'/delete',{method:'POST'}).then(r=>r.json()).then(function(d){if(d.deleted)btn.closest('tr').remove();});
 }
 loadContent();
 </script>
