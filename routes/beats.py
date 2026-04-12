@@ -8,7 +8,7 @@ beats_bp = Blueprint('beats', __name__)
 @beats_bp.route('/')
 def index():
     beats = Beat.query.filter_by(is_active=True).order_by(Beat.is_free.desc(), Beat.created_at.desc()).all()
-    return render_template('beats.html', beats=beats)
+    return render_template('beats.html', beats=[b.to_dict() for b in beats])
 
 
 @beats_bp.route('/api/all')
