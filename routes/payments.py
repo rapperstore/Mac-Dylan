@@ -84,6 +84,25 @@ def store_checkout():
     return jsonify({'checkout_url': session.url})
 
 
+@payments_bp.route('/checkout-product/<int:product_id>')
+def checkout_product(product_id):
+    product = Product.query.get_or_404(product_id)
+    session = stripe.checkout.Session.create(
+        payment_method_types=['card'],
+        line_items=[{'price_data': {'currency': 'usd',
+            'unit_amount': product.price * 100,
+            'product_data': {'name': product.name,
+                             'description': product.description or 'Digital download'}},
+            'quantity': 1}],
+        mode='payment',
+        success_url=get_domain() + '/payments/success?session_id={CHECKOUT_SESSION_ID}',
+        cancel_url=get_domain() + '/store/',
+        metadata={'order_type': 'store', 'product_id': str(product.id),
+                  'product_name': product.name}
+    )
+    return redirect(session.url)
+
+
 @payments_bp.route('/tip', methods=['POST'])
 def tip():
     data   = request.get_json()
