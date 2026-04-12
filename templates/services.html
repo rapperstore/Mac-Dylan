@@ -1,104 +1,344 @@
 {% extends "base.html" %}
-{% block title %}Services — Mac Dylan{% endblock %}
+{% block title %}Services - Mac Dylan{% endblock %}
 {% block extra_styles %}
-.svc-hero{padding:88px 48px 52px;border-bottom:1px solid var(--border)}
-.svc-eyebrow{font-family:'Space Mono',monospace;font-size:9px;letter-spacing:.5em;color:var(--ember);text-transform:uppercase;margin-bottom:14px}
-.svc-heading{font-family:'Bebas Neue',sans-serif;font-size:clamp(52px,10vw,110px);line-height:.88;color:var(--white);margin-bottom:16px}
+.svc-hero{padding:100px 48px 60px;border-bottom:1px solid var(--border);position:relative;overflow:hidden}
+.svc-hero::after{content:'SERVICES';position:absolute;right:-20px;bottom:-60px;font-family:'Bebas Neue',sans-serif;font-size:260px;color:rgba(200,75,10,.03);pointer-events:none;line-height:1}
+.svc-eyebrow{font-family:'Space Mono',monospace;font-size:9px;letter-spacing:.5em;color:var(--ember);text-transform:uppercase;margin-bottom:16px}
+.svc-heading{font-family:'Bebas Neue',sans-serif;font-size:clamp(56px,10vw,120px);line-height:.88;color:var(--white);margin-bottom:20px}
 .svc-heading em{color:var(--fire);font-style:normal}
-.svc-sub{font-size:16px;color:var(--ash);font-style:italic;line-height:1.7;max-width:520px}
-.svc-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(300px,1fr));gap:2px;background:var(--border);border:1px solid var(--border);margin:60px 48px}
-.svc-card{background:var(--card);padding:36px 32px;position:relative;overflow:hidden;transition:background .25s}
+.svc-sub{font-size:17px;color:var(--ash);font-style:italic;line-height:1.8;max-width:560px}
+.svc-section{padding:60px 48px 0}
+.svc-section-label{font-family:'Space Mono',monospace;font-size:8px;letter-spacing:.6em;color:var(--ember);text-transform:uppercase;margin-bottom:28px;display:flex;align-items:center;gap:16px}
+.svc-section-label::after{content:'';flex:1;height:1px;background:var(--border)}
+.svc-grid{background:var(--border);border:1px solid var(--border);display:grid;grid-template-columns:1fr;gap:1px}
+.svc-card{background:var(--card);padding:40px 36px;position:relative;overflow:hidden;display:flex;flex-direction:column}
 .svc-card:hover{background:var(--card2)}
 .svc-card::before{content:'';position:absolute;top:0;left:0;right:0;height:2px;background:linear-gradient(90deg,var(--ember),var(--flame));transform:scaleX(0);transform-origin:left;transition:transform .4s}
 .svc-card:hover::before{transform:scaleX(1)}
-.svc-n{font-family:'Bebas Neue',sans-serif;font-size:52px;color:rgba(200,75,10,.08);line-height:1;margin-bottom:12px}
-.svc-name{font-family:'Bebas Neue',sans-serif;font-size:26px;color:var(--white);letter-spacing:.04em;margin-bottom:10px;line-height:1}
-.svc-desc{font-size:14px;color:var(--ash);font-style:italic;line-height:1.7;margin-bottom:20px}
-.svc-price{font-family:'Bebas Neue',sans-serif;font-size:36px;color:var(--fire);margin-bottom:16px}
-.svc-price small{font-size:12px;color:var(--muted);font-family:'Space Mono',monospace;margin-left:4px}
-.svc-book{display:inline-block;padding:11px 28px;background:var(--ember);color:#f5f0e8;font-family:'Space Mono',monospace;font-size:8px;letter-spacing:.3em;text-transform:uppercase;text-decoration:none;transition:all .25s}
-.svc-book:hover{background:var(--fire);box-shadow:0 0 24px rgba(200,75,10,.4);color:#f5f0e8}
-@media(max-width:900px){.svc-hero{padding:60px 24px 36px}.svc-grid{margin:40px 0;grid-template-columns:1fr}}
+.svc-card-num{font-family:'Bebas Neue',sans-serif;font-size:64px;color:rgba(200,75,10,.06);line-height:1;margin-bottom:8px}
+.svc-card-name{font-family:'Bebas Neue',sans-serif;font-size:36px;color:var(--white);letter-spacing:.04em;margin-bottom:6px;line-height:1}
+.svc-card-tag{font-family:'Space Mono',monospace;font-size:8px;letter-spacing:.3em;color:var(--ember);text-transform:uppercase;margin-bottom:16px}
+.svc-card-desc{font-size:15px;color:var(--ash);font-style:italic;line-height:1.8;margin-bottom:20px}
+.svc-price-row{display:flex;align-items:baseline;gap:8px;margin-bottom:8px;padding:14px 0;border-top:1px solid var(--border);border-bottom:1px solid var(--border)}
+.svc-price-main{font-family:'Bebas Neue',sans-serif;font-size:56px;color:var(--fire);line-height:1}
+.svc-price-unit{font-family:'Space Mono',monospace;font-size:11px;color:var(--muted);letter-spacing:.2em}
+.svc-price-note{font-family:'Space Mono',monospace;font-size:9px;color:var(--muted);letter-spacing:.15em;margin-bottom:20px}
+.svc-includes{margin:16px 0;padding:0;list-style:none}
+.svc-includes li{font-size:14px;color:var(--ash);padding:8px 0;border-bottom:1px solid rgba(30,26,22,.6);display:flex;align-items:flex-start;gap:12px;line-height:1.6}
+.svc-includes li:last-child{border-bottom:none}
+.svc-includes li::before{content:'arrow_forward';font-family:'Space Mono',monospace;font-size:10px;color:var(--ember);flex-shrink:0;margin-top:2px;content:'->'}
+.svc-addons{margin:16px 0;border-top:1px solid var(--border);padding-top:14px}
+.addon-section-label{font-family:'Space Mono',monospace;font-size:7px;letter-spacing:.5em;color:var(--muted);text-transform:uppercase;margin-bottom:10px}
+.addon-row{display:flex;align-items:center;gap:12px;padding:9px 0;border-bottom:1px solid rgba(30,26,22,.5);cursor:pointer}
+.addon-row:last-child{border-bottom:none}
+.addon-row input{accent-color:var(--ember);flex-shrink:0;width:14px;height:14px}
+.addon-row-text{font-size:13px;color:var(--ash);flex:1;line-height:1.4}
+.addon-row-price{font-family:'Space Mono',monospace;font-size:11px;color:var(--ember);white-space:nowrap}
+.tier-row{display:flex;align-items:center;gap:12px;padding:12px 16px;border:1px solid var(--border);margin-bottom:8px;cursor:pointer;transition:all .2s;background:var(--deep)}
+.tier-row:hover,.tier-row.selected{border-color:var(--ember);background:rgba(200,75,10,.08)}
+.tier-row input[type=radio]{accent-color:var(--ember);flex-shrink:0}
+.tier-row-info{flex:1}
+.tier-row-name{font-family:'Bebas Neue',sans-serif;font-size:18px;color:var(--white);letter-spacing:.04em;line-height:1}
+.tier-row-desc{font-size:11px;color:var(--muted);margin-top:3px;line-height:1.4}
+.tier-row-price{font-family:'Bebas Neue',sans-serif;font-size:26px;color:var(--fire)}
+.svc-total-bar{background:var(--deep);border:1px solid var(--border);padding:12px 16px;margin:14px 0;display:flex;justify-content:space-between;align-items:center}
+.svc-total-label{font-family:'Space Mono',monospace;font-size:8px;letter-spacing:.3em;color:var(--muted);text-transform:uppercase}
+.svc-total-amount{font-family:'Bebas Neue',sans-serif;font-size:32px;color:var(--white)}
+.tier-cards{display:grid;grid-template-columns:repeat(3,1fr);gap:1px;background:var(--border);border:1px solid var(--border);margin:20px 0}
+.tier-card{background:var(--card);padding:32px 28px;cursor:pointer;transition:background .2s;position:relative;display:flex;flex-direction:column}
+.tier-card:hover{background:var(--card2)}
+.tier-card.active{background:#0d0a07;outline:2px solid var(--ember)}
+.tier-card-badge{font-family:'Space Mono',monospace;font-size:7px;letter-spacing:.4em;color:var(--muted);text-transform:uppercase;margin-bottom:8px}
+.tier-card-name{font-family:'Bebas Neue',sans-serif;font-size:28px;color:var(--white);letter-spacing:.04em;margin-bottom:6px}
+.tier-card-price{font-family:'Bebas Neue',sans-serif;font-size:48px;color:var(--fire);line-height:1;margin-bottom:6px}
+.tier-card-price span{font-family:'Space Mono',monospace;font-size:11px;color:var(--muted)}
+.tier-card-features{margin-top:16px;padding-top:16px;border-top:1px solid var(--border);flex:1}
+.tier-card-features li{font-size:13px;color:var(--ash);padding:6px 0;border-bottom:1px solid rgba(30,26,22,.4);list-style:none;display:flex;gap:9px;align-items:flex-start;line-height:1.5}
+.tier-card-features li:last-child{border-bottom:none}
+.tier-card-features li::before{content:'OK';font-family:'Space Mono',monospace;font-size:8px;color:var(--green);flex-shrink:0;margin-top:2px;content:'+'}
+.tier-card-features li.na{color:var(--muted)}
+.tier-card-features li.na::before{content:'-';color:var(--muted)}
+.tier-popular{position:absolute;top:0;right:0;background:var(--ember);font-family:'Space Mono',monospace;font-size:7px;letter-spacing:.3em;color:#fff;text-transform:uppercase;padding:3px 10px}
+.svc-btns{display:flex;gap:8px;flex-wrap:wrap;margin-top:auto;padding-top:20px}
+.svc-btn{font-family:'Space Mono',monospace;font-size:8px;letter-spacing:.3em;text-transform:uppercase;padding:13px 24px;border:none;cursor:pointer;transition:all .25s;text-decoration:none;display:inline-flex;align-items:center;gap:8px;white-space:nowrap}
+.svc-btn-primary{background:var(--ember);color:#f5f0e8}
+.svc-btn-primary:hover{background:var(--fire);box-shadow:0 0 24px rgba(200,75,10,.35);color:#f5f0e8}
+.svc-btn-ghost{background:transparent;border:1px solid var(--ember);color:var(--ember)}
+.svc-btn-ghost:hover{background:var(--ember);color:#f5f0e8}
+.svc-btn-outline{background:transparent;border:1px solid var(--border);color:var(--muted)}
+.svc-btn-outline:hover{border-color:var(--ember);color:var(--ember)}
+.dev-selected-bar{background:var(--deep);border:1px solid var(--border);padding:16px 20px;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:12px}
+@media(max-width:1000px){.tier-cards{grid-template-columns:1fr}.svc-section{padding:40px 24px 0}.svc-hero{padding:70px 24px 44px}.svc-card{padding:32px 24px}}
 {% endblock %}
 {% block content %}
 <div class="svc-hero">
   <div class="svc-eyebrow">Professional Services</div>
   <h1 class="svc-heading">Work With <em>Mac Dylan</em></h1>
-  <p class="svc-sub">From mobile recording to full artist development. Everything you need to go from idea to release-ready.</p>
+  <p class="svc-sub">From mobile recording sessions to full-scale artist development. Built for artists who take their craft seriously and engineered to scale worldwide.</p>
 </div>
-<div class="svc-grid">
-  <div class="svc-card">
-    <div class="svc-n">01</div>
-    <div class="svc-name">Recording Session</div>
-    <p class="svc-desc">Mobile engineering. I come to you, fully equipped. Studio quality wherever you create.</p>
-    <div class="svc-price">$75 <small>/ hr and 50% deposit</small></div>
-    <div class="svc-addons">
-      <div class="addon-label">Add-ons</div>
-      <label class="addon"><input type="checkbox" class="rec-addon" value="25" data-name="Vocal Tuning"> Vocal Tuning <span>+$25</span></label>
-      <label class="addon"><input type="checkbox" class="rec-addon" value="50" data-name="Same-Day Mix"> Same-Day Mix <span>+$50</span></label>
-      <label class="addon"><input type="checkbox" class="rec-addon" value="30" data-name="Session Musician"> Session Musician <span>+$30/hr</span></label>
+
+<div class="svc-section">
+  <div class="svc-section-label">01 Recording Session</div>
+  <div class="svc-grid">
+    <div class="svc-card">
+      <div class="svc-card-num">01</div>
+      <div class="svc-card-name">Recording Session</div>
+      <div class="svc-card-tag">Mobile Engineering - Studio Quality On Location</div>
+      <p class="svc-card-desc">Mac Dylan comes to you fully equipped with professional mobile recording gear. Whether you are tracking vocals in your home studio, a rehearsal space, or a rented venue you get studio-quality engineering without the studio overhead. Every session is run with precision, intention, and zero compromise on sound quality.</p>
+      <ul class="svc-includes">
+        <li>Professional mobile recording setup delivered to your location</li>
+        <li>2-hour minimum session with Mac Dylan as your engineer</li>
+        <li>Real-time monitoring and playback throughout the session</li>
+        <li>Raw session files delivered within 24 hours of completion</li>
+        <li>50 percent deposit required to book, remainder due day of session</li>
+        <li>Travel within 30 miles of Boise Idaho included at no extra charge</li>
+      </ul>
+      <div class="svc-price-row">
+        <div class="svc-price-main">$75</div>
+        <div class="svc-price-unit">per hour, 2 hour minimum</div>
+      </div>
+      <div class="svc-price-note">Starting at $150 total - 50 percent deposit to secure your date</div>
+      <div class="svc-addons">
+        <div class="addon-section-label">Optional Add-ons</div>
+        <label class="addon-row"><input type="checkbox" class="rec-addon" value="25" data-name="Vocal Tuning"><div class="addon-row-text">Vocal Tuning - Auto-Tune or Melodyne correction applied during session</div><div class="addon-row-price">+$25</div></label>
+        <label class="addon-row"><input type="checkbox" class="rec-addon" value="50" data-name="Same-Day Rough Mix"><div class="addon-row-text">Same-Day Rough Mix delivered within hours of session completion</div><div class="addon-row-price">+$50</div></label>
+        <label class="addon-row"><input type="checkbox" class="rec-addon" value="75" data-name="Additional Hour"><div class="addon-row-text">Additional hour beyond the 2-hour minimum at the standard rate</div><div class="addon-row-price">+$75/hr</div></label>
+        <label class="addon-row"><input type="checkbox" class="rec-addon" value="35" data-name="Travel Fee 30+ Miles"><div class="addon-row-text">Travel fee for locations more than 30 miles outside of Boise Idaho</div><div class="addon-row-price">+$35</div></label>
+      </div>
+      <div class="svc-total-bar">
+        <div class="svc-total-label">Session Total</div>
+        <div class="svc-total-amount" id="rec-total">$150</div>
+      </div>
+      <div class="svc-btns">
+        <button class="svc-btn svc-btn-primary" onclick="bookService('recording')">Book Session</button>
+        <a href="https://calendly.com/macdylanforever/30min" target="_blank" class="svc-btn svc-btn-ghost">Free Discovery Call</a>
+      </div>
     </div>
-    <div class="svc-total" id="rec-total">Total: $75 deposit</div>
-    <div class="svc-btns">
-      <button class="svc-book" onclick="bookService('recording')">Book</button>
-      <a href="https://calendly.com/macdylanforever/30min" target="_blank" class="svc-book ghost">Free Call</a>
-    </div>
-  </div>
-  <div class="svc-card">
-    <div class="svc-n">02</div>
-    <div class="svc-name">Mix and Master</div>
-    <p class="svc-desc">One seamless process. Radio and streaming ready. Delivery in all major formats.</p>
-    <div class="svc-price" id="mix-price-display">$150 <small>/ single</small></div>
-    <div class="svc-addons">
-      <div class="addon-label">Tiers</div>
-      <label class="addon"><input type="radio" name="mix-tier" value="150" data-name="Single Mix and Master" checked> Single <span>$150</span></label>
-      <label class="addon"><input type="radio" name="mix-tier" value="250" data-name="EP Mix and Master"> EP 3 to 5 songs <span>$250</span></label>
-      <label class="addon"><input type="radio" name="mix-tier" value="450" data-name="Album Mix and Master"> Album 6 plus songs <span>$450</span></label>
-      <div class="addon-label" style="margin-top:10px">Add-ons</div>
-      <label class="addon"><input type="checkbox" class="mix-addon" value="40" data-name="Stem Export"> Stem Export <span>+$40</span></label>
-      <label class="addon"><input type="checkbox" class="mix-addon" value="25" data-name="Instrumental Version"> Instrumental Version <span>+$25</span></label>
-    </div>
-    <div class="svc-total" id="mix-total">Total: $150</div>
-    <div class="svc-btns">
-      <button class="svc-book" onclick="bookService('mixing')">Pay and Book</button>
-      <a href="https://calendly.com/macdylanforever/30min" target="_blank" class="svc-book ghost">Free Call</a>
-    </div>
-  </div>
-  <div class="svc-card">
-    <div class="svc-n">03</div>
-    <div class="svc-name">Artist Development</div>
-    <p class="svc-desc">Monthly creative partnership. Sessions, mixing, strategy, brand direction and content planning.</p>
-    <div class="svc-addons">
-      <div class="addon-label">Tiers</div>
-      <label class="addon"><input type="radio" name="dev-tier" value="300" data-name="Foundation Dev Tier 1" checked> Foundation <span>$300/mo</span></label>
-      <label class="addon"><input type="radio" name="dev-tier" value="600" data-name="Growth Dev Tier 2"> Growth <span>$600/mo</span></label>
-      <label class="addon"><input type="radio" name="dev-tier" value="1000" data-name="Full Partnership Dev Tier 3"> Full Partnership <span>$1000/mo</span></label>
-    </div>
-    <div class="svc-total" id="dev-total">Total: $300/mo</div>
-    <div class="svc-btns">
-      <button class="svc-book" onclick="bookService('development')">Start</button>
-      <a href="https://calendly.com/macdylanforever/1-hr-paid-strategy-meeting" target="_blank" class="svc-book ghost">Free Call</a>
-    </div>
-  </div>
-  <div class="svc-card">
-    <div class="svc-n">04</div>
-    <div class="svc-name">Beat Licensing</div>
-    <p class="svc-desc">Basic, Premium, Trackout, and Exclusive licenses. Instant delivery. 145 beats in catalog.</p>
-    <div class="svc-price">From $29</div>
-    <a href="/beats/" class="svc-book">Browse Beats</a>
   </div>
 </div>
-<style>
-.svc-addons{margin:12px 0 8px;border-top:1px solid var(--border);padding-top:12px}
-.addon-label{font-family:"Space Mono",monospace;font-size:7px;letter-spacing:.4em;color:var(--muted);text-transform:uppercase;margin-bottom:6px}
-.addon{display:flex;align-items:center;gap:8px;padding:5px 0;font-size:13px;color:var(--ash);cursor:pointer;border-bottom:1px solid rgba(30,26,22,.5)}
-.addon:last-child{border-bottom:none}
-.addon span{margin-left:auto;font-family:"Space Mono",monospace;font-size:10px;color:var(--ember)}
-.addon input{accent-color:var(--ember);flex-shrink:0}
-.svc-total{font-family:"Space Mono",monospace;font-size:10px;letter-spacing:.2em;color:var(--white);padding:8px 0;border-top:1px solid var(--border);margin-top:8px}
-.svc-btns{display:flex;gap:8px;flex-wrap:wrap;margin-top:12px}
-.svc-book.ghost{background:transparent;border:1px solid var(--ember);color:var(--ember)}
-.svc-book.ghost:hover{background:var(--ember);color:#f5f0e8}
-</style>
+
+<div class="svc-section">
+  <div class="svc-section-label">02 Mix and Master</div>
+  <div class="svc-grid">
+    <div class="svc-card">
+      <div class="svc-card-num">02</div>
+      <div class="svc-card-name">Mix and Master</div>
+      <div class="svc-card-tag">One Seamless Process - Radio and Streaming Ready</div>
+      <p class="svc-card-desc">Mixing and mastering handled as one cohesive process by the same engineer. No back and forth between separate people. Every record leaves balanced, loud, and ready to compete on any platform worldwide. You can upload your stems directly or collaborate in real time through the Session app on Aeralabs.io for a fully connected workflow.</p>
+      <ul class="svc-includes">
+        <li>Full mix with professional balance, EQ, compression, and spatial processing</li>
+        <li>Mastering to current streaming specs for Spotify, Apple Music, YouTube, and more</li>
+        <li>Delivery in WAV master plus MP3 320kbps within 5 business days</li>
+        <li>One round of revisions included with every tier</li>
+        <li>Stem upload supported or collaborate live via Session app on Aeralabs.io</li>
+        <li>Suitable for independent releases, label submissions, and sync placements</li>
+      </ul>
+      <div class="svc-addons" style="border-top:none;padding-top:0;margin-top:0">
+        <div class="addon-section-label">Select Your Tier</div>
+        <div class="tier-row selected" onclick="selectMixTier(this,150,'Single Mix and Master')">
+          <input type="radio" name="mix-tier" value="150" checked>
+          <div class="tier-row-info">
+            <div class="tier-row-name">Single</div>
+            <div class="tier-row-desc">1 song - full mix and master</div>
+          </div>
+          <div class="tier-row-price">$150</div>
+        </div>
+        <div class="tier-row" onclick="selectMixTier(this,250,'EP Mix and Master 3 to 5 Songs')">
+          <input type="radio" name="mix-tier" value="250">
+          <div class="tier-row-info">
+            <div class="tier-row-name">EP</div>
+            <div class="tier-row-desc">3 to 5 songs - full mix and master</div>
+          </div>
+          <div class="tier-row-price">$250</div>
+        </div>
+        <div class="tier-row" onclick="selectMixTier(this,450,'Album Mix and Master 6 Plus Songs')">
+          <input type="radio" name="mix-tier" value="450">
+          <div class="tier-row-info">
+            <div class="tier-row-name">Album</div>
+            <div class="tier-row-desc">6 or more songs - full mix and master</div>
+          </div>
+          <div class="tier-row-price">$450</div>
+        </div>
+      </div>
+      <div class="svc-addons">
+        <div class="addon-section-label">Add-ons</div>
+        <label class="addon-row"><input type="checkbox" class="mix-addon" value="40" data-name="Stem Export"><div class="addon-row-text">Stem export - individual track bounces delivered with the master</div><div class="addon-row-price">+$40</div></label>
+        <label class="addon-row"><input type="checkbox" class="mix-addon" value="25" data-name="Instrumental Version"><div class="addon-row-text">Clean instrumental version delivered alongside your master</div><div class="addon-row-price">+$25</div></label>
+        <label class="addon-row"><input type="checkbox" class="mix-addon" value="35" data-name="Rush Delivery 48hr"><div class="addon-row-text">Rush delivery - completed and delivered within 48 hours</div><div class="addon-row-price">+$35</div></label>
+        <label class="addon-row"><input type="checkbox" class="mix-addon" value="20" data-name="Extra Revision Round"><div class="addon-row-text">Additional revision round beyond the one included</div><div class="addon-row-price">+$20</div></label>
+        <label class="addon-row"><input type="checkbox" class="mix-addon" value="0" data-name="Session App Collab"><div class="addon-row-text">Collaborate in real time via Session app on Aeralabs.io - free with any tier</div><div class="addon-row-price">Free</div></label>
+      </div>
+      <div class="svc-total-bar">
+        <div class="svc-total-label">Mix and Master Total</div>
+        <div class="svc-total-amount" id="mix-total">$150</div>
+      </div>
+      <div class="svc-btns">
+        <button class="svc-btn svc-btn-primary" onclick="bookService('mixing')">Pay and Book</button>
+        <a href="https://calendly.com/macdylanforever/30min" target="_blank" class="svc-btn svc-btn-ghost">Free Discovery Call</a>
+        <a href="https://aeralabs.io" target="_blank" class="svc-btn svc-btn-outline">Session App on Aeralabs</a>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="svc-section">
+  <div class="svc-section-label">03 Artist Development</div>
+  <p style="font-size:15px;color:var(--ash);font-style:italic;line-height:1.8;max-width:640px;margin-bottom:32px">A monthly creative partnership built to scale your career at every level. From brand identity and release strategy to website builds and weekly Zoom calls, each tier gives your team the tools and direct access needed to grow you worldwide.</p>
+  <div class="tier-cards">
+    <div class="tier-card active" id="dev-card-300" onclick="selectDevTier(300,'Foundation - Artist Development Tier 1')">
+      <div class="tier-card-badge">Tier 01</div>
+      <div class="tier-card-name">Foundation</div>
+      <div class="tier-card-price">$300<span>/mo</span></div>
+      <ul class="tier-card-features">
+        <li>2 mix and masters per month</li>
+        <li>Monthly strategy session via Zoom</li>
+        <li>Brand direction and identity review</li>
+        <li>Release strategy and rollout planning</li>
+        <li>Song feedback and A and R style notes</li>
+        <li>Access to Aeralabs resources and community</li>
+        <li class="na">Website development</li>
+        <li class="na">Weekly Zoom calls</li>
+        <li class="na">Content creation pipeline</li>
+        <li class="na">Advanced release campaigns</li>
+      </ul>
+    </div>
+    <div class="tier-card" id="dev-card-500" onclick="selectDevTier(500,'Growth - Artist Development Tier 2')">
+      <div class="tier-popular">Most Popular</div>
+      <div class="tier-card-badge">Tier 02</div>
+      <div class="tier-card-name">Growth</div>
+      <div class="tier-card-price">$500<span>/mo</span></div>
+      <ul class="tier-card-features">
+        <li>4 mix and masters per month</li>
+        <li>Weekly Zoom strategy calls</li>
+        <li>Full brand direction and content planning</li>
+        <li>Release strategy with timeline and assets</li>
+        <li>Priority song feedback and A and R notes</li>
+        <li>Basic website build or redesign included</li>
+        <li>Social media content calendar</li>
+        <li>Access to Aeralabs resources and community</li>
+        <li class="na">Advanced website development</li>
+        <li class="na">Full campaign management</li>
+      </ul>
+    </div>
+    <div class="tier-card" id="dev-card-900" onclick="selectDevTier(900,'Full Partnership - Artist Development Tier 3')">
+      <div class="tier-card-badge">Tier 03</div>
+      <div class="tier-card-name">Full Partnership</div>
+      <div class="tier-card-price">$900<span>/mo</span></div>
+      <ul class="tier-card-features">
+        <li>Unlimited mix and masters</li>
+        <li>Weekly Zoom calls plus async support</li>
+        <li>Full brand identity system delivered</li>
+        <li>Advanced website development and updates</li>
+        <li>Complete release strategy and campaign management</li>
+        <li>Priority A and R feedback on all records</li>
+        <li>Dedicated content creation pipeline</li>
+        <li>Direct access to Mac Dylan and team</li>
+        <li>Priority placement in Aeralabs ecosystem</li>
+        <li>Worldwide rollout support and distribution strategy</li>
+      </ul>
+    </div>
+  </div>
+  <div class="dev-selected-bar">
+    <div>
+      <div style="font-family:'Space Mono',monospace;font-size:8px;letter-spacing:.3em;color:var(--muted);text-transform:uppercase;margin-bottom:4px">Selected Plan</div>
+      <div style="font-family:'Bebas Neue',sans-serif;font-size:24px;color:var(--white)" id="dev-selected-name">Foundation - $300/mo</div>
+    </div>
+    <div class="svc-btns" style="padding-top:0;margin-top:0">
+      <button class="svc-btn svc-btn-primary" onclick="bookService('development')">Start This Plan</button>
+      <a href="https://calendly.com/macdylanforever/1-hr-paid-strategy-meeting" target="_blank" class="svc-btn svc-btn-ghost">Free Strategy Call</a>
+    </div>
+  </div>
+</div>
+
+<div class="svc-section" style="padding-bottom:80px">
+  <div class="svc-section-label">04 Beat Licensing</div>
+  <div class="svc-grid">
+    <div class="svc-card" style="flex-direction:row;align-items:center;gap:32px;flex-wrap:wrap">
+      <div style="flex:1;min-width:240px">
+        <div class="svc-card-num">04</div>
+        <div class="svc-card-name">Beat Licensing</div>
+        <div class="svc-card-tag">145 Beats In Catalog - Instant Delivery</div>
+        <p class="svc-card-desc" style="margin-bottom:0">Basic, Premium, Trackout, and Exclusive licenses available. Every beat is tagged, BPM and key labeled, and ready to go. Stream previews directly in the browser and purchase the license that fits your project and budget.</p>
+      </div>
+      <div style="display:flex;flex-direction:column;gap:10px;min-width:200px">
+        <a href="/beats/" class="svc-btn svc-btn-primary" style="justify-content:center;text-align:center">Browse 145 Beats</a>
+      </div>
+    </div>
+  </div>
+</div>
 {% endblock %}
-{% block extra_scripts %}<script></script>{% endblock %}
+{% block extra_scripts %}
+<script>
+var devAmount = 300;
+var devName = 'Foundation - Artist Development Tier 1';
+var mixAmount = 150;
+var mixName = 'Single Mix and Master';
+
+document.querySelectorAll('.rec-addon').forEach(function(el) {
+  el.addEventListener('change', function() {
+    var base = 150;
+    var addons = 0;
+    document.querySelectorAll('.rec-addon:checked').forEach(function(c) { addons += parseInt(c.value); });
+    document.getElementById('rec-total').textContent = '$' + (base + addons);
+  });
+});
+
+window.selectMixTier = function(row, amount, name) {
+  document.querySelectorAll('.tier-row').forEach(function(r) { r.classList.remove('selected'); });
+  row.classList.add('selected');
+  row.querySelector('input[type=radio]').checked = true;
+  mixAmount = amount;
+  mixName = name;
+  updateMixTotal();
+};
+
+function updateMixTotal() {
+  var addons = 0;
+  document.querySelectorAll('.mix-addon:checked').forEach(function(c) { addons += parseInt(c.value); });
+  document.getElementById('mix-total').textContent = '$' + (mixAmount + addons);
+}
+document.querySelectorAll('.mix-addon').forEach(function(el) {
+  el.addEventListener('change', updateMixTotal);
+});
+
+window.selectDevTier = function(amount, name) {
+  devAmount = amount;
+  devName = name;
+  document.querySelectorAll('.tier-card').forEach(function(c) { c.classList.remove('active'); });
+  document.getElementById('dev-card-' + amount).classList.add('active');
+  var label = name.split(' - ')[0];
+  document.getElementById('dev-selected-name').textContent = label + ' - $' + amount + '/mo';
+};
+
+window.bookService = function(type) {
+  var email = prompt('Enter your email to proceed to checkout:');
+  if (!email || email.indexOf('@') === -1) {
+    if (email !== null) alert('Please enter a valid email address.');
+    return;
+  }
+  var service, amount;
+  if (type === 'recording') {
+    var addons = []; var at = 0;
+    document.querySelectorAll('.rec-addon:checked').forEach(function(c) { addons.push(c.dataset.name); at += parseInt(c.value); });
+    service = 'Recording Session 2hr min' + (addons.length ? ' plus ' + addons.join(', ') : '');
+    amount = 150 + at;
+  } else if (type === 'mixing') {
+    var ma = []; var mt = 0;
+    document.querySelectorAll('.mix-addon:checked').forEach(function(c) { if(parseInt(c.value) > 0) { ma.push(c.dataset.name); mt += parseInt(c.value); } });
+    service = mixName + (ma.length ? ' plus ' + ma.join(', ') : '');
+    amount = mixAmount + mt;
+  } else {
+    service = devName;
+    amount = devAmount;
+  }
+  fetch('/payments/checkout', {
+    method: 'POST',
+    headers: {'Content-Type': 'application/json'},
+    body: JSON.stringify({service: service, amount: amount, email: email, order_type: 'session'})
+  }).then(function(r) { return r.json(); }).then(function(d) {
+    if (d.checkout_url) window.location.href = d.checkout_url;
+    else alert(d.error || 'Something went wrong. Please try again.');
+  }).catch(function() { alert('Connection error. Please try again.'); });
+};
+</script>
+{% endblock %}
