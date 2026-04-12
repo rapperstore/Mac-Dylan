@@ -1,0 +1,384 @@
+import os, re, shutil
+
+BASE = os.path.expanduser('~/Desktop/macdylan')
+
+homepage = open('/dev/stdin').read() if False else None
+
+# Write complete clean index.html
+content = '''{% extends "base.html" %}
+{% block title %}Mac Dylan — Mix Engineer · Producer · Artist Developer{% endblock %}
+
+{% block extra_styles %}
+.hero{min-height:100vh;display:flex;flex-direction:column;justify-content:flex-end;padding:0 48px 88px;position:relative}
+.hero-eyebrow{font-family:'Space Mono',monospace;font-size:9px;letter-spacing:.5em;color:var(--ember);text-transform:uppercase;margin-bottom:20px;opacity:0;animation:burnIn 1s ease forwards .4s}
+.hero-title{font-family:'Bebas Neue',sans-serif;font-size:clamp(80px,16vw,210px);line-height:.84;letter-spacing:.01em;opacity:0;animation:burnIn 1s ease forwards .7s}
+.hero-title .outline{color:var(--fire);display:block;text-shadow:0 0 80px rgba(232,114,12,.45)}
+.hero-desc{font-size:clamp(15px,2vw,21px);font-style:italic;color:var(--ash);margin-top:24px;max-width:520px;line-height:1.7;opacity:0;animation:burnIn 1s ease forwards 1s}
+.hero-cta{display:flex;gap:12px;margin-top:44px;flex-wrap:wrap;opacity:0;animation:burnIn 1s ease forwards 1.3s}
+.btn-fire{display:inline-block;padding:15px 36px;background:var(--ember);color:#f5f0e8;font-family:'Space Mono',monospace;font-size:10px;letter-spacing:.3em;text-transform:uppercase;text-decoration:none;transition:background .25s,box-shadow .25s;border:none}
+.btn-fire:hover{background:var(--fire);box-shadow:0 0 36px rgba(200,75,10,.55);color:#f5f0e8}
+.btn-ghost{display:inline-block;padding:14px 36px;background:transparent;color:#b8a898;font-family:'Space Mono',monospace;font-size:10px;letter-spacing:.3em;text-transform:uppercase;text-decoration:none;border:1px solid rgba(200,75,10,.28);transition:all .25s}
+.btn-ghost:hover{border-color:var(--ember);color:var(--fire)}
+.hero-extra{display:flex;align-items:center;gap:12px;margin-top:16px;flex-wrap:wrap;opacity:0;animation:burnIn 1s ease forwards 1.5s}
+.btn-ebook{display:inline-flex;align-items:center;gap:8px;padding:9px 18px;background:rgba(200,75,10,.07);border:1px solid rgba(200,75,10,.22);color:#c84b0a;font-family:'Space Mono',monospace;font-size:8px;letter-spacing:.25em;text-transform:uppercase;text-decoration:none;transition:all .22s;cursor:pointer}
+.btn-ebook:hover{background:rgba(200,75,10,.15);border-color:var(--ember);color:#c84b0a}
+.about{padding:120px 48px;display:grid;grid-template-columns:1fr 1fr;gap:80px;align-items:center;border-top:1px solid var(--border)}
+.about-label{font-family:'Space Mono',monospace;font-size:8px;letter-spacing:.5em;color:var(--ember);text-transform:uppercase;margin-bottom:18px}
+.about-heading{font-family:'Bebas Neue',sans-serif;font-size:clamp(40px,6vw,72px);line-height:.95;margin-bottom:20px}.about-heading em{color:var(--fire);font-style:normal}
+.about-text{font-size:17px;line-height:1.8;color:var(--ash);font-style:italic;margin-bottom:20px}
+.about-contact{font-family:'Space Mono',monospace;font-size:9px;letter-spacing:.2em;color:var(--muted)}.about-contact a{color:var(--ember);text-decoration:none}
+.stats{display:grid;grid-template-columns:1fr 1fr;gap:2px;background:var(--border);border:1px solid var(--border)}
+.stat{background:var(--card);padding:30px 22px;transition:background .2s}.stat:hover{background:var(--card2)}
+.stat-num{font-family:'Bebas Neue',sans-serif;font-size:48px;color:var(--fire);line-height:1;margin-bottom:4px}
+.stat-label{font-family:'Space Mono',monospace;font-size:8px;letter-spacing:.3em;color:var(--muted);text-transform:uppercase}
+.section{padding:0 48px 100px}
+.sec-hdr{display:flex;align-items:baseline;justify-content:space-between;margin-bottom:32px}
+.sec-lbl{font-family:'Space Mono',monospace;font-size:8px;letter-spacing:.5em;color:var(--ember);text-transform:uppercase}
+.sec-link{font-family:'Space Mono',monospace;font-size:8px;letter-spacing:.3em;color:var(--muted);text-transform:uppercase;text-decoration:none;transition:color .2s}.sec-link:hover{color:var(--fire)}
+.mini-playlist{background:var(--card);border:1px solid var(--border)}
+.mini-row{display:flex;align-items:center;padding:12px 18px;border-bottom:1px solid var(--border);gap:12px;text-decoration:none;color:inherit;transition:background .2s;position:relative;overflow:hidden}
+.mini-row:last-child{border-bottom:none}.mini-row:hover{background:var(--card2)}
+.mini-row::before{content:'';position:absolute;left:0;top:0;bottom:0;width:0;background:var(--ember);transition:width .3s}.mini-row:hover::before{width:2px}
+.mini-num{font-family:'Space Mono',monospace;font-size:9px;color:var(--muted);width:18px;flex-shrink:0}
+.mini-ph{width:30px;height:30px;background:linear-gradient(135deg,#0d0a07,#1e1208);display:flex;align-items:center;justify-content:center;font-family:'Bebas Neue',sans-serif;font-size:13px;color:rgba(200,75,10,.25);flex-shrink:0}
+.mini-info{flex:1;min-width:0}
+.mini-title{font-family:'Bebas Neue',sans-serif;font-size:15px;color:var(--white);letter-spacing:.04em;line-height:1}
+.mini-meta{font-family:'Space Mono',monospace;font-size:7px;letter-spacing:.16em;color:var(--muted);text-transform:uppercase;margin-top:2px}
+.mini-price{font-family:'Bebas Neue',sans-serif;font-size:17px;flex-shrink:0}
+.mini-price.fire{color:var(--fire)}.mini-price.green{color:var(--green)}
+.svc-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:2px;background:var(--border);border:1px solid var(--border)}
+.svc-card{background:var(--card);padding:34px 26px;text-decoration:none;display:block;position:relative;overflow:hidden;transition:background .3s;color:inherit}
+.svc-card:hover{background:var(--card2)}
+.svc-card::before{content:'';position:absolute;top:0;left:0;right:0;height:2px;background:linear-gradient(90deg,var(--ember),var(--flame));transform:scaleX(0);transform-origin:left;transition:transform .4s}.svc-card:hover::before{transform:scaleX(1)}
+.svc-num{font-family:'Bebas Neue',sans-serif;font-size:48px;color:var(--border);line-height:1;margin-bottom:12px}
+.svc-name{font-family:'Bebas Neue',sans-serif;font-size:21px;color:var(--white);letter-spacing:.04em;margin-bottom:8px;line-height:1}
+.svc-desc{font-size:13px;color:var(--muted);font-style:italic;line-height:1.6;margin-bottom:16px}
+.svc-price{font-family:'Bebas Neue',sans-serif;font-size:24px;color:var(--fire)}
+.svc-price small{font-size:11px;color:var(--muted);font-family:'Space Mono',monospace;margin-left:4px}
+.credits-section{padding:0 48px 80px}
+.credits-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(200px,1fr));gap:2px;background:var(--border);border:1px solid var(--border)}
+.credit-card{background:var(--card);padding:18px 20px;transition:background .2s}
+.credit-card:hover{background:var(--card2)}
+.credit-artist{font-family:'Bebas Neue',sans-serif;font-size:17px;color:var(--white);letter-spacing:.04em;line-height:1}
+.credit-role{font-family:'Space Mono',monospace;font-size:7px;letter-spacing:.28em;color:var(--ember);text-transform:uppercase;margin-top:4px}
+.credit-track{font-size:12px;color:var(--muted);font-style:italic;margin-top:4px}
+.credits-empty{padding:28px;font-family:'Space Mono',monospace;font-size:9px;letter-spacing:.2em;color:var(--muted);text-transform:uppercase;background:var(--card);text-align:center;border:1px solid var(--border)}
+.tip-section{padding:0 48px 60px}
+.tip-banner{background:linear-gradient(135deg,rgba(200,75,10,.1),rgba(200,75,10,.04));border:1px solid rgba(200,75,10,.3);padding:32px 40px;display:flex;align-items:center;justify-content:space-between;gap:24px;flex-wrap:wrap;position:relative;overflow:hidden}
+.tip-banner::before{content:'';position:absolute;inset:0;background:linear-gradient(90deg,transparent,rgba(200,75,10,.05),transparent);background-size:200% 100%;animation:tShimmer 4s ease-in-out infinite;pointer-events:none}
+@keyframes tShimmer{0%,100%{background-position:0% 50%}50%{background-position:200% 50%}}
+.tip-left{display:flex;align-items:center;gap:20px}
+.tip-jar-big{font-size:52px;line-height:1;animation:jarRock 3s ease-in-out infinite;filter:drop-shadow(0 0 14px rgba(200,75,10,.55))}
+@keyframes jarRock{0%,100%{transform:translateY(0) rotate(-3deg)}50%{transform:translateY(-6px) rotate(3deg)}}
+.tip-copy h3{font-family:'Bebas Neue',sans-serif;font-size:30px;color:var(--white);letter-spacing:.04em;line-height:1;margin-bottom:6px}
+.tip-copy p{font-size:14px;color:var(--ash);font-style:italic;line-height:1.5}
+.tip-amounts{display:flex;gap:8px;align-items:center;flex-wrap:wrap}
+.ta-btn{font-family:'Space Mono',monospace;font-size:9px;letter-spacing:.18em;padding:10px 18px;background:transparent;border:1px solid rgba(200,75,10,.3);color:var(--muted);transition:all .2s;cursor:pointer}
+.ta-btn:hover,.ta-btn.active{background:var(--ember);border-color:var(--ember);color:var(--white)}
+.ta-custom{width:72px;padding:10px 12px;background:var(--card);border:1px solid var(--border);color:var(--white);font-family:'Bebas Neue',sans-serif;font-size:20px;text-align:center;transition:border-color .2s}
+.ta-custom:focus{outline:none;border-color:var(--ember)}
+.ta-send{padding:10px 28px;background:var(--ember);border:none;color:var(--white);font-family:'Space Mono',monospace;font-size:9px;letter-spacing:.3em;text-transform:uppercase;transition:all .2s;cursor:pointer}
+.ta-send:hover{background:var(--fire);box-shadow:0 0 20px rgba(200,75,10,.4)}
+.newsletter{padding:80px 48px;border-top:1px solid var(--border);display:grid;grid-template-columns:1fr 1fr;gap:56px;align-items:center}
+.nl-heading{font-family:'Bebas Neue',sans-serif;font-size:clamp(36px,5vw,62px);line-height:.95;margin-bottom:12px}.nl-heading em{color:var(--fire);font-style:normal}
+.nl-sub{font-size:15px;color:var(--ash);font-style:italic;line-height:1.7}
+.nl-form-wrap{display:flex;gap:2px}
+.nl-input{flex:1;padding:14px 16px;background:var(--card);border:1px solid var(--border);color:var(--white);font-family:'Cormorant Garamond',serif;font-size:16px;transition:border-color .2s}
+.nl-input:focus{outline:none;border-color:var(--ember)}.nl-input::placeholder{color:var(--muted);font-style:italic}
+.nl-btn{padding:14px 24px;background:var(--ember);border:none;color:var(--white);font-family:'Space Mono',monospace;font-size:9px;letter-spacing:.28em;text-transform:uppercase;transition:background .2s;white-space:nowrap;cursor:pointer}.nl-btn:hover{background:var(--fire)}
+.nl-note{font-family:'Space Mono',monospace;font-size:8px;color:var(--muted);letter-spacing:.14em;margin-top:8px}
+.nl-ok{display:none;font-family:'Space Mono',monospace;font-size:10px;letter-spacing:.22em;color:var(--fire);text-transform:uppercase;padding:12px 0}
+.quote{padding:90px 48px;border-top:1px solid var(--border);border-bottom:1px solid var(--border);text-align:center;position:relative;overflow:hidden}
+.quote::before{content:'"';position:absolute;top:-80px;left:50%;transform:translateX(-50%);font-family:'Bebas Neue',sans-serif;font-size:380px;color:rgba(200,75,10,.03);pointer-events:none;line-height:1}
+.quote-text{font-family:'Cormorant Garamond',serif;font-size:clamp(20px,4vw,40px);font-style:italic;font-weight:300;color:var(--white);max-width:780px;margin:0 auto 18px;line-height:1.4;position:relative}.quote-text em{color:var(--fire);font-style:normal}
+.quote-attr{font-family:'Space Mono',monospace;font-size:9px;letter-spacing:.4em;color:var(--muted);text-transform:uppercase}
+.social-section{padding:0 48px 56px}
+.social-label{font-family:'Space Mono',monospace;font-size:8px;letter-spacing:.5em;color:var(--ember);text-transform:uppercase;margin-bottom:20px;display:flex;align-items:center;gap:12px}
+.social-label::after{content:'';flex:1;height:1px;background:var(--border)}
+.social-circles{display:flex;gap:8px;flex-wrap:wrap;justify-content:center}
+.sb-btn{width:30px;height:30px;border-radius:50%;display:flex;align-items:center;justify-content:center;border:1px solid rgba(200,75,10,.4);background:rgba(200,75,10,.06);transition:all .2s;color:var(--ember);text-decoration:none;flex-shrink:0}
+.sb-btn svg{width:12px;height:12px;fill:currentColor;transition:fill .2s}
+.sb-btn:hover{background:var(--ember);border-color:var(--fire);box-shadow:0 0 12px rgba(200,75,10,.4)}
+.sb-btn:hover svg{fill:#f5f0e8}
+.modal-overlay{position:fixed;inset:0;background:rgba(0,0,0,.88);backdrop-filter:blur(10px);z-index:2000;display:flex;align-items:center;justify-content:center;padding:24px;opacity:0;pointer-events:none;transition:opacity .4s}
+.modal-overlay.open{opacity:1;pointer-events:all}
+.modal-box{background:#110d08;border:1px solid rgba(200,75,10,.4);max-width:580px;width:100%;position:relative;transform:translateY(32px) scale(.97);transition:transform .4s cubic-bezier(.4,0,.2,1);overflow:hidden}
+.modal-overlay.open .modal-box{transform:translateY(0) scale(1)}
+.modal-topbar{height:3px;background:linear-gradient(90deg,var(--ember),var(--flame),var(--gold),var(--flame),var(--ember));background-size:200% 100%;animation:mShimmer 3s linear infinite}
+@keyframes mShimmer{0%{background-position:0% 50%}100%{background-position:200% 50%}}
+.modal-close{position:absolute;top:14px;right:14px;background:rgba(200,75,10,.08);border:1px solid rgba(200,75,10,.3);color:var(--muted);width:30px;height:30px;border-radius:50%;display:flex;align-items:center;justify-content:center;cursor:pointer;font-size:14px;transition:all .2s;line-height:1;z-index:2}
+.modal-close:hover{border-color:var(--ember);color:var(--fire)}
+.modal-cover{background:linear-gradient(160deg,#130e08,#1e1008);padding:44px 40px 32px;text-align:center;border-bottom:1px solid rgba(200,75,10,.2);position:relative;overflow:hidden}
+.modal-cover::before{content:'';position:absolute;inset:0;background:radial-gradient(ellipse 80% 70% at 50% 60%,rgba(200,75,10,.14),transparent)}
+.modal-eyebrow{font-family:'Space Mono',monospace;font-size:8px;letter-spacing:.5em;color:var(--muted);text-transform:uppercase;display:block;margin-bottom:10px;position:relative;z-index:1}
+.modal-title{font-family:'Bebas Neue',sans-serif;font-size:clamp(48px,9vw,72px);line-height:.88;color:var(--white);position:relative;z-index:1;letter-spacing:.02em}
+.modal-title em{color:var(--fire);font-style:normal;display:block;text-shadow:0 0 50px rgba(232,114,12,.4)}
+.modal-tagline{font-family:'Cormorant Garamond',serif;font-size:16px;font-style:italic;color:var(--ash);margin-top:12px;position:relative;z-index:1}
+.modal-body{padding:32px 40px}
+.modal-desc{font-family:'Cormorant Garamond',serif;font-size:18px;line-height:1.8;color:var(--ash);margin-bottom:22px;font-style:italic}
+.modal-feats{list-style:none;display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:26px}
+.modal-feats li{font-family:'Space Mono',monospace;font-size:8px;letter-spacing:.14em;color:var(--muted);text-transform:uppercase;display:flex;align-items:center;gap:8px;line-height:1.4}
+.modal-feats li::before{content:'->'; color:var(--ember);flex-shrink:0}
+.modal-footer{display:flex;align-items:center;justify-content:space-between;padding-top:18px;border-top:1px solid rgba(200,75,10,.15);flex-wrap:wrap;gap:16px}
+.modal-price{font-family:'Bebas Neue',sans-serif;font-size:48px;color:var(--fire);line-height:1}
+.modal-price-note{font-family:'Space Mono',monospace;font-size:8px;letter-spacing:.15em;color:var(--muted);text-transform:uppercase;margin-top:4px}
+.modal-btn{display:inline-block;padding:14px 32px;background:var(--ember);color:#f5f0e8;font-family:'Space Mono',monospace;font-size:9px;letter-spacing:.3em;text-transform:uppercase;text-decoration:none;border:none;cursor:pointer;transition:all .25s}
+.modal-btn:hover{background:var(--fire);box-shadow:0 0 28px rgba(200,75,10,.4);color:#f5f0e8}
+@media(max-width:900px){.hero{padding:0 24px 64px}.about{grid-template-columns:1fr;padding:80px 24px;gap:44px}.section,.social-section,.credits-section,.tip-section{padding-left:24px;padding-right:24px}.svc-grid{grid-template-columns:1fr}.newsletter{grid-template-columns:1fr;padding:56px 24px;gap:28px}.nl-form-wrap{flex-direction:column}.quote{padding:68px 24px}.tip-banner{flex-direction:column;align-items:flex-start;gap:20px;padding:24px}.tip-amounts{gap:6px}.modal-feats{grid-template-columns:1fr}.modal-body{padding:24px}.modal-cover{padding:32px 24px}}
+{% endblock %}
+
+{% block content %}
+<div class="modal-overlay" id="ebook-modal">
+  <div class="modal-box">
+    <div class="modal-topbar"></div>
+    <button class="modal-close" onclick="closeModal()">x</button>
+    <div class="modal-cover">
+      <span class="modal-eyebrow">Mac Dylan Presents</span>
+      <h2 class="modal-title">The Artist<em>Is The Business</em></h2>
+      <p class="modal-tagline">The complete independent artist blueprint</p>
+    </div>
+    <div class="modal-body">
+      <p class="modal-desc">Everything the music industry will not tell you, laid out in 9 chapters with real frameworks, income strategies, and a 90-day execution plan built for artists who are done waiting.</p>
+      <ul class="modal-feats">
+        <li>9 chapters of real strategy</li>
+        <li>Income streams that work</li>
+        <li>Brand building from scratch</li>
+        <li>Organic growth without ads</li>
+        <li>AI as a force multiplier</li>
+        <li>90-day action checklist</li>
+        <li>Interactive navigation</li>
+        <li>Instant digital download</li>
+      </ul>
+      <div class="modal-footer">
+        <div>
+          <div class="modal-price">$27</div>
+          <div class="modal-price-note">One-time - Instant download - Yours forever</div>
+        </div>
+        <a href="{{ url_for('store.index') }}" class="modal-btn" onclick="closeModal()">Get The Blueprint</a>
+      </div>
+    </div>
+  </div>
+</div>
+<section class="hero">
+  <div>
+    <div class="hero-eyebrow">Boise, Idaho - Mix - Record - Develop</div>
+    <h1 class="hero-title">Mac<span class="outline">Dylan</span></h1>
+    <p class="hero-desc">Where independent artists come to sound like they mean it. Mix engineering, production, and artist development from someone who built from nothing.</p>
+    <div class="hero-cta">
+      <a href="{{ url_for('services.index') }}" class="btn-fire">Book a Session</a>
+      <a href="{{ url_for('beats.index') }}" class="btn-ghost">Browse Beats</a>
+    </div>
+    <div class="hero-extra">
+      <button class="btn-ebook" onclick="openModal()">The Artist Is The Business - $27</button>
+    </div>
+  </div>
+</section>
+<section class="about" id="about" data-reveal>
+  <div>
+    <div class="about-label">The Engineer</div>
+    <h2 class="about-heading">Built from <em>nothing.</em><br>Sounds like everything.</h2>
+    <p class="about-text">Years behind the boards, inside the industry, and deep in the craft. Mac Dylan brings executive producer vision to every independent session because your music deserves to hit like a major without the major label.</p>
+    <div class="about-contact"><a href="tel:2083915292">(208) 391-5292</a> - Boise, Idaho</div>
+  </div>
+  <div class="stats">
+    <div class="stat"><div class="stat-num">10+</div><div class="stat-label">Years in craft</div></div>
+    <div class="stat"><div class="stat-num">500+</div><div class="stat-label">Records mixed</div></div>
+    <div class="stat"><div class="stat-num">100%</div><div class="stat-label">Independent</div></div>
+    <div class="stat"><div class="stat-num">inf</div><div class="stat-label">Artist first</div></div>
+  </div>
+</section>
+<section class="section" data-reveal>
+  <div class="sec-hdr">
+    <div class="sec-lbl">Featured Beats</div>
+    <a href="{{ url_for('beats.index') }}" class="sec-link">Full Catalog</a>
+  </div>
+  <div class="mini-playlist">
+    {% if beats %}
+      {% for beat in beats %}
+      <a href="{{ url_for('beats.index') }}" class="mini-row">
+        <div class="mini-num">{{ '%02d'|format(loop.index) }}</div>
+        <div class="mini-ph">{{ beat.title[0] }}</div>
+        <div class="mini-info">
+          <div class="mini-title">{{ beat.title }}</div>
+          <div class="mini-meta">{{ beat.bpm }} BPM - {{ beat.key }} - {{ beat.genre }}</div>
+        </div>
+        <div class="mini-price {{ 'green' if beat.is_free else 'fire' }}">{{ 'FREE' if beat.is_free else '$' + beat.price_basic|string }}</div>
+      </a>
+      {% endfor %}
+    {% else %}
+      <div style="padding:24px 18px;font-family:'Space Mono',monospace;font-size:9px;letter-spacing:.2em;color:var(--muted);text-transform:uppercase">New beats dropping soon</div>
+    {% endif %}
+  </div>
+</section>
+<section class="credits-section" data-reveal>
+  <div class="sec-hdr"><div class="sec-lbl">Credits</div></div>
+  {% if credits %}
+    <div class="credits-grid">
+      {% for c in credits %}
+      <div class="credit-card">
+        <div class="credit-artist">{{ c.artist }}</div>
+        <div class="credit-role">{{ c.role }}</div>
+        {% if c.track_name %}<div class="credit-track">{{ c.track_name }}</div>{% endif %}
+      </div>
+      {% endfor %}
+    </div>
+  {% else %}
+    <div class="credits-empty">Credits coming soon - add them via the admin panel</div>
+  {% endif %}
+</section>
+<section class="section" data-reveal>
+  <div class="sec-hdr"><div class="sec-lbl">Services</div><a href="{{ url_for('services.index') }}" class="sec-link">Book Now</a></div>
+  <div class="svc-grid">
+    <a href="{{ url_for('services.index') }}" class="svc-card"><div class="svc-num">01</div><div class="svc-name">Recording Session</div><div class="svc-desc">Mobile engineering - I come to you, fully equipped.</div><div class="svc-price">$75 <small>/ hr - 50% deposit</small></div></a>
+    <a href="{{ url_for('services.index') }}" class="svc-card"><div class="svc-num">02</div><div class="svc-name">Mix &amp; Master</div><div class="svc-desc">One seamless process. Streaming and radio ready.</div><div class="svc-price">$150 <small>/ single</small></div></a>
+    <a href="{{ url_for('services.index') }}" class="svc-card"><div class="svc-num">03</div><div class="svc-name">Artist Development</div><div class="svc-desc">Monthly partnership. Sessions, mixing, strategy, direction.</div><div class="svc-price">$300 <small>/ mo</small></div></a>
+  </div>
+</section>
+<section class="tip-section" data-reveal>
+  <div class="tip-banner">
+    <div class="tip-left">
+      <span class="tip-jar-big">🫙</span>
+      <div class="tip-copy">
+        <h3>Support Independent Music</h3>
+        <p>Every tip goes directly into making more - beats, sessions, and content.</p>
+      </div>
+    </div>
+    <div class="tip-amounts">
+      <button class="ta-btn active" onclick="selTip(5,this)">$5</button>
+      <button class="ta-btn" onclick="selTip(10,this)">$10</button>
+      <button class="ta-btn" onclick="selTip(25,this)">$25</button>
+      <button class="ta-btn" onclick="selTip(50,this)">$50</button>
+      <input class="ta-custom" type="number" id="tip-amt" value="5" min="1" oninput="document.querySelectorAll('.ta-btn').forEach(function(b){b.classList.remove('active')})">
+      <button class="ta-send" onclick="sendTipAmt()">Send Tip</button>
+    </div>
+  </div>
+</section>
+<section class="newsletter" data-reveal>
+  <div>
+    <h2 class="nl-heading">Stay in the <em>Loop</em></h2>
+    <p class="nl-sub">New beats, session availability, exclusive drops, and industry insights. No spam - just signal.</p>
+  </div>
+  <div>
+    <form id="ck-form" onsubmit="subCK(event)">
+      <div class="nl-form-wrap">
+        <input class="nl-input" type="email" id="ck-email" placeholder="Your email address" required>
+        <button class="nl-btn" type="submit">Subscribe</button>
+      </div>
+    </form>
+    <div class="nl-ok" id="nl-ok">YOU ARE IN - CHECK YOUR EMAIL</div>
+    <div class="nl-note" id="nl-note">NO SPAM. UNSUBSCRIBE ANYTIME.</div>
+  </div>
+</section>
+<div class="quote" data-reveal>
+  <p class="quote-text">Your music already has the <em>fire.</em><br>Let us make sure the world can hear it.</p>
+  <div class="quote-attr">Mac Dylan - Boise, Idaho</div>
+</div>
+<section class="social-section" data-reveal>
+  <div class="social-label">Follow the Movement</div>
+  <div class="social-circles">
+    <a href="https://instagram.com/macdylan4ever" target="_blank" class="sb-btn" title="Instagram"><svg viewBox="0 0 24 24"><path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zM12 0C8.741 0 8.333.014 7.053.072 2.695.272.273 2.69.073 7.052.014 8.333 0 8.741 0 12c0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98C8.333 23.986 8.741 24 12 24c3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98C15.668.014 15.259 0 12 0zm0 5.838a6.162 6.162 0 100 12.324 6.162 6.162 0 000-12.324zM12 16a4 4 0 110-8 4 4 0 010 8zm6.406-11.845a1.44 1.44 0 100 2.881 1.44 1.44 0 000-2.881z"/></svg></a>
+    <a href="https://facebook.com/macdylan4ever" target="_blank" class="sb-btn" title="Facebook"><svg viewBox="0 0 24 24"><path d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z"/></svg></a>
+    <a href="https://youtube.com/@macdylan" target="_blank" class="sb-btn" title="YouTube"><svg viewBox="0 0 24 24"><path d="M23.498 6.186a3.016 3.016 0 00-2.122-2.136C19.505 3.545 12 3.545 12 3.545s-7.505 0-9.377.505A3.017 3.017 0 00.502 6.186C0 8.07 0 12 0 12s0 3.93.502 5.814a3.016 3.016 0 002.122 2.136c1.871.505 9.376.505 9.376.505s7.505 0 9.377-.505a3.015 3.015 0 002.122-2.136C24 15.93 24 12 24 12s0-3.93-.502-5.814zM9.545 15.568V8.432L15.818 12l-6.273 3.568z"/></svg></a>
+  </div>
+</section>
+{% endblock %}
+
+{% block extra_scripts %}
+<script>
+window.subCK = function(e) {
+  e.preventDefault();
+  var email = document.getElementById('ck-email').value.trim();
+  if (!email) return;
+  fetch('https://mac-dylan.kit.com/b5923233e5/subscriptions', {
+    method: 'POST', headers: {'Content-Type': 'application/x-www-form-urlencoded'},
+    body: 'email_address=' + encodeURIComponent(email)
+  }).then(function(){}).catch(function(){});
+  document.getElementById('ck-form').style.display = 'none';
+  document.getElementById('nl-ok').style.display = 'block';
+  document.getElementById('nl-note').style.display = 'none';
+};
+window.selTip = function(amt, btn) {
+  document.querySelectorAll('.ta-btn').forEach(function(b){ b.classList.remove('active'); });
+  btn.classList.add('active');
+  document.getElementById('tip-amt').value = amt;
+};
+window.sendTipAmt = function() {
+  var amt = +document.getElementById('tip-amt').value;
+  if (!amt || amt < 1) { alert('Please enter a tip amount.'); return; }
+  fetch('/payments/tip', {
+    method: 'POST', headers: {'Content-Type': 'application/json'},
+    body: JSON.stringify({amount: amt, email: ''})
+  }).then(function(r){ return r.json(); })
+    .then(function(d){ if (d.checkout_url) window.location.href = d.checkout_url; })
+    .catch(function(){ alert('Checkout unavailable. Try again shortly.'); });
+};
+window.openTip = window.sendTipAmt;
+window.openModal = function() {
+  document.getElementById('ebook-modal').classList.add('open');
+  document.body.style.overflow = 'hidden';
+};
+window.closeModal = function() {
+  document.getElementById('ebook-modal').classList.remove('open');
+  document.body.style.overflow = '';
+  try { sessionStorage.setItem('ebookSeen','1'); } catch(e){}
+};
+document.getElementById('ebook-modal').addEventListener('click', function(e) {
+  if (e.target === this) window.closeModal();
+});
+document.addEventListener('keydown', function(e) {
+  if (e.key === 'Escape') window.closeModal();
+});
+(function(){
+  try {
+    if (!sessionStorage.getItem('ebookSeen')) setTimeout(window.openModal, 1500);
+  } catch(e) { setTimeout(window.openModal, 1500); }
+})();
+</script>
+{% endblock %}
+'''
+
+with open(f'{BASE}/templates/index.html', 'w') as f:
+    f.write(content)
+print('index.html rebuilt')
+
+# Fix base.html
+with open(f'{BASE}/templates/base.html', 'r') as f:
+    base = f.read()
+if 'a{color:inherit' not in base:
+    base = base.replace('body{background:var(--black)', 'a{color:inherit;text-decoration:none}\nbutton{cursor:pointer}\nbody{background:var(--black)')
+    with open(f'{BASE}/templates/base.html', 'w') as f:
+        f.write(base)
+    print('base.html link reset added')
+
+# Seed ebook
+seed = '''import sys
+sys.path.insert(0, '.')
+from app import create_app
+from database import db
+from models import Product
+app = create_app()
+with app.app_context():
+    db.create_all()
+    e = Product.query.filter_by(name="The Artist Is The Business").first()
+    if e:
+        e.price=27;e.is_active=True;e.is_new=True;e.product_type="digital"
+        e.file_path="uploads/products/artist-is-the-business-v2.html"
+        e.description="The complete independent artist blueprint. 9 chapters covering branding, income streams, organic growth, AI leverage, and a 90-day execution plan. Interactive e-book."
+        e.tags="ebook,artist development,branding,income,strategy"
+        db.session.commit();print("Ebook updated ID:",e.id)
+    else:
+        p=Product(product_type="digital",name="The Artist Is The Business",
+            description="The complete independent artist blueprint. 9 chapters covering branding, income streams, organic growth, AI leverage, and a 90-day execution plan. Interactive e-book.",
+            price=27,tags="ebook,artist development,branding,income,strategy",
+            file_path="uploads/products/artist-is-the-business-v2.html",
+            is_active=True,is_new=True)
+        db.session.add(p);db.session.commit();print("Ebook created ID:",p.id)
+    print("Done - check Admin > Products and Store page")
+'''
+with open(f'{BASE}/seed_ebook.py', 'w') as f:
+    f.write(seed)
+os.system(f'cd {BASE} && python3 seed_ebook.py')
+
+# Push
+os.system(f'cd {BASE} && git add -A && git commit -m "rebuild homepage clean from scratch, seed ebook" && git push')
+print('DONE - Railway deploys in 60 seconds')

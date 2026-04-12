@@ -15,6 +15,3 @@ def index():
     return render_template('index.html', beats=beats, credits=credits)
 
 
-@main_bp.route('/success')
-def success():
-    return render_template('success.html')

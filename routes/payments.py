@@ -2,7 +2,7 @@ import stripe
 import json
 import hmac
 import hashlib
-from flask import Blueprint, request, jsonify, render_template, current_app
+from flask import Blueprint, request, jsonify, render_template, redirect, current_app
 from database import db
 from models import Order, Beat, Product
 
@@ -31,7 +31,7 @@ def beat_checkout():
             'quantity': 1}],
         mode='payment',
         success_url=get_domain() + '/payments/success?session_id={CHECKOUT_SESSION_ID}',
-        cancel_url=get_domain() + '/beats',
+        cancel_url=get_domain() + '/beats/',
         metadata={'order_type': 'beat', 'beat_id': str(beat_id),
                   'beat_title': beat.title, 'license': license}
     )

@@ -1,5 +1,7 @@
 # Environment — NEVER commit this
 .env
+.env.*
+!.env.example
 
 # Python
 venv/
@@ -10,23 +12,16 @@ __pycache__/
 *.egg-info/
 dist/
 build/
-
 # Database (dev only — Railway uses PostgreSQL in prod)
 *.db
 *.sqlite
-
 # Uploads (store these on S3 or Railway volume in prod)
 static/uploads/
-
 # OS
 .DS_Store
 Thumbs.db
-
 # IDE
 .vscode/
 .idea/
-*.py
-fix_*.py
-update_*.py
 fix_*.py
 update_*.py
