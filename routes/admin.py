@@ -3,7 +3,7 @@ import hmac
 from functools import wraps
 from flask import Blueprint,render_template,request,redirect,url_for,session,jsonify,current_app
 from werkzeug.utils import secure_filename
-from app import db
+from database import db
 from models import Beat,Order,Product,Content
 
 admin_bp = Blueprint("admin",__name__)
