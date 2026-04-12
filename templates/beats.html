@@ -182,7 +182,7 @@ BEATS = BEATS.map(function(b){
   return {
     id: b.id, title: b.title, bpm: b.bpm, key: b.key,
     genre: b.genre, mood: b.mood, free: b.is_free,
-    mp3: b.mp3_path ? '/static/' + b.mp3_path : null,
+    mp3: b.mp3_path || null,
     lics: b.is_free ? [
       {n:'Free Download',d:'MP3 · Non-commercial · Demo & freestyle only',p:'FREE',a:0,t:'free'}
     ] : [

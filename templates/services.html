@@ -30,31 +30,75 @@
   <div class="svc-card">
     <div class="svc-n">01</div>
     <div class="svc-name">Recording Session</div>
-    <p class="svc-desc">Mobile engineering — I come to you, fully equipped. Studio quality wherever you create.</p>
-    <div class="svc-price">$75 <small>/ hr &middot; 50% deposit</small></div>
-    <a href="https://calendly.com/macdylanforever/30min" target="_blank" class="svc-book">Book Session &rarr;</a>
+    <p class="svc-desc">Mobile engineering. I come to you, fully equipped. Studio quality wherever you create.</p>
+    <div class="svc-price">$75 <small>/ hr and 50% deposit</small></div>
+    <div class="svc-addons">
+      <div class="addon-label">Add-ons</div>
+      <label class="addon"><input type="checkbox" class="rec-addon" value="25" data-name="Vocal Tuning"> Vocal Tuning <span>+$25</span></label>
+      <label class="addon"><input type="checkbox" class="rec-addon" value="50" data-name="Same-Day Mix"> Same-Day Mix <span>+$50</span></label>
+      <label class="addon"><input type="checkbox" class="rec-addon" value="30" data-name="Session Musician"> Session Musician <span>+$30/hr</span></label>
+    </div>
+    <div class="svc-total" id="rec-total">Total: $75 deposit</div>
+    <div class="svc-btns">
+      <button class="svc-book" onclick="bookService('recording')">Book</button>
+      <a href="https://calendly.com/macdylanforever/30min" target="_blank" class="svc-book ghost">Free Call</a>
+    </div>
   </div>
   <div class="svc-card">
     <div class="svc-n">02</div>
-    <div class="svc-name">Mix &amp; Master</div>
+    <div class="svc-name">Mix and Master</div>
     <p class="svc-desc">One seamless process. Radio and streaming ready. Delivery in all major formats.</p>
-    <div class="svc-price">$150 <small>/ single</small></div>
-    <a href="https://calendly.com/macdylanforever/30min" target="_blank" class="svc-book">Get Quote &rarr;</a>
+    <div class="svc-price" id="mix-price-display">$150 <small>/ single</small></div>
+    <div class="svc-addons">
+      <div class="addon-label">Tiers</div>
+      <label class="addon"><input type="radio" name="mix-tier" value="150" data-name="Single Mix and Master" checked> Single <span>$150</span></label>
+      <label class="addon"><input type="radio" name="mix-tier" value="250" data-name="EP Mix and Master"> EP 3 to 5 songs <span>$250</span></label>
+      <label class="addon"><input type="radio" name="mix-tier" value="450" data-name="Album Mix and Master"> Album 6 plus songs <span>$450</span></label>
+      <div class="addon-label" style="margin-top:10px">Add-ons</div>
+      <label class="addon"><input type="checkbox" class="mix-addon" value="40" data-name="Stem Export"> Stem Export <span>+$40</span></label>
+      <label class="addon"><input type="checkbox" class="mix-addon" value="25" data-name="Instrumental Version"> Instrumental Version <span>+$25</span></label>
+    </div>
+    <div class="svc-total" id="mix-total">Total: $150</div>
+    <div class="svc-btns">
+      <button class="svc-book" onclick="bookService('mixing')">Pay and Book</button>
+      <a href="https://calendly.com/macdylanforever/30min" target="_blank" class="svc-book ghost">Free Call</a>
+    </div>
   </div>
   <div class="svc-card">
     <div class="svc-n">03</div>
     <div class="svc-name">Artist Development</div>
     <p class="svc-desc">Monthly creative partnership. Sessions, mixing, strategy, brand direction and content planning.</p>
-    <div class="svc-price">$300 <small>/ mo</small></div>
-    <a href="https://calendly.com/macdylanforever/1-hr-paid-strategy-meeting" target="_blank" class="svc-book">Strategy Call &rarr;</a>
+    <div class="svc-addons">
+      <div class="addon-label">Tiers</div>
+      <label class="addon"><input type="radio" name="dev-tier" value="300" data-name="Foundation Dev Tier 1" checked> Foundation <span>$300/mo</span></label>
+      <label class="addon"><input type="radio" name="dev-tier" value="600" data-name="Growth Dev Tier 2"> Growth <span>$600/mo</span></label>
+      <label class="addon"><input type="radio" name="dev-tier" value="1000" data-name="Full Partnership Dev Tier 3"> Full Partnership <span>$1000/mo</span></label>
+    </div>
+    <div class="svc-total" id="dev-total">Total: $300/mo</div>
+    <div class="svc-btns">
+      <button class="svc-book" onclick="bookService('development')">Start</button>
+      <a href="https://calendly.com/macdylanforever/1-hr-paid-strategy-meeting" target="_blank" class="svc-book ghost">Free Call</a>
+    </div>
   </div>
   <div class="svc-card">
     <div class="svc-n">04</div>
     <div class="svc-name">Beat Licensing</div>
     <p class="svc-desc">Basic, Premium, Trackout, and Exclusive licenses. Instant delivery. 145 beats in catalog.</p>
     <div class="svc-price">From $29</div>
-    <a href="/beats/" class="svc-book">Browse Beats &rarr;</a>
+    <a href="/beats/" class="svc-book">Browse Beats</a>
   </div>
 </div>
+<style>
+.svc-addons{margin:12px 0 8px;border-top:1px solid var(--border);padding-top:12px}
+.addon-label{font-family:"Space Mono",monospace;font-size:7px;letter-spacing:.4em;color:var(--muted);text-transform:uppercase;margin-bottom:6px}
+.addon{display:flex;align-items:center;gap:8px;padding:5px 0;font-size:13px;color:var(--ash);cursor:pointer;border-bottom:1px solid rgba(30,26,22,.5)}
+.addon:last-child{border-bottom:none}
+.addon span{margin-left:auto;font-family:"Space Mono",monospace;font-size:10px;color:var(--ember)}
+.addon input{accent-color:var(--ember);flex-shrink:0}
+.svc-total{font-family:"Space Mono",monospace;font-size:10px;letter-spacing:.2em;color:var(--white);padding:8px 0;border-top:1px solid var(--border);margin-top:8px}
+.svc-btns{display:flex;gap:8px;flex-wrap:wrap;margin-top:12px}
+.svc-book.ghost{background:transparent;border:1px solid var(--ember);color:var(--ember)}
+.svc-book.ghost:hover{background:var(--ember);color:#f5f0e8}
+</style>
 {% endblock %}
 {% block extra_scripts %}<script></script>{% endblock %}
