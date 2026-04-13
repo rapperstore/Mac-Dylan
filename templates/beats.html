@@ -1,5 +1,5 @@
 {% extends "base.html" %}
-{% block title %}Beats — Mac Dylan{% endblock %}
+{% block title %}Beats â Mac Dylan{% endblock %}
 
 {% block extra_styles %}
 .hero{padding:88px 48px 52px;border-bottom:1px solid var(--border);position:relative;overflow:hidden}
@@ -97,9 +97,9 @@
 
 {% block content %}
 <div class="hero">
-  <div class="hero-eyebrow">Mac Dylan · Beat Store</div>
+  <div class="hero-eyebrow">Mac Dylan Â· Beat Store</div>
   <h1 class="hero-title">Find Your <span>Sound</span></h1>
-  <p class="hero-sub">Every beat built from scratch. Click any row to preview — choose the license that fits your project.</p>
+  <p class="hero-sub">Every beat built from scratch. Click any row to preview â choose the license that fits your project.</p>
 </div>
 
 <div class="filter-bar">
@@ -184,12 +184,12 @@ BEATS = BEATS.map(function(b){
     genre: b.genre, mood: b.mood, free: b.is_free,
     mp3: b.mp3_path || null,
     lics: b.is_free ? [
-      {n:'Free Download',d:'MP3 · Non-commercial · Demo & freestyle only',p:'FREE',a:0,t:'free'}
+      {n:'Free Download',d:'MP3 Â· Non-commercial Â· Demo & freestyle only',p:'FREE',a:0,t:'free'}
     ] : [
-      {n:'Basic Lease',   d:'MP3 · 2,500 streams · Non-exclusive · 1 year',            p:'$'+b.price_basic,    a:b.price_basic,    t:'basic'},
-      {n:'Premium Lease', d:'WAV+MP3 · Unlimited streams · Non-exclusive · 2 years',   p:'$'+b.price_premium,  a:b.price_premium,  t:'premium'},
-      {n:'Trackout Lease',d:'WAV+Stems · Unlimited · Non-exclusive · Lifetime',        p:'$'+b.price_trackout, a:b.price_trackout, t:'trackout'},
-      {n:'Exclusive',     d:'WAV+Stems · Full ownership · Removed from store',         p:'$'+b.price_exclusive,a:b.price_exclusive,t:'exclusive'},
+      {n:'Basic Lease',   d:'MP3 Â· 2,500 streams Â· Non-exclusive Â· 1 year',            p:'$'+b.price_basic,    a:b.price_basic,    t:'basic'},
+      {n:'Premium Lease', d:'WAV+MP3 Â· Unlimited streams Â· Non-exclusive Â· 2 years',   p:'$'+b.price_premium,  a:b.price_premium,  t:'premium'},
+      {n:'Trackout Lease',d:'WAV+Stems Â· Unlimited Â· Non-exclusive Â· Lifetime',        p:'$'+b.price_trackout, a:b.price_trackout, t:'trackout'},
+      {n:'Exclusive',     d:'WAV+Stems Â· Full ownership Â· Removed from store',         p:'$'+b.price_exclusive,a:b.price_exclusive,t:'exclusive'},
     ]
   };
 });
@@ -224,7 +224,7 @@ window.selectBeat=function(id){
   if(currentId){var old=document.getElementById('row-'+currentId);if(old)old.classList.remove('active')}
   currentId=id;var row=document.getElementById('row-'+id);if(row)row.classList.add('active');
   document.getElementById('np-name').textContent=beat.title;
-  document.getElementById('np-sub').textContent=beat.bpm+' BPM · '+beat.key+' · '+beat.genre;
+  document.getElementById('np-sub').textContent=beat.bpm+' BPM Â· '+beat.key+' Â· '+beat.genre;
   document.getElementById('np-tag').textContent=beat.free?'Free Beat':'Now Playing';
   renderLics(beat);initNpFire();
   if(ws){ws.destroy();ws=null}
@@ -262,11 +262,11 @@ function renderLics(beat){
 
 window.buyLic=function(id,type,price,amt){
   var beat=BEATS.find(function(b){return b.id===id});
-  var email=prompt('Email to purchase "'+beat.title+'" — '+type+' ('+price+'):');
-  if(!email)return;
-  fetch('/payments/beat-checkout',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({beat_id:id,license:type,email:email,price:amt})})
-  .then(function(r){return r.json()}).then(function(d){if(d.checkout_url)window.location.href=d.checkout_url});
+  if(!beat)return;
+  fetch('/payments/beat-checkout',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({beat_id:id,license:type,price:amt})})
+  .then(function(r){return r.json()}).then(function(d){if(d.checkout_url)window.location.href=d.checkout_url;else alert(d.error||'Something went wrong. Please try again.');});
 };
+
 window.dlFree=function(id){
   var beat=BEATS.find(function(b){return b.id===id});
   if(beat&&beat.mp3){var a=document.createElement('a');a.href=beat.mp3;a.download=beat.title+'.mp3';a.click()}
