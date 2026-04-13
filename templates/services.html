@@ -267,8 +267,6 @@ window.selectDevTier=function(amount,name){
   document.getElementById('dev-selected-name').textContent=name.split(' - ')[0]+' - $'+amount+'/mo';
 };
 window.bookService=function(type){
-  var email=prompt('Enter your email to proceed to checkout:');
-  if(!email||email.indexOf('@')===-1){if(email!==null)alert('Please enter a valid email.');return;}
   var service,amount;
   if(type==='recording'){
     var a=[],t=0;document.querySelectorAll('.rec-addon:checked').forEach(function(c){a.push(c.dataset.name);t+=parseInt(c.value)});
@@ -278,11 +276,12 @@ window.bookService=function(type){
     service=mixName+(ma.length?' plus '+ma.join(', '):'');amount=mixAmount+mt;
   }else{service=devName;amount=devAmount;}
   fetch('/payments/checkout',{method:'POST',headers:{'Content-Type':'application/json'},
-    body:JSON.stringify({service:service,amount:amount,email:email,order_type:'session'})
+    body:JSON.stringify({service:service,amount:amount,order_type:'session'})
   }).then(function(r){return r.json()}).then(function(d){
     if(d.checkout_url)window.location.href=d.checkout_url;
     else alert(d.error||'Something went wrong. Please try again.');
   }).catch(function(){alert('Connection error. Please try again.');});
 };
+
 </script>
 {% endblock %}
