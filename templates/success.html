@@ -1,25 +1,91 @@
 {% extends "base.html" %}
-{% block title %}Payment Confirmed — Mac Dylan{% endblock %}
+{% block title %}Payment Successful - Mac Dylan{% endblock %}
+{% block extra_styles %}
+.success-wrap{max-width:680px;margin:0 auto;padding:80px 48px;text-align:center}
+.success-icon{width:64px;height:64px;background:rgba(58,138,90,.1);border:1px solid var(--green);border-radius:50%;display:flex;align-items:center;justify-content:center;margin:0 auto 24px}
+.success-icon svg{width:28px;height:28px;fill:var(--green)}
+.success-eyebrow{font-family:"Space Mono",monospace;font-size:8px;letter-spacing:.5em;color:var(--green);text-transform:uppercase;margin-bottom:12px}
+.success-heading{font-family:"Bebas Neue",sans-serif;font-size:56px;color:var(--white);letter-spacing:.04em;line-height:1;margin-bottom:12px}
+.success-sub{font-size:15px;color:var(--ash);font-style:italic;line-height:1.8;margin-bottom:32px}
+.success-card{background:var(--card);border:1px solid var(--border);padding:28px 32px;text-align:left;margin-bottom:20px}
+.success-card-label{font-family:"Space Mono",monospace;font-size:7px;letter-spacing:.4em;color:var(--ember);text-transform:uppercase;margin-bottom:8px}
+.success-card-value{font-family:"Bebas Neue",sans-serif;font-size:22px;color:var(--white);letter-spacing:.04em}
+.success-card-sub{font-size:13px;color:var(--muted);margin-top:4px;font-style:italic}
+.dl-btn{display:inline-flex;align-items:center;gap:10px;padding:14px 28px;background:var(--ember);color:#f5f0e8;font-family:"Space Mono",monospace;font-size:8px;letter-spacing:.3em;text-transform:uppercase;text-decoration:none;transition:all .25s;border:none;cursor:pointer;margin:8px 4px}
+.dl-btn:hover{background:var(--fire);box-shadow:0 0 24px rgba(200,75,10,.4);color:#f5f0e8}
+.dl-btn.ghost{background:transparent;border:1px solid var(--ember);color:var(--ember)}.dl-btn.ghost:hover{background:var(--ember);color:#f5f0e8}
+.dl-btn svg{width:14px;height:14px;fill:currentColor}
+.wav-note{background:var(--deep);border:1px solid var(--border);padding:16px 20px;margin:20px 0;text-align:left}
+.wav-note-label{font-family:"Space Mono",monospace;font-size:7px;letter-spacing:.4em;color:var(--ember);text-transform:uppercase;margin-bottom:6px}
+.wav-note-text{font-size:13px;color:var(--ash);line-height:1.7;font-style:italic}
+.success-actions{display:flex;gap:10px;flex-wrap:wrap;justify-content:center;margin-top:28px}
+{% endblock %}
 {% block content %}
-<div style="min-height:80vh;display:flex;align-items:center;justify-content:center;padding:80px 48px 60px;text-align:center">
-  <div>
-    <div style="font-family:'Bebas Neue',sans-serif;font-size:80px;color:var(--fire);line-height:1;margin-bottom:16px">✓</div>
-    <h1 style="font-family:'Bebas Neue',sans-serif;font-size:clamp(40px,8vw,80px);line-height:.9;margin-bottom:16px">Payment <span style="color:var(--fire)">Confirmed</span></h1>
-    {% if session %}
-    <p style="font-size:17px;font-style:italic;color:var(--ash);margin-bottom:8px">
-      Confirmation sent to <strong style="color:var(--white)">{{ session.customer_email }}</strong>
-    </p>
-    {% endif %}
-    <p style="font-size:15px;color:var(--muted);font-style:italic;max-width:480px;margin:0 auto 36px;line-height:1.7">
-      Thank you for supporting independent music. If you have any questions about your order or need your download, reach out directly. 
-    </p>
-    <div style="display:flex;gap:12px;justify-content:center;flex-wrap:wrap">
-      <a href="{{ url_for('beats.index') }}" style="font-family:'Space Mono',monospace;font-size:9px;letter-spacing:.3em;text-transform:uppercase;padding:13px 28px;background:var(--ember);color:var(--white);text-decoration:none;transition:background .2s">Browse More Beats</a>
-      <a href="{{ url_for('main.index') }}" style="font-family:'Space Mono',monospace;font-size:9px;letter-spacing:.3em;text-transform:uppercase;padding:13px 28px;background:transparent;border:1px solid var(--border);color:var(--muted);text-decoration:none;transition:all .2s">Back to Home</a>
-    </div>
-    <p style="font-family:'Space Mono',monospace;font-size:8px;letter-spacing:.2em;color:var(--muted);margin-top:32px">
-      Questions? <a href="tel:2083915292" style="color:var(--ember);text-decoration:none">(208) 391-5292</a>
-    </p>
+<div class="success-wrap">
+  <div class="success-icon">
+    <svg viewBox="0 0 24 24"><path d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41L9 16.17z"/></svg>
+  </div>
+  <div class="success-eyebrow">Payment Confirmed</div>
+  <h1 class="success-heading">
+    {% if order_type == "beat" %}Beat Purchased{% elif order_type == "tip" %}Thank You{% elif order_type == "digital" %}Order Complete{% else %}Booking Confirmed{% endif %}
+  </h1>
+  <p class="success-sub">
+    {% if customer_email %}A confirmation has been sent to <strong>{{ customer_email }}</strong>.{% endif %}
+    {% if order_type == "beat" %}Your MP3 is ready to download below. WAV files and track stems are available upon request.{% elif order_type == "digital" %}Your download is ready below.{% elif order_type == "tip" %}Your support means everything. Thank you.{% else %}Your booking is confirmed. Mac Dylan will be in touch shortly.{% endif %}
+  </p>
+
+  {% if product_name %}
+  <div class="success-card">
+    <div class="success-card-label">{% if order_type == "beat" %}Beat{% elif order_type == "session" %}Service{% else %}Product{% endif %}</div>
+    <div class="success-card-value">{{ product_name }}</div>
+    {% if license_type %}<div class="success-card-sub">License: {{ license_type | title }} Lease</div>{% endif %}
+    {% if customer_email %}<div class="success-card-sub" style="margin-top:8px">Confirmation sent to: {{ customer_email }}</div>{% endif %}
+  </div>
+  {% endif %}
+
+  {% if order_type == "beat" and beat_mp3 %}
+  <div style="text-align:center">
+    <a href="{{ beat_mp3 }}" download class="dl-btn" id="mp3-dl-btn">
+      <svg viewBox="0 0 24 24"><path d="M19 9h-4V3H9v6H5l7 7 7-7zM5 18v2h14v-2H5z"/></svg>
+      Download MP3
+    </a>
+  </div>
+  <div class="wav-note">
+    <div class="wav-note-label">WAV + Track Stems</div>
+    <div class="wav-note-text">WAV files and individual track stems are available upon request for Premium, Trackout, and Exclusive licenses. Reply to your confirmation email or contact Mac Dylan directly to request your files.</div>
+  </div>
+  {% endif %}
+
+  {% if order_type == "digital" and download_url %}
+  <div style="text-align:center">
+    <a href="{{ download_url }}" target="_blank" class="dl-btn">
+      <svg viewBox="0 0 24 24"><path d="M19 9h-4V3H9v6H5l7 7 7-7zM5 18v2h14v-2H5z"/></svg>
+      Download Your File
+    </a>
+  </div>
+  {% endif %}
+
+  <div class="success-actions">
+    <a href="/beats/" class="dl-btn ghost">Browse More Beats</a>
+    <a href="/" class="dl-btn ghost">Back to Home</a>
   </div>
 </div>
+{% endblock %}
+{% block extra_scripts %}
+<script>
+// Auto-trigger MP3 download on page load for beat purchases
+(function(){
+  var dlBtn = document.getElementById('mp3-dl-btn');
+  if(dlBtn) {
+    setTimeout(function(){
+      var a = document.createElement('a');
+      a.href = dlBtn.href;
+      a.download = dlBtn.href.split('/').pop();
+      document.body.appendChild(a);
+      a.click();
+      document.body.removeChild(a);
+    }, 1500);
+  }
+})();
+</script>
 {% endblock %}
