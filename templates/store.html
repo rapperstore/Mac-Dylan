@@ -1,100 +1,154 @@
 {% extends "base.html" %}
-{% block title %}Store — Mac Dylan{% endblock %}
+{% block title %}Store - Mac Dylan{% endblock %}
 {% block extra_styles %}
-.store-hero{padding:80px 48px 48px;border-bottom:1px solid var(--border)}
+.store-hero{padding:80px 48px 48px;border-bottom:1px solid var(--border);position:relative;overflow:hidden}
+.store-hero::after{content:'STORE';position:absolute;right:-10px;bottom:-40px;font-family:'Bebas Neue',sans-serif;font-size:200px;color:rgba(200,75,10,.03);pointer-events:none;line-height:1}
 .store-eyebrow{font-family:'Space Mono',monospace;font-size:9px;letter-spacing:.5em;color:var(--ember);text-transform:uppercase;margin-bottom:14px}
 .store-heading{font-family:'Bebas Neue',sans-serif;font-size:clamp(48px,8vw,96px);line-height:.9;color:var(--white);margin-bottom:14px}
 .store-heading em{color:var(--fire);font-style:normal}
 .store-sub{font-size:15px;color:var(--ash);font-style:italic;line-height:1.7;max-width:480px}
-.store-sec{padding:56px 48px}
-.store-sec+.store-sec{border-top:1px solid var(--border)}
-.sec-lbl{font-family:'Space Mono',monospace;font-size:8px;letter-spacing:.5em;color:var(--ember);text-transform:uppercase;margin-bottom:24px;display:flex;align-items:center;gap:10px}
-.sec-lbl::after{content:'';flex:1;height:1px;background:var(--border)}
-.prod-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));gap:2px;background:var(--border);border:1px solid var(--border)}
-.prod-card{background:var(--card);padding:28px 24px;display:flex;flex-direction:column;position:relative;overflow:hidden;transition:background .25s}
+.store-wrap{max-width:1100px;margin:0 auto;padding:48px 48px 80px}
+.store-section-label{font-family:'Space Mono',monospace;font-size:8px;letter-spacing:.6em;color:var(--ember);text-transform:uppercase;margin-bottom:24px;display:flex;align-items:center;gap:14px}
+.store-section-label::after{content:'';flex:1;height:1px;background:var(--border)}
+.ebook-card{display:grid;grid-template-columns:320px 1fr;gap:1px;background:var(--border);border:1px solid var(--border);margin-bottom:48px}
+.ebook-cover{background:linear-gradient(135deg,#0a0704 0%,#1a0e06 50%,#0d0804 100%);padding:48px 40px;display:flex;flex-direction:column;align-items:center;justify-content:center;position:relative;overflow:hidden;min-height:400px}
+.ebook-cover::before{content:'';position:absolute;inset:0;background:radial-gradient(ellipse at 30% 20%,rgba(200,75,10,.18) 0%,transparent 65%)}
+.ebook-cover::after{content:'';position:absolute;bottom:0;left:0;right:0;height:1px;background:linear-gradient(90deg,transparent,var(--ember),transparent)}
+.ebook-book{width:160px;height:220px;position:relative;transform:perspective(800px) rotateY(-12deg) rotateX(4deg);filter:drop-shadow(0 24px 48px rgba(0,0,0,.8))}
+.ebook-book-spine{position:absolute;left:-10px;top:0;bottom:0;width:10px;background:linear-gradient(to right,#080503,#1a0e06)}
+.ebook-book-front{position:absolute;inset:0;background:linear-gradient(160deg,#1a0e06,#0d0804);border:1px solid rgba(200,75,10,.3);display:flex;flex-direction:column;align-items:center;justify-content:center;padding:18px;gap:10px}
+.ebook-book-front::before{content:'';position:absolute;top:0;left:0;right:0;height:3px;background:linear-gradient(90deg,var(--ember),var(--flame),var(--ember))}
+.ebook-title-text{font-family:'Bebas Neue',sans-serif;font-size:18px;color:var(--white);letter-spacing:.06em;text-align:center;line-height:1.1}
+.ebook-title-sub{font-family:'Space Mono',monospace;font-size:6px;letter-spacing:.25em;color:var(--ember);text-transform:uppercase;text-align:center}
+.ebook-author{font-family:'Cormorant Garamond',serif;font-size:12px;color:var(--muted);font-style:italic;text-align:center;margin-top:6px}
+.ebook-fire-line{width:50px;height:1px;background:linear-gradient(90deg,transparent,var(--ember),transparent)}
+.ebook-badge{position:absolute;top:16px;right:16px;background:var(--ember);font-family:'Space Mono',monospace;font-size:7px;letter-spacing:.3em;color:#fff;text-transform:uppercase;padding:4px 10px}
+.ebook-info{background:var(--card);padding:40px 36px;display:flex;flex-direction:column}
+.ebook-info-tag{font-family:'Space Mono',monospace;font-size:8px;letter-spacing:.4em;color:var(--ember);text-transform:uppercase;margin-bottom:10px}
+.ebook-info-title{font-family:'Bebas Neue',sans-serif;font-size:40px;color:var(--white);letter-spacing:.04em;line-height:1;margin-bottom:6px}
+.ebook-info-subtitle{font-family:'Cormorant Garamond',serif;font-size:17px;color:var(--ash);font-style:italic;margin-bottom:16px;line-height:1.5}
+.ebook-info-desc{font-size:14px;color:var(--ash);line-height:1.8;margin-bottom:20px;font-style:italic}
+.ebook-chapters{display:grid;grid-template-columns:1fr 1fr;gap:1px;background:var(--border);border:1px solid var(--border);margin-bottom:20px}
+.ebook-chapter{background:var(--deep);padding:9px 12px;display:flex;align-items:center;gap:8px}
+.ebook-ch-num{font-family:'Space Mono',monospace;font-size:7px;letter-spacing:.3em;color:var(--ember);flex-shrink:0}
+.ebook-ch-title{font-size:11px;color:var(--ash);line-height:1.3}
+.ebook-price-row{display:flex;align-items:baseline;gap:10px;margin-bottom:18px;padding:12px 0;border-top:1px solid var(--border);border-bottom:1px solid var(--border)}
+.ebook-price{font-family:'Bebas Neue',sans-serif;font-size:52px;color:var(--fire);line-height:1}
+.ebook-price-note{font-family:'Space Mono',monospace;font-size:9px;color:var(--muted);letter-spacing:.15em}
+.ebook-btns{display:flex;gap:8px;flex-wrap:wrap;margin-top:auto}
+.ebook-btn{font-family:'Space Mono',monospace;font-size:8px;letter-spacing:.28em;text-transform:uppercase;padding:12px 22px;border:none;cursor:pointer;transition:all .25s;text-decoration:none;display:inline-flex;align-items:center}
+.ebook-btn-primary{background:var(--ember);color:#f5f0e8}.ebook-btn-primary:hover{background:var(--fire);color:#f5f0e8}
+.ebook-btn-ghost{background:transparent;border:1px solid var(--border);color:var(--muted)}.ebook-btn-ghost:hover{border-color:var(--ember);color:var(--ember)}
+.products-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));gap:1px;background:var(--border);border:1px solid var(--border)}
+.prod-card{background:var(--card);padding:28px;position:relative;display:flex;flex-direction:column;transition:background .2s}
 .prod-card:hover{background:var(--card2)}
-.prod-card::before{content:'';position:absolute;top:0;left:0;right:0;height:2px;background:linear-gradient(90deg,var(--ember),var(--flame));transform:scaleX(0);transform-origin:left;transition:transform .4s}
+.prod-card::before{content:'';position:absolute;top:0;left:0;right:0;height:2px;background:linear-gradient(90deg,var(--ember),var(--flame));transform:scaleX(0);transform-origin:left;transition:transform .35s}
 .prod-card:hover::before{transform:scaleX(1)}
-.prod-tag{display:inline-block;font-family:'Space Mono',monospace;font-size:7px;letter-spacing:.3em;color:var(--ember);border:1px solid rgba(200,75,10,.3);padding:2px 8px;text-transform:uppercase;margin-bottom:14px;align-self:flex-start}
-.prod-name{font-family:'Bebas Neue',sans-serif;font-size:26px;color:var(--white);letter-spacing:.03em;line-height:1;margin-bottom:10px}
-.prod-desc{font-size:13px;color:var(--ash);font-style:italic;line-height:1.7;margin-bottom:20px;flex:1}
-.prod-footer{display:flex;align-items:center;justify-content:space-between;padding-top:16px;border-top:1px solid rgba(200,75,10,.1)}
-.prod-price{font-family:'Bebas Neue',sans-serif;font-size:38px;color:var(--fire);line-height:1}
-.prod-note{font-family:'Space Mono',monospace;font-size:7px;letter-spacing:.15em;color:var(--muted);text-transform:uppercase;margin-top:3px}
-.btn-buy{display:inline-block;padding:10px 22px;background:var(--ember);color:#f5f0e8;font-family:'Space Mono',monospace;font-size:8px;letter-spacing:.25em;text-transform:uppercase;text-decoration:none;transition:all .22s}
-.btn-buy:hover{background:var(--fire);box-shadow:0 0 20px rgba(200,75,10,.4);color:#f5f0e8}
-.store-empty{padding:48px;text-align:center;background:var(--card);border:1px solid var(--border)}
-.store-empty-icon{font-size:36px;margin-bottom:12px;opacity:.4}
-.store-empty-txt{font-family:'Space Mono',monospace;font-size:8px;letter-spacing:.3em;color:var(--muted);text-transform:uppercase}
-@media(max-width:900px){.store-hero,.store-sec{padding-left:24px;padding-right:24px}.prod-grid{grid-template-columns:1fr}}
+.prod-type{font-family:'Space Mono',monospace;font-size:7px;letter-spacing:.4em;color:var(--ember);text-transform:uppercase;margin-bottom:10px}
+.prod-name{font-family:'Bebas Neue',sans-serif;font-size:24px;color:var(--white);letter-spacing:.04em;margin-bottom:8px;line-height:1}
+.prod-desc{font-size:13px;color:var(--ash);font-style:italic;line-height:1.6;margin-bottom:16px;flex:1}
+.prod-price{font-family:'Bebas Neue',sans-serif;font-size:36px;color:var(--fire);margin-bottom:16px;padding-top:12px;border-top:1px solid var(--border)}
+.prod-btn{font-family:'Space Mono',monospace;font-size:7px;letter-spacing:.28em;text-transform:uppercase;padding:10px 18px;background:var(--ember);color:#f5f0e8;border:none;cursor:pointer;transition:all .22s;width:100%;text-align:center}
+.prod-btn:hover{background:var(--fire)}
+.prod-new{position:absolute;top:0;right:0;background:var(--green);font-family:'Space Mono',monospace;font-size:6px;letter-spacing:.3em;color:#fff;text-transform:uppercase;padding:3px 8px}
+@media(max-width:900px){.store-wrap{padding:32px 20px 60px}.store-hero{padding:56px 20px 36px}.ebook-card{grid-template-columns:1fr}.ebook-cover{min-height:260px}.ebook-chapters{grid-template-columns:1fr}}
 {% endblock %}
 {% block content %}
 <div class="store-hero">
-  <div class="store-eyebrow">Official Store</div>
-  <h1 class="store-heading">The <em>Blueprint</em></h1>
-  <p class="store-sub">Tools, knowledge, and resources built for independent artists who are done waiting for permission.</p>
+  <div class="store-eyebrow">Digital Products</div>
+  <h1 class="store-heading">The <em>Store</em></h1>
+  <p class="store-sub">Ebooks, courses, and resources built for independent artists. Everything you need to own your craft and your career.</p>
 </div>
-<section class="store-sec">
-  <div class="sec-lbl">Digital Products</div>
-  {% if digital %}
-  <div class="prod-grid">
-    {% for p in digital %}
-    <div class="prod-card">
-      <span class="prod-tag">{% if p.is_new %}New &mdash; {% endif %}Digital</span>
-      <div class="prod-name">{{ p.name }}</div>
-      <p class="prod-desc">{{ p.description }}</p>
-      <div class="prod-footer">
-        <div>
-          <div class="prod-price">${{ p.price }}</div>
-          <div class="prod-note">Instant download &middot; Yours forever</div>
+<div class="store-wrap">
+  <div class="store-section-label">Featured Release</div>
+  <div class="ebook-card">
+    <div class="ebook-cover">
+      <div class="ebook-badge">New Release</div>
+      <div class="ebook-book">
+        <div class="ebook-book-spine"></div>
+        <div class="ebook-book-front">
+          <div class="ebook-fire-line"></div>
+          <div class="ebook-title-text">THE ARTIST IS THE BUSINESS</div>
+          <div class="ebook-title-sub">Independent Artist Blueprint</div>
+          <div class="ebook-fire-line"></div>
+          <div class="ebook-author">Mac Dylan</div>
         </div>
-        <a href="/payments/checkout-product/{{ p.id }}" class="btn-buy">Get Access &rarr;</a>
       </div>
     </div>
-    {% endfor %}
+    <div class="ebook-info">
+      <div class="ebook-info-tag">Digital Ebook - Instant Access</div>
+      <div class="ebook-info-title">The Artist Is The Business</div>
+      <div class="ebook-info-subtitle">The Complete Independent Artist Blueprint</div>
+      <p class="ebook-info-desc">Nine chapters of real systems, frameworks, and strategy for artists who are done waiting for permission. Covers branding, income streams, organic growth, AI leverage, release strategy, and a 90-day execution plan you can start today.</p>
+      <div class="ebook-chapters">
+        <div class="ebook-chapter"><span class="ebook-ch-num">01</span><span class="ebook-ch-title">Identity and Brand Architecture</span></div>
+        <div class="ebook-chapter"><span class="ebook-ch-num">02</span><span class="ebook-ch-title">Income Streams for Artists</span></div>
+        <div class="ebook-chapter"><span class="ebook-ch-num">03</span><span class="ebook-ch-title">Organic Growth Strategy</span></div>
+        <div class="ebook-chapter"><span class="ebook-ch-num">04</span><span class="ebook-ch-title">AI Tools and Leverage</span></div>
+        <div class="ebook-chapter"><span class="ebook-ch-num">05</span><span class="ebook-ch-title">Release Strategy and Rollout</span></div>
+        <div class="ebook-chapter"><span class="ebook-ch-num">06</span><span class="ebook-ch-title">Content and Consistency</span></div>
+        <div class="ebook-chapter"><span class="ebook-ch-num">07</span><span class="ebook-ch-title">Building Your Team</span></div>
+        <div class="ebook-chapter"><span class="ebook-ch-num">08</span><span class="ebook-ch-title">Monetization and Licensing</span></div>
+        <div class="ebook-chapter"><span class="ebook-ch-num">09</span><span class="ebook-ch-title">90-Day Execution Plan</span></div>
+      </div>
+      <div class="ebook-price-row">
+        <div class="ebook-price">$27</div>
+        <div class="ebook-price-note">One-time payment - Instant digital delivery</div>
+      </div>
+      <div class="ebook-btns">
+        <button class="ebook-btn ebook-btn-primary" onclick="buyEbook()">Get Instant Access - $27</button>
+        <a href="#" class="ebook-btn ebook-btn-ghost" onclick="previewEbook(event)">Preview Chapters</a>
+      </div>
+    </div>
   </div>
-  {% else %}
-  <div class="store-empty">
-    <div class="store-empty-icon">&#x1F4D6;</div>
-    <div class="store-empty-txt">Products coming soon</div>
+  {% if products %}
+  <div class="store-section-label">All Products</div>
+  <div class="products-grid">
+    {% for product in products %}
+    {% if product.name != "The Artist Is The Business" and product.is_active %}
+    <div class="prod-card">
+      {% if product.is_new %}<div class="prod-new">New</div>{% endif %}
+      <div class="prod-type">{{ product.product_type | title }}</div>
+      <div class="prod-name">{{ product.name }}</div>
+      <p class="prod-desc">{{ product.description }}</p>
+      <div class="prod-price">${{ product.price }}</div>
+      <button class="prod-btn" onclick="buyProduct({{ product.id }}, '{{ product.name }}', {{ product.price }})">Buy Now</button>
+    </div>
+    {% endif %}
+    {% endfor %}
   </div>
   {% endif %}
-</section>
-{% if courses %}
-<section class="store-sec">
-  <div class="sec-lbl">Courses</div>
-  <div class="prod-grid">
-    {% for p in courses %}
-    <div class="prod-card">
-      <span class="prod-tag">Course</span>
-      <div class="prod-name">{{ p.name }}</div>
-      <p class="prod-desc">{{ p.description }}</p>
-      <div class="prod-footer">
-        <div><div class="prod-price">${{ p.price }}</div></div>
-        <a href="/payments/checkout-product/{{ p.id }}" class="btn-buy">Enroll &rarr;</a>
-      </div>
-    </div>
-    {% endfor %}
-  </div>
-</section>
-{% endif %}
-{% if merch %}
-<section class="store-sec">
-  <div class="sec-lbl">Merch</div>
-  <div class="prod-grid">
-    {% for p in merch %}
-    <div class="prod-card">
-      <span class="prod-tag">Merch</span>
-      <div class="prod-name">{{ p.name }}</div>
-      <p class="prod-desc">{{ p.description }}</p>
-      <div class="prod-footer">
-        <div><div class="prod-price">${{ p.price }}</div></div>
-        <a href="/payments/checkout-product/{{ p.id }}" class="btn-buy">Order &rarr;</a>
-      </div>
-    </div>
-    {% endfor %}
-  </div>
-</section>
-{% endif %}
+</div>
 {% endblock %}
-{% block extra_scripts %}<script></script>{% endblock %}
+{% block extra_scripts %}
+<script>
+window.buyEbook = function() {
+  var email = prompt('Enter your email to get instant access:');
+  if (!email || email.indexOf('@') === -1) { if (email !== null) alert('Please enter a valid email.'); return; }
+  fetch('/payments/store-checkout', {
+    method: 'POST',
+    headers: {'Content-Type': 'application/json'},
+    body: JSON.stringify({product_id: 1, email: email, product_name: 'The Artist Is The Business', price: 27})
+  }).then(function(r){return r.json()}).then(function(d){
+    if (d.checkout_url) window.location.href = d.checkout_url;
+    else alert(d.error || 'Something went wrong.');
+  }).catch(function(){alert('Connection error. Please try again.');});
+};
+window.previewEbook = function(e) {
+  e.preventDefault();
+  alert('Full preview coming soon. Purchase now for instant access to all 9 chapters.');
+};
+window.buyProduct = function(id, name, price) {
+  var email = prompt('Enter your email to purchase "' + name + '" for $' + price + ':');
+  if (!email || email.indexOf('@') === -1) { if (email !== null) alert('Please enter a valid email.'); return; }
+  fetch('/payments/store-checkout', {
+    method: 'POST',
+    headers: {'Content-Type': 'application/json'},
+    body: JSON.stringify({product_id: id, email: email, product_name: name, price: price})
+  }).then(function(r){return r.json()}).then(function(d){
+    if (d.checkout_url) window.location.href = d.checkout_url;
+    else alert(d.error || 'Something went wrong.');
+  }).catch(function(){alert('Connection error. Please try again.');});
+};
+</script>
+{% endblock %}
