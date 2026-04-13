@@ -67,11 +67,16 @@
       <div class="ebook-book">
         <div class="ebook-book-spine"></div>
         <div class="ebook-book-front">
-          <div class="ebook-fire-line"></div>
-          <div class="ebook-title-text">THE ARTIST IS THE BUSINESS</div>
-          <div class="ebook-title-sub">Independent Artist Blueprint</div>
-          <div class="ebook-fire-line"></div>
-          <div class="ebook-author">Mac Dylan</div>
+          <div style="font-family:'Space Mono',monospace;font-size:9px;letter-spacing:.2em;color:#b8a898;text-align:center;margin-bottom:4px">THE</div>
+          <div style="font-family:'Bebas Neue',sans-serif;font-size:38px;color:#f5f0e8;letter-spacing:.04em;text-align:center;line-height:.9;text-shadow:0 2px 8px rgba(0,0,0,.8)">ARTIST</div>
+          <div style="display:flex;align-items:center;gap:6px;margin:4px 0">
+            <div style="flex:1;height:1px;background:var(--ember)"></div>
+            <div style="font-family:'Space Mono',monospace;font-size:7px;letter-spacing:.2em;color:#f5f0e8">IS THE</div>
+            <div style="flex:1;height:1px;background:var(--ember)"></div>
+          </div>
+          <div style="font-family:'Bebas Neue',sans-serif;font-size:36px;color:var(--ember);letter-spacing:.04em;text-align:center;line-height:.9;text-shadow:0 2px 12px rgba(200,75,10,.5)">BUSINESS</div>
+          <div style="font-family:'Cormorant Garamond',serif;font-size:8px;color:#b8a898;font-style:italic;text-align:center;margin-top:8px;line-height:1.4;padding:0 4px">A Real-World Guide to Branding, Growth, and Income</div>
+          <div style="margin-top:10px;padding-top:8px;border-top:1px solid rgba(200,75,10,.3);font-family:'Space Mono',monospace;font-size:7px;letter-spacing:.2em;color:var(--ember);text-align:center">MAC DYLAN</div>
         </div>
       </div>
     </div>
@@ -123,32 +128,30 @@
 {% block extra_scripts %}
 <script>
 window.buyEbook = function() {
-  var email = prompt('Enter your email to get instant access:');
-  if (!email || email.indexOf('@') === -1) { if (email !== null) alert('Please enter a valid email.'); return; }
   fetch('/payments/store-checkout', {
     method: 'POST',
     headers: {'Content-Type': 'application/json'},
-    body: JSON.stringify({product_id: 1, email: email, product_name: 'The Artist Is The Business', price: 27})
+    body: JSON.stringify({product_id: 1, product_name: 'The Artist Is The Business', price: 27})
   }).then(function(r){return r.json()}).then(function(d){
     if (d.checkout_url) window.location.href = d.checkout_url;
     else alert(d.error || 'Something went wrong.');
   }).catch(function(){alert('Connection error. Please try again.');});
 };
+
 window.previewEbook = function(e) {
   e.preventDefault();
   alert('Full preview coming soon. Purchase now for instant access to all 9 chapters.');
 };
 window.buyProduct = function(id, name, price) {
-  var email = prompt('Enter your email to purchase "' + name + '" for $' + price + ':');
-  if (!email || email.indexOf('@') === -1) { if (email !== null) alert('Please enter a valid email.'); return; }
   fetch('/payments/store-checkout', {
     method: 'POST',
     headers: {'Content-Type': 'application/json'},
-    body: JSON.stringify({product_id: id, email: email, product_name: name, price: price})
+    body: JSON.stringify({product_id: id, product_name: name, price: price})
   }).then(function(r){return r.json()}).then(function(d){
     if (d.checkout_url) window.location.href = d.checkout_url;
     else alert(d.error || 'Something went wrong.');
   }).catch(function(){alert('Connection error. Please try again.');});
 };
+
 </script>
 {% endblock %}
