@@ -448,6 +448,7 @@ window.filtBpm=function(min,max,btn){
   btn.closest('div').querySelectorAll('.fb').forEach(function(b){b.classList.remove('on')});btn.classList.add('on');
   activeBpmMin=min;activeBpmMax=max;render();
 };
+window.doSearch=function(q){window.__sq=q.trim().toLowerCase();render();};
 window.filtFree=function(btn){
   freeOnly=!freeOnly;btn.classList.toggle('on',freeOnly);render();
 };
