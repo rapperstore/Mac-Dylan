@@ -1,8 +1,8 @@
 {% extends "base.html" %}
-{% block title %}Beats — Mac Dylan{% endblock %}
+{% block title %}Beats â Mac Dylan{% endblock %}
 
 {% block og_meta %}
-<meta property="og:title" content="146 Beats by Mac Dylan — Stream and License">
+<meta property="og:title" content="146 Beats by Mac Dylan â Stream and License">
 <meta property="og:description" content="146 original Hip Hop beats. Stream free previews, license instantly. MP3 on purchase.">
 <meta property="og:url" content="https://www.macdylan.com/beats/">
 <meta property="og:type" content="website">
@@ -163,6 +163,8 @@
 </div>
 
 <div class="filter-bar">
+  <input id="beat-search" type="text" placeholder="Search beats..." oninput="doSearch(this.value)" style="padding:5px 10px;background:var(--deep);border:1px solid var(--border);color:var(--ash);font-family:'Space Mono',monospace;font-size:9px;outline:none;flex:1;max-width:200px;transition:border-color .2s" onfocus="this.style.borderColor='var(--ember)'" onblur="this.style.borderColor='var(--border)'">
+  <div style="width:1px;height:16px;background:var(--border);margin:0 2px;flex-shrink:0"></div>
   <span class="flbl">Genre</span>
   <button class="fb on" onclick="filt('genre',null,this)">All</button>
   <button class="fb" onclick="filt('genre','Hip Hop',this)">Hip Hop</button>
@@ -273,12 +275,12 @@ BEATS = BEATS.map(function(b){
     genre:b.genre||'Hip Hop', mood:b.mood||'', tags:b.tags||'',
     free:b.is_free, mp3:b.mp3_path||null, plays:b.play_count||0,
     lics:b.is_free ? [
-      {n:'Free Download',d:'MP3 · Non-commercial · Demo only',p:'FREE',a:0,t:'free'}
+      {n:'Free Download',d:'MP3 Â· Non-commercial Â· Demo only',p:'FREE',a:0,t:'free'}
     ] : [
-      {n:'Basic Lease',   d:'MP3 · 2,500 streams · Non-exclusive · 1 year',          p:'$'+b.price_basic,    a:b.price_basic,    t:'basic'},
-      {n:'Premium Lease', d:'WAV+MP3 · Unlimited streams · Non-exclusive · 2 years', p:'$'+b.price_premium,  a:b.price_premium,  t:'premium'},
-      {n:'Trackout Lease',d:'WAV+Stems · Unlimited · Non-exclusive · Lifetime',     p:'$'+b.price_trackout, a:b.price_trackout, t:'trackout'},
-      {n:'Exclusive',     d:'WAV+Stems · Full ownership · Removed from store',        p:'$'+b.price_exclusive,a:b.price_exclusive,t:'exclusive'}
+      {n:'Basic Lease',   d:'MP3 Â· 2,500 streams Â· Non-exclusive Â· 1 year',          p:'$'+b.price_basic,    a:b.price_basic,    t:'basic'},
+      {n:'Premium Lease', d:'WAV+MP3 Â· Unlimited streams Â· Non-exclusive Â· 2 years', p:'$'+b.price_premium,  a:b.price_premium,  t:'premium'},
+      {n:'Trackout Lease',d:'WAV+Stems Â· Unlimited Â· Non-exclusive Â· Lifetime',     p:'$'+b.price_trackout, a:b.price_trackout, t:'trackout'},
+      {n:'Exclusive',     d:'WAV+Stems Â· Full ownership Â· Removed from store',        p:'$'+b.price_exclusive,a:b.price_exclusive,t:'exclusive'}
     ]
   };
 });
@@ -292,7 +294,8 @@ function vis(b){
   if(activeGenre && b.genre!==activeGenre) return false;
   if(activeBpmMin!==null && (b.bpm<activeBpmMin||b.bpm>activeBpmMax)) return false;
   if(freeOnly && !b.free) return false;
-  return true;
+    if(searchQ){var q=searchQ;if(b.title.toLowerCase().indexOf(q)<0&&String(b.bpm).indexOf(q)<0&&(b.key||"").toLowerCase().indexOf(q)<0)return false;}
+return true;
 }
 
 function render(){
@@ -318,7 +321,7 @@ function render(){
       '<div class="row-btns">'+
         '<button class="rbtn" onclick="selectBeat('+b.id+');event.stopPropagation()">Preview</button>'+
         '<button class="rbtn '+( b.free?'dl':'buy')+'" onclick="'+
-        (b.free?'dlFree('+b.id+');':'buyLic('+b.id+',\'basic\',\'$'+b.lics[0]?.a||29+'\','+( b.lics[0]?.a||29)+');')+
+        (b.free?'dlFree('+b.id+');':'buyLic('+b.id+',\'basic\',' + ( b.lics[0]?.a||29) + ');\'')+
         'event.stopPropagation()">'+( b.free?'Free DL':'Buy')+'</button></div>';
     div.addEventListener('click',function(id){return function(){selectBeat(id)}}(b.id));
     panel.appendChild(div);
@@ -332,7 +335,7 @@ window.selectBeat=function(id){
   currentId=id;
   var row=document.getElementById('row-'+id);if(row){row.classList.add('active');row.scrollIntoView({block:'nearest'})}
   document.getElementById('np-name').textContent=beat.title;
-  document.getElementById('np-sub').textContent=beat.bpm+' BPM · '+beat.key+' · '+beat.genre;
+  document.getElementById('np-sub').textContent=beat.bpm+' BPM Â· '+beat.key+' Â· '+beat.genre;
   document.getElementById('np-tag').textContent=beat.free?'Free Beat':'Now Playing';
   document.getElementById('np-plays').style.display='flex';
   document.getElementById('np-plays-count').textContent=(beat.plays||0)+' plays';
@@ -388,7 +391,7 @@ window.toggleLoop=function(){
 // ---- SHARE ----
 function updateShareLinks(beat){
   var url=window.location.origin+'/beats/?beat='+beat.id;
-  var txt=encodeURIComponent('Check out "'+beat.title+'" by Mac Dylan · '+beat.bpm+' BPM · '+beat.key);
+  var txt=encodeURIComponent('Check out "'+beat.title+'" by Mac Dylan Â· '+beat.bpm+' BPM Â· '+beat.key);
   document.getElementById('share-link-input').value=url;
   document.getElementById('share-twitter').href='https://twitter.com/intent/tweet?text='+txt+'&url='+encodeURIComponent(url);
   document.getElementById('share-fb').href='https://www.facebook.com/sharer/sharer.php?u='+encodeURIComponent(url);
@@ -407,7 +410,7 @@ window.copyShareLink=function(){
 };
 window.shareNative=function(){
   var beat=BEATS.find(function(b){return b.id===currentId});if(!beat)return;
-  if(navigator.share){navigator.share({title:beat.title+' by Mac Dylan',text:beat.bpm+' BPM · '+beat.key,url:window.location.origin+'/beats/?beat='+beat.id})}
+  if(navigator.share){navigator.share({title:beat.title+' by Mac Dylan',text:beat.bpm+' BPM Â· '+beat.key,url:window.location.origin+'/beats/?beat='+beat.id})}
   else{copyShareLink();alert('Link copied to clipboard!')}
 };
 
@@ -449,6 +452,7 @@ window.filtBpm=function(min,max,btn){
   activeBpmMin=min;activeBpmMax=max;render();
 };
 window.doSearch=function(q){window.__sq=q.trim().toLowerCase();render();};
+window.doSearch=function(q){searchQ=q.trim().toLowerCase();render();};
 window.filtFree=function(btn){
   freeOnly=!freeOnly;btn.classList.toggle('on',freeOnly);render();
 };
