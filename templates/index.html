@@ -1,6 +1,15 @@
 {% extends "base.html" %}
-{% block title %}Mac Dylan — Mix Engineer · Producer · Artist Developer{% endblock %}
+{% block title %}Mac Dylan â Mix Engineer Â· Producer Â· Artist Developer{% endblock %}
 
+{% block og_meta %}
+<meta property="og:title" content="Mac Dylan — Mix Engineer · Producer · Artist Developer">
+<meta property="og:description" content="Professional recording, mixing, mastering and artist development based in Boise, Idaho. 146 original beats available to license.">
+<meta property="og:url" content="https://www.macdylan.com/">
+<meta property="og:type" content="website">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Mac Dylan — Producer · Mix Engineer">
+<meta name="twitter:description" content="146 beats, mixing, mastering, artist development. Boise, Idaho.">
+{% endblock %}
 {% block extra_styles %}
 .hero{min-height:100vh;display:flex;flex-direction:column;justify-content:flex-end;padding:0 48px 88px;position:relative}
 .hero-eyebrow{font-family:'Space Mono',monospace;font-size:9px;letter-spacing:.5em;color:var(--ember);text-transform:uppercase;margin-bottom:20px;opacity:0;animation:burnIn 1s ease forwards .4s}
@@ -216,7 +225,7 @@
       {% endfor %}
     </div>
   {% else %}
-    <div class="credits-empty">Credits coming soon - add them via the admin panel</div>
+    <div class="credits-empty" style="display:none"></div>
   {% endif %}
 </section>
 <section class="section" data-reveal>
@@ -230,7 +239,7 @@
 <section class="tip-section" data-reveal>
   <div class="tip-banner">
     <div class="tip-left">
-      <span class="tip-jar-big">🫙</span>
+      <span class="tip-jar-big">ð«</span>
       <div class="tip-copy">
         <h3>Support Independent Music</h3>
         <p>Every tip goes directly into making more - beats, sessions, and content.</p>
