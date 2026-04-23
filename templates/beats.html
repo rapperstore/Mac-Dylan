@@ -294,7 +294,7 @@ function vis(b){
   if(activeGenre && b.genre!==activeGenre) return false;
   if(activeBpmMin!==null && (b.bpm<activeBpmMin||b.bpm>activeBpmMax)) return false;
   if(freeOnly && !b.free) return false;
-    if(searchQ){var q=searchQ;if(b.title.toLowerCase().indexOf(q)<0&&String(b.bpm).indexOf(q)<0&&(b.key||"").toLowerCase().indexOf(q)<0)return false;}
+    if(searchQ){var q=searchQ,t=b.title.toLowerCase(),k=(b.key||"").toLowerCase(),p=String(b.bpm),found=t.includes(q)||k.includes(q)||p.includes(q);if(!found)return false;}
 return true;
 }
 
