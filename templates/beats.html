@@ -507,7 +507,7 @@ window.bOpenLease=function(ev,id){
   if(ev)ev.stopPropagation();
   var b=null;for(var i=0;i<BEATS.length;i++){if(BEATS[i].id===id){b=BEATS[i];break;}}
   if(!b)return;
-  if(!cur||cur.id!==id)bSelect(null,id);
+  if(!cur||cur.id!==id)selectBeat(id);
   document.getElementById('lm-title').textContent=b.title+(b.free?' — Free':': Choose License');
   var tiers=b.free
     ?[{n:'Free Download',d:'MP3 · Non-commercial · Demo only · Must credit Mac Dylan',p:'FREE',a:0,t:'free'}]
