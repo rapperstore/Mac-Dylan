@@ -321,7 +321,7 @@ function render(){
     div.id='row-'+b.id;
     var bars='';
     for(var j=0;j<18;j++){var h=((Math.sin(b.id*80+j*1.6)*.5+.5)*.72+.15)*100;bars+='<div class="rwb" style="height:'+h.toFixed(0)+'%;flex:1"></div>'}
-    var baseP=b.free?'FREE':b.lics[0].p;
+    var baseP=b.free?'FREE':'$'+(b.pb||29);
     div.innerHTML='<div class="row-num">'+String(i+1).padStart(2,'0')+'</div>'+
       '<button class="row-play-btn" onclick="selectBeat('+b.id+');event.stopPropagation()"><svg viewBox="0 0 24 24"><polygon points="5,3 19,12 5,21"/></svg></button>'+
       '<div class="row-info"><div class="row-title">'+b.title+'</div>'+
