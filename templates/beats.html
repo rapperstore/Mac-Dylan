@@ -503,34 +503,68 @@ function initNpFire(){
 })();
 
 
-window.bOpenLease=function(ev,id){
-  if(ev)ev.stopPropagation();
-  var b=null;for(var i=0;i<BEATS.length;i++){if(BEATS[i].id===id){b=BEATS[i];break;}}
-  if(!b)return;
-  if(!cur||cur.id!==id)selectBeat(id);
-  document.getElementById('lm-title').textContent=b.title+(b.free?' — Free':': Choose License');
-  var tiers=b.free
-    ?[{n:'Free Download',d:'MP3 · Non-commercial · Demo only · Must credit Mac Dylan',p:'FREE',a:0,t:'free'}]
-    :[{n:'Basic Lease',d:'MP3 · 2,500 streams · Non-exclusive · 1 year',p:'$'+b.pb,a:b.pb,t:'basic'},
-      {n:'Premium Lease',d:'WAV+MP3 · Unlimited streams · Non-exclusive · 2 years',p:'$'+b.pp,a:b.pp,t:'premium'},
-      {n:'Trackout',d:'WAV+Stems · Unlimited · Non-exclusive · Lifetime',p:'$'+b.pt,a:b.pt,t:'trackout'},
-      {n:'Exclusive',d:'WAV+Stems · Full ownership · Removed from catalog',p:'$'+b.pe,a:b.pe,t:'exclusive'}];
-  var rows='';
-  for(var i=0;i<tiers.length;i++){
-    var l=tiers[i],f2=l.t==='free';
-    var fn=f2?'bDlFree('+b.id+')':'bBuy('+b.id+",'"+l.t+"',"+l.a+')';
-    rows+='<div style="padding:14px;border:1px solid #2a2a2a;margin-bottom:10px">';
-    rows+='<div style="display:flex;justify-content:space-between;margin-bottom:5px">';
-    rows+='<b style="font-family:Bebas Neue,sans-serif;font-size:20px;color:#f0f0f0">'+l.n+'</b>';
-    rows+='<b style="font-size:22px;font-family:Bebas Neue,sans-serif;color:'+(f2?'#4ade80':'#ff6b1a')+'">'+l.p+'</b></div>';
-    rows+='<p style="font-size:8px;color:#888;font-family:Space Mono,monospace;margin-bottom:10px;line-height:1.6">'+l.d+'</p>';
-    rows+='<button onclick="'+fn+'" style="width:100%;padding:12px;background:'+(f2?'rgba(74,222,128,.15)':'#ff6b1a')+';border:'+(f2?'1px solid #4ade80':'none')+';color:'+(f2?'#4ade80':'#fff')+';font-family:Space Mono,monospace;font-size:8px;letter-spacing:.2em;text-transform:uppercase;cursor:pointer">'+(f2?'Download Free MP3':'Buy — '+l.p+' → Instant MP3')+'</button></div>';
+
+  // ── LEASE POPUP ─────────────────────────────────────────────
+  function openLeasePopup(id) {
+    var b = null;
+    for (var i = 0; i < BEATS.length; i++) { if (BEATS[i].id === id) { b = BEATS[i]; break; } }
+    if (!b) return;
+    if (!cur || cur.id !== id) selectBeat(id);
+    var isFree = b.free;
+    document.getElementById('lm-title').textContent = b.title + (isFree ? ' — Free Beat' : ' — Choose License');
+    var tiers = isFree
+      ? [{n:'Free Download', d:'MP3 · Non-commercial · Demo only · Must credit Mac Dylan', p:'FREE', a:0, t:'free'}]
+      : [{n:'Basic Lease',   d:'MP3 · 2,500 streams · Non-exclusive · 1 year',             p:'$'+b.pb, a:b.pb, t:'basic'},
+         {n:'Premium Lease', d:'WAV+MP3 · Unlimited streams · Non-exclusive · 2 years',    p:'$'+b.pp, a:b.pp, t:'premium'},
+         {n:'Trackout',      d:'WAV+Stems · Unlimited · Non-exclusive · Lifetime',          p:'$'+b.pt, a:b.pt, t:'trackout'},
+         {n:'Exclusive',     d:'WAV+Stems · Full ownership · Removed from catalog',         p:'$'+b.pe, a:b.pe, t:'exclusive'}];
+    var rows = '';
+    for (var i = 0; i < tiers.length; i++) {
+      var l = tiers[i], f2 = l.t === 'free';
+      var colorPrice = f2 ? '#4ade80' : '#ff6b1a';
+      var colorBtn   = f2 ? 'rgba(74,222,128,.15)' : '#ff6b1a';
+      var borderBtn  = f2 ? '1px solid #4ade80' : 'none';
+      var colorTxt   = f2 ? '#4ade80' : '#fff';
+      var label      = f2 ? 'Download Free MP3' : 'Buy — ' + l.p + ' → Instant MP3';
+      rows += '<div style="padding:14px;border:1px solid #2a2a2a;margin-bottom:10px">'
+            + '<div style="display:flex;justify-content:space-between;margin-bottom:5px">'
+            + '<b style="font-family:Bebas Neue,sans-serif;font-size:20px;color:#f0f0f0">' + l.n + '</b>'
+            + '<b style="font-size:22px;font-family:Bebas Neue,sans-serif;color:' + colorPrice + '">' + l.p + '</b>'
+            + '</div>'
+            + '<p style="font-size:8px;color:#888;font-family:Space Mono,monospace;margin-bottom:10px;line-height:1.6">' + l.d + '</p>'
+            + '<button data-beat="' + b.id + '" data-type="' + l.t + '" data-amt="' + l.a + '"'
+            + ' onclick="handleLeaseBuy(this)"'
+            + ' style="width:100%;padding:12px;background:' + colorBtn + ';border:' + borderBtn + ';color:' + colorTxt + ';font-family:Space Mono,monospace;font-size:8px;letter-spacing:.2em;text-transform:uppercase;cursor:pointer">'
+            + label + '</button>'
+            + '</div>';
+    }
+    document.getElementById('lm-body').innerHTML = rows;
+    document.getElementById('leasepop').style.display = 'flex';
   }
-  document.getElementById('lm-body').innerHTML=rows;
-  document.getElementById('leasepop').style.display='flex';
-};
-window.bCloseLease=function(){document.getElementById('leasepop').style.display='none';};
-render();
+  window.bOpenLease = function(ev, id) { if (ev) ev.stopPropagation(); openLeasePopup(id); };
+  window.bCloseLease = function() { document.getElementById('leasepop').style.display = 'none'; };
+  window.handleLeaseBuy = function(btn) {
+    var id  = parseInt(btn.getAttribute('data-beat'));
+    var type = btn.getAttribute('data-type');
+    var amt  = parseInt(btn.getAttribute('data-amt'));
+    if (type === 'free') {
+      var b = null;
+      for (var i = 0; i < BEATS.length; i++) { if (BEATS[i].id === id) { b = BEATS[i]; break; } }
+      if (b && b.mp3) { var a = document.createElement('a'); a.href = b.mp3; a.download = b.title + '.mp3'; document.body.appendChild(a); a.click(); document.body.removeChild(a); }
+      bCloseLease();
+    } else {
+      bCloseLease();
+      fetch('/payments/beat-checkout', {
+        method: 'POST', headers: {'Content-Type': 'application/json'},
+        body: JSON.stringify({beat_id: id, license: type, price: amt})
+      }).then(function(r) { return r.json(); }).then(function(d) {
+        if (d.checkout_url) window.location.href = d.checkout_url;
+        else alert(d.error || 'Something went wrong.');
+      }).catch(function() { alert('Connection error.'); });
+    }
+  };
+
+  render();
 initNpFire();
 
 // Static waveform bars init
