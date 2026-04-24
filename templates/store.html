@@ -102,7 +102,7 @@
       </div>
       <div class="ebook-btns">
         <button class="ebook-btn ebook-btn-primary" onclick="buyEbook()">Get Instant Access - $27</button>
-        <a href="#" class="ebook-btn ebook-btn-ghost" onclick="previewEbook(event)">Preview Chapters</a>
+        <a href="#" class="ebook-btn ebook-btn-ghost" onclick="window.open('https://pub-3d8b1c7a5e63475b90c0044ca074cba8.r2.dev/THE_ARTIST_IS_THE_BUSINESS_PREVIEW.pdf','_blank')">Preview Chapters</a>
       </div>
     </div>
   </div>
@@ -127,6 +127,10 @@
 {% endblock %}
 {% block extra_scripts %}
 <script>
+function buyEbook(){
+  fetch("/payments/store-checkout",{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify({product_id:1,quantity:1,price:27,product_name:"The Artist Is The Business"})})
+  .then(r=>r.json()).then(d=>{if(d.checkout_url)window.location.href=d.checkout_url;else alert(d.error||"Something went wrong.");}).catch(()=>alert("Connection error."));
+}
 window.buyEbook = function() {
   fetch('/payments/store-checkout', {
     method: 'POST',

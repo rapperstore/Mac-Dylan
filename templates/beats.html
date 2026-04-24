@@ -2,12 +2,12 @@
 {% block title %}Beats â Mac Dylan{% endblock %}
 
 {% block og_meta %}
-<meta property="og:title" content="146 Beats by Mac Dylan â Stream and License">
+<meta property="og:title" content=" Beats by Mac Dylan â Stream and License">
 <meta property="og:description" content="146 original Hip Hop beats. Stream free previews, license instantly. MP3 on purchase.">
 <meta property="og:url" content="https://www.macdylan.com/beats/">
 <meta property="og:type" content="website">
 <meta name="twitter:card" content="summary_large_image">
-<meta name="twitter:title" content="146 Beats by Mac Dylan">
+<meta name="twitter:title" content=" Beats by Mac Dylan">
 {% endblock %}
 {% block extra_styles %}
 /* ===== BEATS PAGE ===== */
@@ -333,8 +333,7 @@ function render(){
       '<div class="row-btns">'+
         '<button class="rbtn" onclick="selectBeat('+b.id+');event.stopPropagation()">Preview</button>'+
         '<button class="rbtn '+( b.free?'dl':'buy')+'" onclick="'+
-        (b.free?'dlFree('+b.id+');':'buyLic('+b.id+',\'basic\',' + ( b.lics[0]?.a||29) + ');\'')+
-        'event.stopPropagation()">'+( b.free?'Free DL':'Buy')+'</button></div>';
+        (b.free?'dlFree('+b.id+');event.stopPropagation()":"bOpenLease(event,'+b.id+');event.stopPropagation()')">'+( b.free?'Free DL':'Buy')+'</button></div>';
     div.addEventListener('click',function(id){return function(){selectBeat(id)}}(b.id));
     panel.appendChild(div);
   });
