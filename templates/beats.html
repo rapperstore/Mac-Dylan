@@ -2,10 +2,10 @@
 window.bBuy=function(id,type,amt){bCloseLease();fetch("/payments/beat-checkout",{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify({beat_id:id,license:type,price:amt})}).then(function(r){return r.json();}).then(function(d){if(d.checkout_url)window.location.href=d.checkout_url;else alert(d.error||"Something went wrong.");}).catch(function(){alert("Connection error.");});};
 window.bDlFree=function(id){bCloseLease();var b=null;for(var i=0;i<BEATS.length;i++){if(BEATS[i].id===id){b=BEATS[i];break;}}if(b&&b.mp3){var a=document.createElement("a");a.href=b.mp3;a.download=b.title+".mp3";document.body.appendChild(a);a.click();document.body.removeChild(a);}else alert("File not available.");};
 {% extends "base.html" %}
-{% block title %}Beats Ã¢ÂÂ Mac Dylan{% endblock %}
+{% block title %}Beats ÃÂ¢ÃÂÃÂ Mac Dylan{% endblock %}
 
 {% block og_meta %}
-<meta property="og:title" content=" Beats by Mac Dylan Ã¢ÂÂ Stream and License">
+<meta property="og:title" content=" Beats by Mac Dylan ÃÂ¢ÃÂÃÂ Stream and License">
 <meta property="og:description" content="146 original Hip Hop beats. Stream free previews, license instantly. MP3 on purchase.">
 <meta property="og:url" content="https://www.macdylan.com/beats/">
 <meta property="og:type" content="website">
@@ -293,12 +293,12 @@ BEATS = BEATS.map(function(b){
     genre:b.genre||'Hip Hop', mood:b.mood||'', tags:b.tags||'',
     free:b.is_free, mp3:b.mp3_path||null, plays:b.play_count||0,
     lics:b.is_free ? [
-      {n:'Free Download',d:'MP3 ÃÂ· Non-commercial ÃÂ· Demo only',p:'FREE',a:0,t:'free'}
+      {n:'Free Download',d:'MP3 ÃÂÃÂ· Non-commercial ÃÂÃÂ· Demo only',p:'FREE',a:0,t:'free'}
     ] : [
-      {n:'Basic Lease',   d:'MP3 ÃÂ· 2,500 streams ÃÂ· Non-exclusive ÃÂ· 1 year',          p:'$'+b.price_basic,    a:b.price_basic,    t:'basic'},
-      {n:'Premium Lease', d:'WAV+MP3 ÃÂ· Unlimited streams ÃÂ· Non-exclusive ÃÂ· 2 years', p:'$'+b.price_premium,  a:b.price_premium,  t:'premium'},
-      {n:'Trackout Lease',d:'WAV+Stems ÃÂ· Unlimited ÃÂ· Non-exclusive ÃÂ· Lifetime',     p:'$'+b.price_trackout, a:b.price_trackout, t:'trackout'},
-      {n:'Exclusive',     d:'WAV+Stems ÃÂ· Full ownership ÃÂ· Removed from store',        p:'$'+b.price_exclusive,a:b.price_exclusive,t:'exclusive'}
+      {n:'Basic Lease',   d:'MP3 ÃÂÃÂ· 2,500 streams ÃÂÃÂ· Non-exclusive ÃÂÃÂ· 1 year',          p:'$'+b.price_basic,    a:b.price_basic,    t:'basic'},
+      {n:'Premium Lease', d:'WAV+MP3 ÃÂÃÂ· Unlimited streams ÃÂÃÂ· Non-exclusive ÃÂÃÂ· 2 years', p:'$'+b.price_premium,  a:b.price_premium,  t:'premium'},
+      {n:'Trackout Lease',d:'WAV+Stems ÃÂÃÂ· Unlimited ÃÂÃÂ· Non-exclusive ÃÂÃÂ· Lifetime',     p:'$'+b.price_trackout, a:b.price_trackout, t:'trackout'},
+      {n:'Exclusive',     d:'WAV+Stems ÃÂÃÂ· Full ownership ÃÂÃÂ· Removed from store',        p:'$'+b.price_exclusive,a:b.price_exclusive,t:'exclusive'}
     ]
   };
 });
@@ -352,7 +352,7 @@ window.selectBeat=function(id){
   currentId=id;
   var row=document.getElementById('row-'+id);if(row){row.classList.add('active');row.scrollIntoView({block:'nearest'})}
   document.getElementById('np-name').textContent=beat.title;
-  document.getElementById('np-sub').textContent=beat.bpm+' BPM ÃÂ· '+beat.key+' ÃÂ· '+beat.genre;
+  document.getElementById('np-sub').textContent=beat.bpm+' BPM ÃÂÃÂ· '+beat.key+' ÃÂÃÂ· '+beat.genre;
   document.getElementById('np-tag').textContent=beat.free?'Free Beat':'Now Playing';
   document.getElementById('np-plays').style.display='flex';
   document.getElementById('np-plays-count').textContent=(beat.plays||0)+' plays';
@@ -408,7 +408,7 @@ window.toggleLoop=function(){
 // ---- SHARE ----
 function updateShareLinks(beat){
   var url=window.location.origin+'/beats/?beat='+beat.id;
-  var txt=encodeURIComponent('Check out "'+beat.title+'" by Mac Dylan ÃÂ· '+beat.bpm+' BPM ÃÂ· '+beat.key);
+  var txt=encodeURIComponent('Check out "'+beat.title+'" by Mac Dylan ÃÂÃÂ· '+beat.bpm+' BPM ÃÂÃÂ· '+beat.key);
   document.getElementById('share-link-input').value=url;
   document.getElementById('share-twitter').href='https://twitter.com/intent/tweet?text='+txt+'&url='+encodeURIComponent(url);
   document.getElementById('share-fb').href='https://www.facebook.com/sharer/sharer.php?u='+encodeURIComponent(url);
@@ -427,7 +427,7 @@ window.copyShareLink=function(){
 };
 window.shareNative=function(){
   var beat=BEATS.find(function(b){return b.id===currentId});if(!beat)return;
-  if(navigator.share){navigator.share({title:beat.title+' by Mac Dylan',text:beat.bpm+' BPM ÃÂ· '+beat.key,url:window.location.origin+'/beats/?beat='+beat.id})}
+  if(navigator.share){navigator.share({title:beat.title+' by Mac Dylan',text:beat.bpm+' BPM ÃÂÃÂ· '+beat.key,url:window.location.origin+'/beats/?beat='+beat.id})}
   else{copyShareLink();alert('Link copied to clipboard!')}
 };
 
@@ -505,74 +505,14 @@ function initNpFire(){
   var params=new URLSearchParams(window.location.search);
   var beatId=params.get('beat');
   if(beatId){setTimeout(function(){selectBeat(parseInt(beatId))},300);}
+
+window.bOpenLease=function(ev,id){if(ev)ev.stopPropagation();var b=null,i;for(i=0;i<BEATS.length;i++){if(BEATS[i].id===id){b=BEATS[i];break;}}if(!b)return;if(!cur||cur.id!==id)bSelect(null,id);document.getElementById("lm-title").textContent=b.title+(b.free?" — Free":" — Choose License");var tiers=b.free?[{n:"Free Download",d:"MP3 · Non-commercial · Demo only",p:"FREE",a:0,t:"free"}]:[{n:"Basic Lease",d:"MP3 · 2,500 streams · Non-exclusive · 1yr",p:"$"+b.pb,a:b.pb,t:"basic"},{n:"Premium Lease",d:"WAV+MP3 · Unlimited · Non-exclusive · 2yr",p:"$"+b.pp,a:b.pp,t:"premium"},{n:"Trackout",d:"WAV+Stems · Unlimited · Lifetime",p:"$"+b.pt,a:b.pt,t:"trackout"},{n:"Exclusive Rights",d:"WAV+Stems · Full ownership",p:"$"+b.pe,a:b.pe,t:"exclusive"}];var html="",l;for(i=0;i<tiers.length;i++){l=tiers[i];var f2=l.t==="free",fn=f2?"bDlFree("+b.id+")":"bBuy("+b.id+',"'+l.t+'",'+l.a+")";html+='<div class="ltier"><div class="ltier-top"><div class="ltier-name">'+l.n+'</div><div class="ltier-price'+(f2?" fp":"")+'">'+l.p+'</div></div><div class="ltier-desc">'+l.d+'</div><button class="lcta'+(f2?" fp":"")+'" onclick="'+fn+'">'+(f2?"Download Free MP3":"Buy — "+l.p+" → Instant MP3")+"</button></div>";}document.getElementById("lm-body").innerHTML=html;document.getElementById("leasepop").classList.add("open");};
+window.bCloseLease=function(){document.getElementById("leasepop").classList.remove("open");};
+window.bBuy=function(id,type,amt){bCloseLease();fetch("/payments/beat-checkout",{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify({beat_id:id,license:type,price:amt})}).then(function(r){return r.json();}).then(function(d){if(d.checkout_url)window.location.href=d.checkout_url;else alert(d.error||"Something went wrong.");}).catch(function(){alert("Connection error.");});};
+window.bDlFree=function(id){bCloseLease();var b=null,i;for(i=0;i<BEATS.length;i++){if(BEATS[i].id===id){b=BEATS[i];break;}}if(b&&b.mp3){var a=document.createElement("a");a.href=b.mp3;a.download=b.title+".mp3";document.body.appendChild(a);a.click();document.body.removeChild(a);}else alert("File not available.");};
+render();
+
 })();
-
-
-
-  // ââ LEASE POPUP âââââââââââââââââââââââââââââââââââââââââââââ
-  function openLeasePopup(id) {
-    var b = null;
-    for (var i = 0; i < BEATS.length; i++) { if (BEATS[i].id === id) { b = BEATS[i]; break; } }
-    if (!b) return;
-    if (!cur || cur.id !== id) selectBeat(id);
-    var isFree = b.free;
-    document.getElementById('lm-title').textContent = b.title + (isFree ? ' â Free Beat' : ' â Choose License');
-    var tiers = isFree
-      ? [{n:'Free Download', d:'MP3 Â· Non-commercial Â· Demo only Â· Must credit Mac Dylan', p:'FREE', a:0, t:'free'}]
-      : [{n:'Basic Lease',   d:'MP3 Â· 2,500 streams Â· Non-exclusive Â· 1 year',             p:'$'+b.pb, a:b.pb, t:'basic'},
-         {n:'Premium Lease', d:'WAV+MP3 Â· Unlimited streams Â· Non-exclusive Â· 2 years',    p:'$'+b.pp, a:b.pp, t:'premium'},
-         {n:'Trackout',      d:'WAV+Stems Â· Unlimited Â· Non-exclusive Â· Lifetime',          p:'$'+b.pt, a:b.pt, t:'trackout'},
-         {n:'Exclusive',     d:'WAV+Stems Â· Full ownership Â· Removed from catalog',         p:'$'+b.pe, a:b.pe, t:'exclusive'}];
-    var rows = '';
-    for (var i = 0; i < tiers.length; i++) {
-      var l = tiers[i], f2 = l.t === 'free';
-      var colorPrice = f2 ? '#4ade80' : '#ff6b1a';
-      var colorBtn   = f2 ? 'rgba(74,222,128,.15)' : '#ff6b1a';
-      var borderBtn  = f2 ? '1px solid #4ade80' : 'none';
-      var colorTxt   = f2 ? '#4ade80' : '#fff';
-      var label      = f2 ? 'Download Free MP3' : 'Buy â ' + l.p + ' â Instant MP3';
-      rows += '<div style="padding:14px;border:1px solid #2a2a2a;margin-bottom:10px">'
-            + '<div style="display:flex;justify-content:space-between;margin-bottom:5px">'
-            + '<b style="font-family:Bebas Neue,sans-serif;font-size:20px;color:#f0f0f0">' + l.n + '</b>'
-            + '<b style="font-size:22px;font-family:Bebas Neue,sans-serif;color:' + colorPrice + '">' + l.p + '</b>'
-            + '</div>'
-            + '<p style="font-size:8px;color:#888;font-family:Space Mono,monospace;margin-bottom:10px;line-height:1.6">' + l.d + '</p>'
-            + '<button data-beat="' + b.id + '" data-type="' + l.t + '" data-amt="' + l.a + '"'
-            + ' onclick="handleLeaseBuy(this)"'
-            + ' style="width:100%;padding:12px;background:' + colorBtn + ';border:' + borderBtn + ';color:' + colorTxt + ';font-family:Space Mono,monospace;font-size:8px;letter-spacing:.2em;text-transform:uppercase;cursor:pointer">'
-            + label + '</button>'
-            + '</div>';
-    }
-    document.getElementById('lm-body').innerHTML = rows;
-    document.getElementById('leasepop').style.display = 'flex';
-  }
-  window.bOpenLease = function(ev, id) { if (ev) ev.stopPropagation(); openLeasePopup(id); };
-  window.bCloseLease = function() { document.getElementById('leasepop').style.display = 'none'; };
-  window.handleLeaseBuy = function(btn) {
-    var id  = parseInt(btn.getAttribute('data-beat'));
-    var type = btn.getAttribute('data-type');
-    var amt  = parseInt(btn.getAttribute('data-amt'));
-    if (type === 'free') {
-      var b = null;
-      for (var i = 0; i < BEATS.length; i++) { if (BEATS[i].id === id) { b = BEATS[i]; break; } }
-      if (b && b.mp3) { var a = document.createElement('a'); a.href = b.mp3; a.download = b.title + '.mp3'; document.body.appendChild(a); a.click(); document.body.removeChild(a); }
-      bCloseLease();
-    } else {
-      bCloseLease();
-      fetch('/payments/beat-checkout', {
-        method: 'POST', headers: {'Content-Type': 'application/json'},
-        body: JSON.stringify({beat_id: id, license: type, price: amt})
-      }).then(function(r) { return r.json(); }).then(function(d) {
-        if (d.checkout_url) window.location.href = d.checkout_url;
-        else alert(d.error || 'Something went wrong.');
-      }).catch(function() { alert('Connection error.'); });
-    }
-  };
-
-  render();
-initNpFire();
-
-// Static waveform bars init
 (function(){
   var c=document.getElementById('np-static-bars');
   if(!c)return;
@@ -581,8 +521,7 @@ initNpFire();
     b.style.cssText='height:'+h.toFixed(0)+'%;flex:1;border-radius:1px;background:rgba(107,90,80,.3)';
     c.appendChild(b);
   }
-})();
-
-})();
+})()
+;
 </script>
 {% endblock %}
