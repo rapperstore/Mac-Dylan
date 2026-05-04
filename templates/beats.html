@@ -506,6 +506,17 @@ function initNpFire(){
   var beatId=params.get('beat');
   if(beatId){setTimeout(function(){selectBeat(parseInt(beatId))},300);}
 
+window.bSelect = function(ev,id){ if(ev) ev.stopPropagation(); selectBeat(id); };
+window.bPlayPause = window.playPause;
+window.bPrev = window.prevTrack;
+window.bNext = window.nextTrack;
+window.bVol = window.setVol;
+window.bLoop = window.toggleLoop;
+window.bSearch = window.doSearch;
+window.bBpm = window.filtBpm;
+window.bFree = window.filtFree;
+window.bMiniLic = function(){ if(window._cur) window.bOpenLease(null, window._cur); };
+
 window.bOpenLease=function(ev,id){if(ev)ev.stopPropagation();var b=null,i;for(i=0;i<BEATS.length;i++){if(BEATS[i].id===id){b=BEATS[i];break;}}if(!b)return;if(!cur||cur.id!==id)bSelect(null,id);document.getElementById("lm-title").textContent=b.title+(b.free?" — Free":" — Choose License");var tiers=b.free?[{n:"Free Download",d:"MP3 · Non-commercial · Demo only",p:"FREE",a:0,t:"free"}]:[{n:"Basic Lease",d:"MP3 · 2,500 streams · Non-exclusive · 1yr",p:"$"+b.pb,a:b.pb,t:"basic"},{n:"Premium Lease",d:"WAV+MP3 · Unlimited · Non-exclusive · 2yr",p:"$"+b.pp,a:b.pp,t:"premium"},{n:"Trackout",d:"WAV+Stems · Unlimited · Lifetime",p:"$"+b.pt,a:b.pt,t:"trackout"},{n:"Exclusive Rights",d:"WAV+Stems · Full ownership",p:"$"+b.pe,a:b.pe,t:"exclusive"}];var html="",l;for(i=0;i<tiers.length;i++){l=tiers[i];var f2=l.t==="free",fn=f2?"bDlFree("+b.id+")":"bBuy("+b.id+',"'+l.t+'",'+l.a+")";html+='<div class="ltier"><div class="ltier-top"><div class="ltier-name">'+l.n+'</div><div class="ltier-price'+(f2?" fp":"")+'">'+l.p+'</div></div><div class="ltier-desc">'+l.d+'</div><button class="lcta'+(f2?" fp":"")+'" onclick="'+fn+'">'+(f2?"Download Free MP3":"Buy — "+l.p+" → Instant MP3")+"</button></div>";}document.getElementById("lm-body").innerHTML=html;document.getElementById("leasepop").classList.add("open");};
 window.bCloseLease=function(){document.getElementById("leasepop").classList.remove("open");};
 window.bBuy=function(id,type,amt){bCloseLease();fetch("/payments/beat-checkout",{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify({beat_id:id,license:type,price:amt})}).then(function(r){return r.json();}).then(function(d){if(d.checkout_url)window.location.href=d.checkout_url;else alert(d.error||"Something went wrong.");}).catch(function(){alert("Connection error.");});};
