@@ -339,7 +339,7 @@ function render(){
       '<div class="row-btns">'+
         '<button class="rbtn" onclick="selectBeat('+b.id+');event.stopPropagation()">Preview</button>'+
         '<button class="rbtn '+( b.free?'dl':'buy')+'" onclick="'+
-        (b.free?'dlFree('+b.id+');event.stopPropagation()":"bOpenLease(event,'+b.id+');event.stopPropagation()')">'+( b.free?'Free DL':'Buy')+'</button></div>';
+        (b.free?'dlFree('+b.id+');event.stopPropagation()"':'bOpenLease(event,'+b.id+');event.stopPropagation()"')+
     div.addEventListener('click',function(id){return function(){selectBeat(id)}}(b.id));
     panel.appendChild(div);
   });
