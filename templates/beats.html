@@ -360,18 +360,25 @@ window.selectBeat=function(id){
   renderLics(beat);
   document.getElementById('np-lic-section').style.display='block';
   initNpFire();
+  if(window._fallbackAudio){try{window._fallbackAudio.pause();}catch(e){}window._fallbackAudio=null;}
   if(ws){ws.destroy();ws=null}
   document.getElementById('np-cur').textContent='0:00';
   document.getElementById('np-dur').textContent='0:00';
   setPI(false);
   if(beat.mp3){
     document.getElementById('np-ws-wrap').innerHTML='<div id="np-ws"></div>';
+    // Create a hidden audio element so playback works even if CORS blocks the waveform fetch
+    var audioEl=document.createElement('audio');
+    audioEl.crossOrigin='anonymous';
+    audioEl.src=beat.mp3;
     ws=WaveSurfer.create({
       container:'#np-ws',
       waveColor:beat.free?'rgba(58,138,90,.5)':'rgba(107,90,80,.5)',
       progressColor:beat.free?'rgba(58,138,90,.85)':'rgba(200,75,10,.85)',
       height:48,barWidth:2,barGap:1,barRadius:1,interact:true,
-      url:beat.mp3
+      media:audioEl,
+      url:beat.mp3,
+      fetchParams:{mode:'cors',credentials:'omit'}
     });
     ws.setVolume(+document.getElementById('vol').value);
     ws.on('ready',function(){document.getElementById('np-dur').textContent=fmt(ws.getDuration());ws.play();setPI(true)});
@@ -379,6 +386,24 @@ window.selectBeat=function(id){
     ws.on('finish',function(){
       if(looping){ws.seekTo(0);ws.play();}
       else{setPI(false);nextTrack();}
+    });
+    // If CORS blocks waveform fetch, fall back to direct audio element playback
+    ws.on('error',function(err){
+      console.warn('WaveSurfer error (likely CORS on R2):', err);
+      // Destroy wavesurfer and use a plain audio element so beat still plays
+      try{ws.destroy();}catch(e){}ws=null;
+      var wrap=document.getElementById('np-ws-wrap');
+      if(!wrap)return;
+      var a=document.createElement('audio');
+      a.src=beat.mp3; a.controls=true; a.autoplay=true;
+      a.style.cssText='width:100%;height:48px;filter:invert(1) sepia(1) saturate(3) hue-rotate(10deg);';
+      a.onplay=function(){setPI(true)};a.onpause=function(){setPI(false)};
+      a.ontimeupdate=function(){document.getElementById('np-cur').textContent=fmt(a.currentTime)};
+      a.ondurationchange=function(){document.getElementById('np-dur').textContent=fmt(a.duration)};
+      a.onended=function(){setPI(false);if(looping){a.currentTime=0;a.play();}else{nextTrack();}};
+      wrap.innerHTML='';wrap.appendChild(a);
+      // Redefine playPause to control this fallback audio
+      window._fallbackAudio=a;
     });
     fetch('/beats/api/play/'+id,{method:'POST'});
   } else {
@@ -390,7 +415,10 @@ window.selectBeat=function(id){
 };
 
 // ---- PLAYBACK CONTROLS ----
-window.playPause=function(){if(!ws){if(currentId)selectBeat(currentId);return}if(ws.isPlaying()){ws.pause();setPI(false)}else{ws.play();setPI(true)}};
+window.playPause=function(){
+  if(window._fallbackAudio){var a=window._fallbackAudio;if(a.paused){a.play();setPI(true)}else{a.pause();setPI(false)}return;}
+  if(!ws){if(currentId)selectBeat(currentId);return}if(ws.isPlaying()){ws.pause();setPI(false)}else{ws.play();setPI(true)}
+};
 window.prevTrack=function(){var v=BEATS.filter(vis),i=v.findIndex(function(b){return b.id===currentId});if(i>0)selectBeat(v[i-1].id);else if(v.length)selectBeat(v[v.length-1].id)};
 window.nextTrack=function(){var v=BEATS.filter(vis),i=v.findIndex(function(b){return b.id===currentId});if(i<v.length-1)selectBeat(v[i+1].id);else if(v.length)selectBeat(v[0].id)};
 window.setVol=function(v){if(ws)ws.setVolume(+v)};
