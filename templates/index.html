@@ -11,7 +11,8 @@
 <meta name="twitter:description" content="146 beats, mixing, mastering, artist development. Boise, Idaho.">
 {% endblock %}
 {% block extra_styles %}
-.hero{min-height:100vh;display:flex;flex-direction:column;justify-content:flex-end;padding:0 48px 88px;position:relative}
+/* ── HERO ── */
+.hero{min-height:100vh;display:flex;flex-direction:column;justify-content:flex-end;padding:0 48px 88px;position:relative;overflow:hidden}
 .hero-eyebrow{font-family:'Space Mono',monospace;font-size:9px;letter-spacing:.5em;color:var(--ember);text-transform:uppercase;margin-bottom:20px;opacity:0;animation:burnIn 1s ease forwards .4s}
 .hero-title{font-family:'Bebas Neue',sans-serif;font-size:clamp(80px,16vw,210px);line-height:.84;letter-spacing:.01em;opacity:0;animation:burnIn 1s ease forwards .7s}
 .hero-title .outline{color:var(--fire);display:block;text-shadow:0 0 80px rgba(232,114,12,.45)}
@@ -24,53 +25,93 @@
 .hero-extra{display:flex;align-items:center;gap:12px;margin-top:16px;flex-wrap:wrap;opacity:0;animation:burnIn 1s ease forwards 1.5s}
 .btn-ebook{display:inline-flex;align-items:center;gap:8px;padding:9px 18px;background:rgba(200,75,10,.07);border:1px solid rgba(200,75,10,.22);color:#c84b0a;font-family:'Space Mono',monospace;font-size:8px;letter-spacing:.25em;text-transform:uppercase;text-decoration:none;transition:all .22s;cursor:pointer}
 .btn-ebook:hover{background:rgba(200,75,10,.15);border-color:var(--ember);color:#c84b0a}
-.about{padding:120px 48px;display:grid;grid-template-columns:1fr 1fr;gap:80px;align-items:center;border-top:1px solid var(--border)}
+
+/* ── HERO MIC SVG ART ── */
+.hero-studio-art{position:absolute;right:-20px;bottom:0;height:105vh;width:auto;pointer-events:none;opacity:.13;filter:drop-shadow(0 0 60px rgba(200,75,10,.5));animation:micDrift 8s ease-in-out infinite;transform-origin:center bottom;color:var(--ember)}
+@keyframes micDrift{0%,100%{transform:translateX(0) rotate(0deg)}50%{transform:translateX(-8px) rotate(.5deg)}}
+.hero-glow-orb{position:absolute;right:15%;top:20%;width:400px;height:400px;border-radius:50%;background:radial-gradient(ellipse,rgba(200,75,10,.08) 0%,transparent 70%);pointer-events:none;animation:orbPulse 5s ease-in-out infinite}
+@keyframes orbPulse{0%,100%{transform:scale(1);opacity:.6}50%{transform:scale(1.15);opacity:1}}
+
+/* ── STUDIO SIGNAL STRIP ── */
+.studio-strip{background:rgba(5,4,3,.99);border-top:1px solid rgba(200,75,10,.18);border-bottom:1px solid rgba(200,75,10,.18);padding:10px 48px;display:flex;align-items:center;gap:18px;overflow:hidden;position:relative}
+.studio-strip::before{content:'';position:absolute;inset:0;background:linear-gradient(90deg,rgba(200,75,10,.06),transparent 30%,transparent 70%,rgba(200,75,10,.06));pointer-events:none}
+.rec-indicator{display:flex;align-items:center;gap:8px;flex-shrink:0}
+.rec-dot{width:7px;height:7px;background:var(--ember);border-radius:50%;animation:recPulse 1.1s ease-in-out infinite;box-shadow:0 0 10px var(--ember)}
+@keyframes recPulse{0%,100%{opacity:1;box-shadow:0 0 10px var(--ember)}50%{opacity:.2;box-shadow:0 0 2px var(--ember)}}
+.rec-label{font-family:'Space Mono',monospace;font-size:7px;letter-spacing:.45em;color:var(--ember);text-transform:uppercase}
+.vu-wrap{display:flex;align-items:flex-end;gap:1.5px;height:20px;flex:1;min-width:0}
+.vu-b{border-radius:1px 1px 0 0;flex:1;min-width:2px;max-width:8px}
+.studio-meta{font-family:'Space Mono',monospace;font-size:7px;letter-spacing:.28em;color:var(--muted);text-transform:uppercase;flex-shrink:0;white-space:nowrap}
+
+/* ── ABOUT ── */
+.about{padding:120px 48px;display:grid;grid-template-columns:1fr 1fr;gap:80px;align-items:center;border-top:1px solid var(--border);position:relative}
 .about-label{font-family:'Space Mono',monospace;font-size:8px;letter-spacing:.5em;color:var(--ember);text-transform:uppercase;margin-bottom:18px}
 .about-heading{font-family:'Bebas Neue',sans-serif;font-size:clamp(40px,6vw,72px);line-height:.95;margin-bottom:20px}.about-heading em{color:var(--fire);font-style:normal}
 .about-text{font-size:17px;line-height:1.8;color:var(--ash);font-style:italic;margin-bottom:20px}
 .about-contact{font-family:'Space Mono',monospace;font-size:9px;letter-spacing:.2em;color:var(--muted)}.about-contact a{color:var(--ember);text-decoration:none}
-.stats{display:grid;grid-template-columns:1fr 1fr;gap:2px;background:var(--border);border:1px solid var(--border)}
-.stat{background:var(--card);padding:30px 22px;transition:background .2s}.stat:hover{background:var(--card2)}
-.stat-num{font-family:'Bebas Neue',sans-serif;font-size:48px;color:var(--fire);line-height:1;margin-bottom:4px}
+.stats{display:grid;grid-template-columns:1fr 1fr;gap:2px;background:var(--border);border:1px solid var(--border);position:relative}
+.stats-mic-accent{position:absolute;inset:0;pointer-events:none;overflow:hidden}
+.stat{background:var(--card);padding:30px 22px;transition:background .2s;position:relative;overflow:hidden}
+.stat:hover{background:var(--card2)}
+.stat::after{content:'';position:absolute;bottom:0;left:0;right:0;height:2px;background:linear-gradient(90deg,transparent,rgba(200,75,10,.0));transition:background .3s}
+.stat:hover::after{background:linear-gradient(90deg,transparent,rgba(200,75,10,.3),transparent)}
+.stat-num{font-family:'Bebas Neue',sans-serif;font-size:52px;color:var(--fire);line-height:1;margin-bottom:4px;text-shadow:0 0 30px rgba(232,114,12,.25)}
 .stat-label{font-family:'Space Mono',monospace;font-size:8px;letter-spacing:.3em;color:var(--muted);text-transform:uppercase}
+
+/* ── WAVEFORM DIVIDER ── */
+.wave-div{padding:0 48px;height:48px;display:flex;align-items:center;gap:1.5px;overflow:hidden;opacity:.35;border-top:1px solid var(--border)}
+.wave-div-b{flex:1;border-radius:1px;background:linear-gradient(to top,rgba(200,75,10,.6),rgba(200,75,10,.15))}
+
+/* ── SECTIONS ── */
 .section{padding:0 48px 100px}
 .sec-hdr{display:flex;align-items:baseline;justify-content:space-between;margin-bottom:32px}
 .sec-lbl{font-family:'Space Mono',monospace;font-size:8px;letter-spacing:.5em;color:var(--ember);text-transform:uppercase}
 .sec-link{font-family:'Space Mono',monospace;font-size:8px;letter-spacing:.3em;color:var(--muted);text-transform:uppercase;text-decoration:none;transition:color .2s}.sec-link:hover{color:var(--fire)}
+
+/* ── MINI PLAYLIST ── */
 .mini-playlist{background:var(--card);border:1px solid var(--border)}
 .mini-row{display:flex;align-items:center;padding:12px 18px;border-bottom:1px solid var(--border);gap:12px;text-decoration:none;color:inherit;transition:background .2s;position:relative;overflow:hidden}
 .mini-row:last-child{border-bottom:none}.mini-row:hover{background:var(--card2)}
 .mini-row::before{content:'';position:absolute;left:0;top:0;bottom:0;width:0;background:var(--ember);transition:width .3s}.mini-row:hover::before{width:2px}
 .mini-num{font-family:'Space Mono',monospace;font-size:9px;color:var(--muted);width:18px;flex-shrink:0}
-.mini-ph{width:30px;height:30px;background:linear-gradient(135deg,#0d0a07,#1e1208);display:flex;align-items:center;justify-content:center;font-family:'Bebas Neue',sans-serif;font-size:13px;color:rgba(200,75,10,.25);flex-shrink:0}
+.mini-ph{width:30px;height:30px;background:linear-gradient(135deg,#0d0a07,#1e1208);display:flex;align-items:center;justify-content:center;font-family:'Bebas Neue',sans-serif;font-size:13px;color:rgba(200,75,10,.35);flex-shrink:0;border:1px solid var(--border)}
 .mini-info{flex:1;min-width:0}
 .mini-title{font-family:'Bebas Neue',sans-serif;font-size:15px;color:var(--white);letter-spacing:.04em;line-height:1}
 .mini-meta{font-family:'Space Mono',monospace;font-size:7px;letter-spacing:.16em;color:var(--muted);text-transform:uppercase;margin-top:2px}
 .mini-price{font-family:'Bebas Neue',sans-serif;font-size:17px;flex-shrink:0}
 .mini-price.fire{color:var(--fire)}.mini-price.green{color:var(--green)}
+
+/* ── SERVICES GRID ── */
 .svc-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:2px;background:var(--border);border:1px solid var(--border)}
 .svc-card{background:var(--card);padding:34px 26px;text-decoration:none;display:block;position:relative;overflow:hidden;transition:background .3s;color:inherit}
 .svc-card:hover{background:var(--card2)}
 .svc-card::before{content:'';position:absolute;top:0;left:0;right:0;height:2px;background:linear-gradient(90deg,var(--ember),var(--flame));transform:scaleX(0);transform-origin:left;transition:transform .4s}.svc-card:hover::before{transform:scaleX(1)}
-.svc-num{font-family:'Bebas Neue',sans-serif;font-size:48px;color:var(--border);line-height:1;margin-bottom:12px}
+.svc-card-icon{margin-bottom:14px;opacity:.55;transition:opacity .3s}.svc-card:hover .svc-card-icon{opacity:.85}
+.svc-num{font-family:'Bebas Neue',sans-serif;font-size:48px;color:rgba(30,26,22,.8);line-height:1;margin-bottom:4px;position:absolute;right:20px;top:20px}
 .svc-name{font-family:'Bebas Neue',sans-serif;font-size:21px;color:var(--white);letter-spacing:.04em;margin-bottom:8px;line-height:1}
 .svc-desc{font-size:13px;color:var(--muted);font-style:italic;line-height:1.6;margin-bottom:16px}
 .svc-price{font-family:'Bebas Neue',sans-serif;font-size:24px;color:var(--fire)}
 .svc-price small{font-size:11px;color:var(--muted);font-family:'Space Mono',monospace;margin-left:4px}
+
+/* ── CREDITS ── */
 .credits-section{padding:0 48px 80px}
 .credits-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(200px,1fr));gap:2px;background:var(--border);border:1px solid var(--border)}
-.credit-card{background:var(--card);padding:18px 20px;transition:background .2s}
+.credit-card{background:var(--card);padding:18px 20px;transition:background .2s;position:relative;overflow:hidden}
 .credit-card:hover{background:var(--card2)}
+.credit-card::before{content:'';position:absolute;left:0;top:0;bottom:0;width:2px;background:var(--ember);transform:scaleY(0);transform-origin:bottom;transition:transform .3s}.credit-card:hover::before{transform:scaleY(1)}
 .credit-artist{font-family:'Bebas Neue',sans-serif;font-size:17px;color:var(--white);letter-spacing:.04em;line-height:1}
 .credit-role{font-family:'Space Mono',monospace;font-size:7px;letter-spacing:.28em;color:var(--ember);text-transform:uppercase;margin-top:4px}
 .credit-track{font-size:12px;color:var(--muted);font-style:italic;margin-top:4px}
 .credits-empty{padding:28px;font-family:'Space Mono',monospace;font-size:9px;letter-spacing:.2em;color:var(--muted);text-transform:uppercase;background:var(--card);text-align:center;border:1px solid var(--border)}
+
+/* ── TIP JAR ── */
 .tip-section{padding:0 48px 60px}
-.tip-banner{background:linear-gradient(135deg,rgba(200,75,10,.1),rgba(200,75,10,.04));border:1px solid rgba(200,75,10,.3);padding:32px 40px;display:flex;align-items:center;justify-content:space-between;gap:24px;flex-wrap:wrap;position:relative;overflow:hidden}
+.tip-banner{background:linear-gradient(135deg,rgba(200,75,10,.12),rgba(200,75,10,.04) 60%,rgba(232,114,12,.06));border:1px solid rgba(200,75,10,.35);padding:32px 40px;display:flex;align-items:center;justify-content:space-between;gap:24px;flex-wrap:wrap;position:relative;overflow:hidden}
 .tip-banner::before{content:'';position:absolute;inset:0;background:linear-gradient(90deg,transparent,rgba(200,75,10,.05),transparent);background-size:200% 100%;animation:tShimmer 4s ease-in-out infinite;pointer-events:none}
 @keyframes tShimmer{0%,100%{background-position:0% 50%}50%{background-position:200% 50%}}
+.tip-banner-art{position:absolute;right:220px;top:50%;transform:translateY(-50%);opacity:.06;pointer-events:none}
 .tip-left{display:flex;align-items:center;gap:20px}
-.tip-jar-big{font-size:52px;line-height:1;animation:jarRock 3s ease-in-out infinite;filter:drop-shadow(0 0 14px rgba(200,75,10,.55))}
+.tip-jar-svg{width:54px;height:62px;flex-shrink:0;animation:jarRock 3s ease-in-out infinite;filter:drop-shadow(0 0 14px rgba(200,75,10,.7))}
 @keyframes jarRock{0%,100%{transform:translateY(0) rotate(-3deg)}50%{transform:translateY(-6px) rotate(3deg)}}
 .tip-copy h3{font-family:'Bebas Neue',sans-serif;font-size:30px;color:var(--white);letter-spacing:.04em;line-height:1;margin-bottom:6px}
 .tip-copy p{font-size:14px;color:var(--ash);font-style:italic;line-height:1.5}
@@ -81,6 +122,8 @@
 .ta-custom:focus{outline:none;border-color:var(--ember)}
 .ta-send{padding:10px 28px;background:var(--ember);border:none;color:var(--white);font-family:'Space Mono',monospace;font-size:9px;letter-spacing:.3em;text-transform:uppercase;transition:all .2s;cursor:pointer}
 .ta-send:hover{background:var(--fire);box-shadow:0 0 20px rgba(200,75,10,.4)}
+
+/* ── NEWSLETTER ── */
 .newsletter{padding:80px 48px;border-top:1px solid var(--border);display:grid;grid-template-columns:1fr 1fr;gap:56px;align-items:center}
 .nl-heading{font-family:'Bebas Neue',sans-serif;font-size:clamp(36px,5vw,62px);line-height:.95;margin-bottom:12px}.nl-heading em{color:var(--fire);font-style:normal}
 .nl-sub{font-size:15px;color:var(--ash);font-style:italic;line-height:1.7}
@@ -90,54 +133,136 @@
 .nl-btn{padding:14px 24px;background:var(--ember);border:none;color:var(--white);font-family:'Space Mono',monospace;font-size:9px;letter-spacing:.28em;text-transform:uppercase;transition:background .2s;white-space:nowrap;cursor:pointer}.nl-btn:hover{background:var(--fire)}
 .nl-note{font-family:'Space Mono',monospace;font-size:8px;color:var(--muted);letter-spacing:.14em;margin-top:8px}
 .nl-ok{display:none;font-family:'Space Mono',monospace;font-size:10px;letter-spacing:.22em;color:var(--fire);text-transform:uppercase;padding:12px 0}
+
+/* ── QUOTE ── */
 .quote{padding:90px 48px;border-top:1px solid var(--border);border-bottom:1px solid var(--border);text-align:center;position:relative;overflow:hidden}
 .quote::before{content:'"';position:absolute;top:-80px;left:50%;transform:translateX(-50%);font-family:'Bebas Neue',sans-serif;font-size:380px;color:rgba(200,75,10,.03);pointer-events:none;line-height:1}
+.quote-waveform{display:flex;align-items:center;justify-content:center;gap:2px;height:32px;margin-bottom:28px;opacity:.3}
+.qwb{flex:1;max-width:5px;border-radius:1px;background:linear-gradient(to top,var(--ember),var(--flame))}
 .quote-text{font-family:'Cormorant Garamond',serif;font-size:clamp(20px,4vw,40px);font-style:italic;font-weight:300;color:var(--white);max-width:780px;margin:0 auto 18px;line-height:1.4;position:relative}.quote-text em{color:var(--fire);font-style:normal}
 .quote-attr{font-family:'Space Mono',monospace;font-size:9px;letter-spacing:.4em;color:var(--muted);text-transform:uppercase}
+
+/* ── SOCIAL ── */
 .social-section{padding:0 48px 56px}
 .social-label{font-family:'Space Mono',monospace;font-size:8px;letter-spacing:.5em;color:var(--ember);text-transform:uppercase;margin-bottom:20px;display:flex;align-items:center;gap:12px}
 .social-label::after{content:'';flex:1;height:1px;background:var(--border)}
-.social-circles{display:flex;gap:8px;flex-wrap:wrap;justify-content:center}
-.sb-btn{width:30px;height:30px;border-radius:50%;display:flex;align-items:center;justify-content:center;border:1px solid rgba(200,75,10,.4);background:rgba(200,75,10,.06);transition:all .2s;color:var(--ember);text-decoration:none;flex-shrink:0}
-.sb-btn svg{width:12px;height:12px;fill:currentColor;transition:fill .2s}
-.sb-btn:hover{background:var(--ember);border-color:var(--fire);box-shadow:0 0 12px rgba(200,75,10,.4)}
+.social-circles{display:flex;gap:10px;flex-wrap:wrap;justify-content:center}
+.sb-btn{width:36px;height:36px;border-radius:50%;display:flex;align-items:center;justify-content:center;border:1px solid rgba(200,75,10,.4);background:rgba(200,75,10,.06);transition:all .25s;color:var(--ember);text-decoration:none;flex-shrink:0}
+.sb-btn svg{width:14px;height:14px;fill:currentColor;transition:fill .2s}
+.sb-btn:hover{background:var(--ember);border-color:var(--fire);box-shadow:0 0 16px rgba(200,75,10,.45);transform:translateY(-2px)}
 .sb-btn:hover svg{fill:#f5f0e8}
+
+/* ── MODAL ── */
 .modal-overlay{position:fixed;inset:0;background:rgba(0,0,0,.88);backdrop-filter:blur(10px);z-index:2000;display:flex;align-items:center;justify-content:center;padding:24px;opacity:0;pointer-events:none;transition:opacity .4s}
 .modal-overlay.open{opacity:1;pointer-events:all}
 .modal-box{background:#110d08;border:1px solid rgba(200,75,10,.4);max-width:580px;width:100%;position:relative;transform:translateY(32px) scale(.97);transition:transform .4s cubic-bezier(.4,0,.2,1);overflow:hidden}
 .modal-overlay.open .modal-box{transform:translateY(0) scale(1)}
-.modal-topbar{height:3px;background:linear-gradient(90deg,var(--ember),var(--flame),var(--gold),var(--flame),var(--ember));background-size:200% 100%;animation:mShimmer 3s linear infinite}
+.modal-topbar{height:3px;background:linear-gradient(90deg,var(--ember),var(--flame),var(--ember));background-size:200% 100%;animation:mShimmer 3s linear infinite}
 @keyframes mShimmer{0%{background-position:0% 50%}100%{background-position:200% 50%}}
 .modal-close{position:absolute;top:14px;right:14px;background:rgba(200,75,10,.08);border:1px solid rgba(200,75,10,.3);color:var(--muted);width:30px;height:30px;border-radius:50%;display:flex;align-items:center;justify-content:center;cursor:pointer;font-size:14px;transition:all .2s;line-height:1;z-index:2}
 .modal-close:hover{border-color:var(--ember);color:var(--fire)}
-.modal-cover{background:linear-gradient(160deg,#130e08,#1e1008);padding:44px 40px 32px;text-align:center;border-bottom:1px solid rgba(200,75,10,.2);position:relative;overflow:hidden}
+.modal-cover{background:linear-gradient(160deg,#130e08,#1e1008);padding:36px 40px 28px;text-align:center;border-bottom:1px solid rgba(200,75,10,.2);position:relative;overflow:hidden;display:flex;align-items:center;gap:28px}
 .modal-cover::before{content:'';position:absolute;inset:0;background:radial-gradient(ellipse 80% 70% at 50% 60%,rgba(200,75,10,.14),transparent)}
-.modal-eyebrow{font-family:'Space Mono',monospace;font-size:8px;letter-spacing:.5em;color:var(--muted);text-transform:uppercase;display:block;margin-bottom:10px;position:relative;z-index:1}
-.modal-title{font-family:'Bebas Neue',sans-serif;font-size:clamp(48px,9vw,72px);line-height:.88;color:var(--white);position:relative;z-index:1;letter-spacing:.02em}
-.modal-title em{color:var(--fire);font-style:normal;display:block;text-shadow:0 0 50px rgba(232,114,12,.4)}
-.modal-tagline{font-family:'Cormorant Garamond',serif;font-size:16px;font-style:italic;color:var(--ash);margin-top:12px;position:relative;z-index:1}
+.modal-book-wrap{flex-shrink:0;position:relative;z-index:1}
+.modal-book-3d{width:110px;height:152px;position:relative;transform:perspective(700px) rotateY(-14deg) rotateX(3deg);filter:drop-shadow(0 20px 40px rgba(0,0,0,.9)) drop-shadow(0 0 30px rgba(200,75,10,.25))}
+.modal-cover-text{text-align:left;position:relative;z-index:1;flex:1}
+.modal-eyebrow{font-family:'Space Mono',monospace;font-size:8px;letter-spacing:.5em;color:var(--muted);text-transform:uppercase;display:block;margin-bottom:10px}
+.modal-title{font-family:'Bebas Neue',sans-serif;font-size:clamp(36px,7vw,56px);line-height:.88;color:var(--white);letter-spacing:.02em}
+.modal-title em{color:var(--fire);font-style:normal;display:block;text-shadow:0 0 40px rgba(232,114,12,.4)}
+.modal-tagline{font-family:'Cormorant Garamond',serif;font-size:15px;font-style:italic;color:var(--ash);margin-top:10px}
 .modal-body{padding:32px 40px}
 .modal-desc{font-family:'Cormorant Garamond',serif;font-size:18px;line-height:1.8;color:var(--ash);margin-bottom:22px;font-style:italic}
 .modal-feats{list-style:none;display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:26px}
 .modal-feats li{font-family:'Space Mono',monospace;font-size:8px;letter-spacing:.14em;color:var(--muted);text-transform:uppercase;display:flex;align-items:center;gap:8px;line-height:1.4}
-.modal-feats li::before{content:'->'; color:var(--ember);flex-shrink:0}
+.modal-feats li::before{content:'->';color:var(--ember);flex-shrink:0}
 .modal-footer{display:flex;align-items:center;justify-content:space-between;padding-top:18px;border-top:1px solid rgba(200,75,10,.15);flex-wrap:wrap;gap:16px}
 .modal-price{font-family:'Bebas Neue',sans-serif;font-size:48px;color:var(--fire);line-height:1}
 .modal-price-note{font-family:'Space Mono',monospace;font-size:8px;letter-spacing:.15em;color:var(--muted);text-transform:uppercase;margin-top:4px}
 .modal-btn{display:inline-block;padding:14px 32px;background:var(--ember);color:#f5f0e8;font-family:'Space Mono',monospace;font-size:9px;letter-spacing:.3em;text-transform:uppercase;text-decoration:none;border:none;cursor:pointer;transition:all .25s}
 .modal-btn:hover{background:var(--fire);box-shadow:0 0 28px rgba(200,75,10,.4);color:#f5f0e8}
-@media(max-width:900px){.hero{padding:0 24px 64px}.about{grid-template-columns:1fr;padding:80px 24px;gap:44px}.section,.social-section,.credits-section,.tip-section{padding-left:24px;padding-right:24px}.svc-grid{grid-template-columns:1fr}.newsletter{grid-template-columns:1fr;padding:56px 24px;gap:28px}.nl-form-wrap{flex-direction:column}.quote{padding:68px 24px}.tip-banner{flex-direction:column;align-items:flex-start;gap:20px;padding:24px}.tip-amounts{gap:6px}.modal-feats{grid-template-columns:1fr}.modal-body{padding:24px}.modal-cover{padding:32px 24px}}
+
+/* ── RESPONSIVE ── */
+@media(max-width:900px){
+  .hero{padding:0 24px 64px}
+  .hero-studio-art{display:none}
+  .hero-glow-orb{display:none}
+  .studio-strip{padding:10px 20px}
+  .about{grid-template-columns:1fr;padding:80px 24px;gap:44px}
+  .section,.social-section,.credits-section,.tip-section{padding-left:24px;padding-right:24px}
+  .svc-grid{grid-template-columns:1fr}
+  .newsletter{grid-template-columns:1fr;padding:56px 24px;gap:28px}
+  .nl-form-wrap{flex-direction:column}
+  .quote{padding:68px 24px}
+  .tip-banner{flex-direction:column;align-items:flex-start;gap:20px;padding:24px}
+  .tip-banner-art{display:none}
+  .tip-amounts{gap:6px}
+  .wave-div{padding:0 20px}
+  .modal-feats{grid-template-columns:1fr}
+  .modal-body{padding:24px}
+  .modal-cover{padding:32px 24px}
+}
 {% endblock %}
 
 {% block content %}
 <div class="modal-overlay" id="ebook-modal">
   <div class="modal-box">
     <div class="modal-topbar"></div>
-    <button class="modal-close" onclick="closeModal()">x</button>
-    <div class="modal-cover"><img src="https://pub-3d8b1c7a5e63475b90c0044ca074cba8.r2.dev/THE_ARTIST_IS_THE_BUSINESS_COVER.jpg" alt="The Artist Is The Business" style="max-width:100%;border-radius:4px;margin-bottom:12px" onerror="this.style.display=chr(39)none chr(39)"><img src="https://pub-3d8b1c7a5e63475b90c0044ca074cba8.r2.dev/THE_ARTIST_IS_THE_BUSINESS_COVER.jpg" alt="The Artist Is The Business" style="max-width:100%;border-radius:4px;margin-bottom:12px" onerror="this.style.display=chr(39)none chr(39)">
-      <span class="modal-eyebrow">Mac Dylan Presents</span>
-      <h2 class="modal-title">The Artist<em>Is The Business</em></h2>
-      <p class="modal-tagline">The complete independent artist blueprint</p>
+    <button class="modal-close" onclick="closeModal()">&#215;</button>
+    <div class="modal-cover">
+      <!-- 3D Book Cover SVG -->
+      <div class="modal-book-wrap">
+        <svg class="modal-book-3d" viewBox="0 0 110 152" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <!-- Spine -->
+          <rect x="0" y="0" width="12" height="152" rx="1" fill="url(#spineGrad)"/>
+          <defs>
+            <linearGradient id="spineGrad" x1="0" y1="0" x2="12" y2="0" gradientUnits="userSpaceOnUse">
+              <stop offset="0%" stop-color="#050403"/>
+              <stop offset="100%" stop-color="#140c06"/>
+            </linearGradient>
+            <linearGradient id="coverGrad" x1="12" y1="0" x2="110" y2="152" gradientUnits="userSpaceOnUse">
+              <stop offset="0%" stop-color="#1a0e06"/>
+              <stop offset="50%" stop-color="#0d0804"/>
+              <stop offset="100%" stop-color="#1e1008"/>
+            </linearGradient>
+            <linearGradient id="topBarGrad" x1="12" y1="0" x2="110" y2="0" gradientUnits="userSpaceOnUse">
+              <stop offset="0%" stop-color="#c84b0a"/>
+              <stop offset="50%" stop-color="#f5a623"/>
+              <stop offset="100%" stop-color="#c84b0a"/>
+            </linearGradient>
+          </defs>
+          <!-- Cover face -->
+          <rect x="12" y="0" width="98" height="152" rx="1" fill="url(#coverGrad)" stroke="rgba(200,75,10,.5)" stroke-width=".8"/>
+          <!-- Top color bar -->
+          <rect x="12" y="0" width="98" height="4" fill="url(#topBarGrad)"/>
+          <!-- Spine highlight line -->
+          <line x1="12" y1="0" x2="12" y2="152" stroke="rgba(200,75,10,.6)" stroke-width=".5"/>
+          <!-- Radial glow on cover -->
+          <ellipse cx="61" cy="76" rx="55" ry="60" fill="none" stroke="rgba(200,75,10,.08)" stroke-width="20"/>
+          <!-- THE -->
+          <text x="61" y="28" font-family="monospace" font-size="7" fill="rgba(184,168,152,.7)" text-anchor="middle" letter-spacing="3">THE</text>
+          <!-- ARTIST -->
+          <text x="61" y="58" font-family="'Bebas Neue', sans-serif" font-size="28" fill="#f5f0e8" text-anchor="middle" letter-spacing="1">ARTIST</text>
+          <!-- divider line + IS THE -->
+          <line x1="24" y1="66" x2="44" y2="66" stroke="#c84b0a" stroke-width=".8"/>
+          <text x="61" y="70" font-family="monospace" font-size="6" fill="#f5f0e8" text-anchor="middle" letter-spacing="2">IS THE</text>
+          <line x1="78" y1="66" x2="98" y2="66" stroke="#c84b0a" stroke-width=".8"/>
+          <!-- BUSINESS -->
+          <text x="61" y="96" font-family="'Bebas Neue', sans-serif" font-size="26" fill="#c84b0a" text-anchor="middle" letter-spacing="1">BUSINESS</text>
+          <!-- Subtitle -->
+          <text x="61" y="112" font-family="serif" font-size="6.5" fill="rgba(184,168,152,.65)" text-anchor="middle" font-style="italic">A Real-World Guide to Branding,</text>
+          <text x="61" y="121" font-family="serif" font-size="6.5" fill="rgba(184,168,152,.65)" text-anchor="middle" font-style="italic">Growth, and Income</text>
+          <!-- Author line -->
+          <line x1="30" y1="132" x2="92" y2="132" stroke="rgba(200,75,10,.35)" stroke-width=".6"/>
+          <text x="61" y="143" font-family="monospace" font-size="6" fill="#c84b0a" text-anchor="middle" letter-spacing="2">MAC DYLAN</text>
+          <!-- Page edge illusion -->
+          <rect x="108" y="2" width="2" height="148" fill="rgba(245,240,232,.06)" rx=".5"/>
+        </svg>
+      </div>
+      <div class="modal-cover-text">
+        <span class="modal-eyebrow">Mac Dylan Presents</span>
+        <h2 class="modal-title">The Artist<em>Is The Business</em></h2>
+        <p class="modal-tagline">The complete independent artist blueprint — 9 chapters</p>
+      </div>
     </div>
     <div class="modal-body">
       <p class="modal-desc">Everything the music industry will not tell you, laid out in 9 chapters with real frameworks, income strategies, and a 90-day execution plan built for artists who are done waiting.</p>
@@ -148,22 +273,89 @@
         <li>Organic growth without ads</li>
         <li>AI as a force multiplier</li>
         <li>90-day action checklist</li>
-        <li>Interactive navigation</li>
-        <li>Instant digital download</li>
+        <li>PDF download, yours forever</li>
+        <li>Instant delivery after purchase</li>
       </ul>
       <div class="modal-footer">
         <div>
           <div class="modal-price">$27</div>
-          <div class="modal-price-note">One-time - Instant download - Yours forever</div>
+          <div class="modal-price-note">One-time · Instant download · Yours forever</div>
         </div>
-        <a href="{{ url_for('store.index') }}" class="modal-btn" onclick="closeModal()">Get The Blueprint</a>
+        <button class="modal-btn" onclick="buyEbookModal()">Get Instant Access — $27</button>
       </div>
     </div>
   </div>
 </div>
+
+<!-- HERO -->
 <section class="hero">
+  <div class="hero-glow-orb"></div>
+  <!-- Condenser Microphone SVG Art -->
+  <svg class="hero-studio-art" viewBox="0 0 180 580" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+    <!-- Shock mount top ring -->
+    <ellipse cx="90" cy="88" rx="72" ry="11" fill="none" stroke="currentColor" stroke-width="1.5" opacity=".6"/>
+    <!-- Shock mount elastics -->
+    <line x1="18" y1="88" x2="28" y2="168" stroke="currentColor" stroke-width="1.2" opacity=".35"/>
+    <line x1="162" y1="88" x2="152" y2="168" stroke="currentColor" stroke-width="1.2" opacity=".35"/>
+    <line x1="55" y1="79" x2="52" y2="166" stroke="currentColor" stroke-width="1" opacity=".28"/>
+    <line x1="125" y1="79" x2="128" y2="166" stroke="currentColor" stroke-width="1" opacity=".28"/>
+    <line x1="90" y1="76" x2="90" y2="166" stroke="currentColor" stroke-width="1" opacity=".22"/>
+    <!-- Shock mount side arms -->
+    <line x1="18" y1="88" x2="18" y2="168" stroke="currentColor" stroke-width="2" opacity=".5"/>
+    <line x1="162" y1="88" x2="162" y2="168" stroke="currentColor" stroke-width="2" opacity=".5"/>
+    <!-- Shock mount bottom ring -->
+    <ellipse cx="90" cy="168" rx="72" ry="11" fill="none" stroke="currentColor" stroke-width="1.5" opacity=".6"/>
+    <!-- Mic capsule grill outer -->
+    <ellipse cx="90" cy="128" rx="44" ry="66" fill="rgba(200,75,10,.05)" stroke="currentColor" stroke-width="1.8" opacity=".7"/>
+    <!-- Capsule inner rings -->
+    <ellipse cx="90" cy="128" rx="38" ry="60" fill="none" stroke="currentColor" stroke-width=".6" opacity=".35"/>
+    <ellipse cx="90" cy="128" rx="28" ry="44" fill="none" stroke="currentColor" stroke-width=".5" opacity=".2"/>
+    <!-- Horizontal grill lines (clipped to capsule shape roughly) -->
+    <line x1="48" y1="80" x2="132" y2="80" stroke="currentColor" stroke-width=".8" opacity=".25"/>
+    <line x1="47" y1="91" x2="133" y2="91" stroke="currentColor" stroke-width=".8" opacity=".25"/>
+    <line x1="47" y1="102" x2="133" y2="102" stroke="currentColor" stroke-width=".8" opacity=".25"/>
+    <line x1="48" y1="113" x2="132" y2="113" stroke="currentColor" stroke-width=".8" opacity=".25"/>
+    <line x1="48" y1="124" x2="132" y2="124" stroke="currentColor" stroke-width=".8" opacity=".25"/>
+    <line x1="48" y1="135" x2="132" y2="135" stroke="currentColor" stroke-width=".8" opacity=".25"/>
+    <line x1="49" y1="146" x2="131" y2="146" stroke="currentColor" stroke-width=".8" opacity=".25"/>
+    <line x1="52" y1="157" x2="128" y2="157" stroke="currentColor" stroke-width=".8" opacity=".25"/>
+    <line x1="58" y1="168" x2="122" y2="168" stroke="currentColor" stroke-width=".8" opacity=".2"/>
+    <!-- Vertical grill lines -->
+    <line x1="70" y1="65" x2="68" y2="190" stroke="currentColor" stroke-width=".5" opacity=".12"/>
+    <line x1="90" y1="62" x2="90" y2="192" stroke="currentColor" stroke-width=".5" opacity=".12"/>
+    <line x1="110" y1="65" x2="112" y2="190" stroke="currentColor" stroke-width=".5" opacity=".12"/>
+    <!-- Body transition cap -->
+    <rect x="64" y="192" width="52" height="5" rx="1" fill="currentColor" opacity=".35"/>
+    <!-- Main body -->
+    <rect x="66" y="197" width="48" height="230" rx="5" fill="none" stroke="currentColor" stroke-width="1.8" opacity=".55"/>
+    <!-- Body top detail ring -->
+    <rect x="66" y="212" width="48" height="7" fill="none" stroke="currentColor" stroke-width=".7" opacity=".35"/>
+    <!-- Body bottom detail ring -->
+    <rect x="66" y="405" width="48" height="7" fill="none" stroke="currentColor" stroke-width=".7" opacity=".35"/>
+    <!-- Center badge/logo area -->
+    <rect x="75" y="285" width="30" height="20" rx="2" fill="none" stroke="currentColor" stroke-width=".8" opacity=".3"/>
+    <line x1="79" y1="295" x2="101" y2="295" stroke="currentColor" stroke-width=".6" opacity=".2"/>
+    <!-- HPF / Pad switches -->
+    <rect x="66" y="345" width="14" height="8" rx="1" fill="none" stroke="currentColor" stroke-width=".8" opacity=".3"/>
+    <rect x="68" y="347" width="5" height="4" rx=".5" fill="currentColor" opacity=".25"/>
+    <rect x="66" y="358" width="14" height="8" rx="1" fill="none" stroke="currentColor" stroke-width=".8" opacity=".3"/>
+    <!-- Body indicator light -->
+    <circle cx="108" cy="350" r="3" fill="none" stroke="currentColor" stroke-width="1" opacity=".4"/>
+    <circle cx="108" cy="350" r="1.5" fill="currentColor" opacity=".5"/>
+    <!-- XLR end cap -->
+    <rect x="64" y="427" width="52" height="6" rx="1" fill="currentColor" opacity=".3"/>
+    <!-- XLR connector housing -->
+    <rect x="68" y="433" width="44" height="36" rx="4" fill="none" stroke="currentColor" stroke-width="1.8" opacity=".45"/>
+    <!-- XLR pins -->
+    <circle cx="82" cy="451" r="3.5" fill="none" stroke="currentColor" stroke-width="1.2" opacity=".45"/>
+    <circle cx="90" cy="445" r="3.5" fill="none" stroke="currentColor" stroke-width="1.2" opacity=".45"/>
+    <circle cx="98" cy="451" r="3.5" fill="none" stroke="currentColor" stroke-width="1.2" opacity=".45"/>
+    <!-- Cable -->
+    <path d="M90 469 C90 490 72 502 65 520 C58 538 64 556 82 564 C88 566 92 566 94 564" fill="none" stroke="currentColor" stroke-width="2.5" opacity=".22" stroke-linecap="round"/>
+  </svg>
+
   <div>
-    <div class="hero-eyebrow">Boise, Idaho - Mix - Record - Develop</div>
+    <div class="hero-eyebrow">Boise, Idaho · Mix · Record · Develop</div>
     <h1 class="hero-title">Mac<span class="outline">Dylan</span></h1>
     <p class="hero-desc">Where independent artists come to sound like they mean it. Mix engineering, production, and artist development from someone who built from nothing.</p>
     <div class="hero-cta">
@@ -171,28 +363,77 @@
       <a href="{{ url_for('beats.index') }}" class="btn-ghost">Browse Beats</a>
     </div>
     <div class="hero-extra">
-      <button class="btn-ebook" onclick="openModal()">The Artist Is The Business - $27</button>
+      <button class="btn-ebook" onclick="openModal()">The Artist Is The Business &mdash; $27 &rarr;</button>
     </div>
   </div>
 </section>
+
+<!-- STUDIO SIGNAL STRIP -->
+<div class="studio-strip" id="studio-strip">
+  <div class="rec-indicator">
+    <div class="rec-dot"></div>
+    <div class="rec-label">Rec</div>
+  </div>
+  <div class="vu-wrap" id="vu-bars"></div>
+  <div class="studio-meta">Mac Dylan Studio &mdash; Boise, ID</div>
+</div>
+
+<!-- WAVEFORM DIVIDER -->
+<div class="wave-div" id="wave-div-1"></div>
+
+<!-- ABOUT -->
 <section class="about" id="about" data-reveal>
   <div>
     <div class="about-label">The Engineer</div>
     <h2 class="about-heading">Built from <em>nothing.</em><br>Sounds like everything.</h2>
     <p class="about-text">Years behind the boards, inside the industry, and deep in the craft. Mac Dylan brings executive producer vision to every independent session because your music deserves to hit like a major without the major label.</p>
-    <div class="about-contact"><a href="tel:2083915292">(208) 391-5292</a> - Boise, Idaho</div>
+    <div class="about-contact"><a href="tel:2083915292">(208) 391-5292</a> &mdash; Boise, Idaho</div>
   </div>
   <div class="stats">
-    <div class="stat"><div class="stat-num">10+</div><div class="stat-label">Years in craft</div></div>
-    <div class="stat"><div class="stat-num">500+</div><div class="stat-label">Records mixed</div></div>
-    <div class="stat"><div class="stat-num">100%</div><div class="stat-label">Independent</div></div>
-    <div class="stat"><div class="stat-num">inf</div><div class="stat-label">Artist first</div></div>
+    <div class="stat">
+      <div class="stat-num">10+</div>
+      <div class="stat-label">Years in craft</div>
+    </div>
+    <div class="stat">
+      <div class="stat-num">500+</div>
+      <div class="stat-label">Records mixed</div>
+    </div>
+    <div class="stat">
+      <div class="stat-num">100%</div>
+      <div class="stat-label">Independent</div>
+    </div>
+    <div class="stat">
+      <!-- Mixing board mini SVG -->
+      <svg viewBox="0 0 80 60" xmlns="http://www.w3.org/2000/svg" style="position:absolute;right:14px;bottom:12px;width:64px;height:48px;opacity:.08" aria-hidden="true">
+        <rect x="2" y="2" width="76" height="56" rx="2" fill="none" stroke="rgba(200,75,10,1)" stroke-width="1"/>
+        <line x1="10" y1="55" x2="10" y2="30" stroke="rgba(200,75,10,1)" stroke-width="1"/>
+        <rect x="7" y="28" width="6" height="4" rx="1" fill="rgba(200,75,10,1)"/>
+        <line x1="22" y1="55" x2="22" y2="18" stroke="rgba(200,75,10,1)" stroke-width="1"/>
+        <rect x="19" y="16" width="6" height="4" rx="1" fill="rgba(200,75,10,1)"/>
+        <line x1="34" y1="55" x2="34" y2="38" stroke="rgba(200,75,10,1)" stroke-width="1"/>
+        <rect x="31" y="36" width="6" height="4" rx="1" fill="rgba(200,75,10,1)"/>
+        <line x1="46" y1="55" x2="46" y2="22" stroke="rgba(200,75,10,1)" stroke-width="1"/>
+        <rect x="43" y="20" width="6" height="4" rx="1" fill="rgba(200,75,10,1)"/>
+        <line x1="58" y1="55" x2="58" y2="12" stroke="rgba(200,75,10,1)" stroke-width="1"/>
+        <rect x="55" y="10" width="6" height="4" rx="1" fill="rgba(200,75,10,1)"/>
+        <line x1="70" y1="55" x2="70" y2="35" stroke="rgba(200,75,10,1)" stroke-width="1"/>
+        <rect x="67" y="33" width="6" height="4" rx="1" fill="rgba(200,75,10,1)"/>
+        <line x1="2" y1="7" x2="78" y2="7" stroke="rgba(200,75,10,1)" stroke-width=".5"/>
+      </svg>
+      <div class="stat-num">&#8734;</div>
+      <div class="stat-label">Artist first</div>
+    </div>
   </div>
 </section>
+
+<!-- WAVEFORM DIVIDER 2 -->
+<div class="wave-div" id="wave-div-2"></div>
+
+<!-- FEATURED BEATS -->
 <section class="section" data-reveal>
   <div class="sec-hdr">
     <div class="sec-lbl">Featured Beats</div>
-    <a href="{{ url_for('beats.index') }}" class="sec-link">Full Catalog</a>
+    <a href="{{ url_for('beats.index') }}" class="sec-link">Full Catalog &rarr;</a>
   </div>
   <div class="mini-playlist">
     {% if beats %}
@@ -202,7 +443,7 @@
         <div class="mini-ph">{{ beat.title[0] }}</div>
         <div class="mini-info">
           <div class="mini-title">{{ beat.title }}</div>
-          <div class="mini-meta">{{ beat.bpm }} BPM - {{ beat.key }} - {{ beat.genre }}</div>
+          <div class="mini-meta">{{ beat.bpm }} BPM &middot; {{ beat.key }} &middot; {{ beat.genre }}</div>
         </div>
         <div class="mini-price {{ 'green' if beat.is_free else 'fire' }}">{{ 'FREE' if beat.is_free else '$' + beat.price_basic|string }}</div>
       </a>
@@ -212,6 +453,8 @@
     {% endif %}
   </div>
 </section>
+
+<!-- CREDITS -->
 <section class="credits-section" data-reveal>
   <div class="sec-hdr"><div class="sec-lbl">Credits</div></div>
   {% if credits %}
@@ -228,21 +471,95 @@
     <div class="credits-empty" style="display:none"></div>
   {% endif %}
 </section>
+
+<!-- SERVICES -->
 <section class="section" data-reveal>
-  <div class="sec-hdr"><div class="sec-lbl">Services</div><a href="{{ url_for('services.index') }}" class="sec-link">Book Now</a></div>
+  <div class="sec-hdr"><div class="sec-lbl">Services</div><a href="{{ url_for('services.index') }}" class="sec-link">Book Now &rarr;</a></div>
   <div class="svc-grid">
-    <a href="{{ url_for('services.index') }}" class="svc-card"><div class="svc-num">01</div><div class="svc-name">Recording Session</div><div class="svc-desc">Mobile engineering - I come to you, fully equipped.</div><div class="svc-price">$75 <small>/ hr - 50% deposit</small></div></a>
-    <a href="{{ url_for('services.index') }}" class="svc-card"><div class="svc-num">02</div><div class="svc-name">Mix &amp; Master</div><div class="svc-desc">One seamless process. Streaming and radio ready.</div><div class="svc-price">$150 <small>/ single</small></div></a>
-    <a href="{{ url_for('services.index') }}" class="svc-card"><div class="svc-num">03</div><div class="svc-name">Artist Development</div><div class="svc-desc">Monthly partnership. Sessions, mixing, strategy, direction.</div><div class="svc-price">$300 <small>/ mo</small></div></a>
+    <a href="{{ url_for('services.index') }}" class="svc-card">
+      <div class="svc-card-icon">
+        <!-- Mic icon -->
+        <svg viewBox="0 0 32 32" width="28" height="28" xmlns="http://www.w3.org/2000/svg" fill="none" stroke="var(--ember)" stroke-width="1.5" stroke-linecap="round">
+          <ellipse cx="16" cy="10" rx="6" ry="9"/>
+          <line x1="10" y1="10" x2="22" y2="10"/><line x1="10" y1="14" x2="22" y2="14"/>
+          <path d="M8 16a8 8 0 0016 0"/><line x1="16" y1="24" x2="16" y2="29"/><line x1="11" y1="29" x2="21" y2="29"/>
+        </svg>
+      </div>
+      <div class="svc-num">01</div>
+      <div class="svc-name">Recording Session</div>
+      <div class="svc-desc">Mobile engineering &mdash; I come to you, fully equipped.</div>
+      <div class="svc-price">$75 <small>/ hr &middot; 50% deposit</small></div>
+    </a>
+    <a href="{{ url_for('services.index') }}" class="svc-card">
+      <div class="svc-card-icon">
+        <!-- EQ/Wave icon -->
+        <svg viewBox="0 0 32 32" width="28" height="28" xmlns="http://www.w3.org/2000/svg" fill="none" stroke="var(--ember)" stroke-width="1.5" stroke-linecap="round">
+          <polyline points="2,20 7,8 12,22 17,6 22,18 27,12 30,15"/>
+        </svg>
+      </div>
+      <div class="svc-num">02</div>
+      <div class="svc-name">Mix &amp; Master</div>
+      <div class="svc-desc">One seamless process. Streaming and radio ready.</div>
+      <div class="svc-price">$150 <small>/ single</small></div>
+    </a>
+    <a href="{{ url_for('services.index') }}" class="svc-card">
+      <div class="svc-card-icon">
+        <!-- Growth/chart icon -->
+        <svg viewBox="0 0 32 32" width="28" height="28" xmlns="http://www.w3.org/2000/svg" fill="none" stroke="var(--ember)" stroke-width="1.5" stroke-linecap="round">
+          <polyline points="4,26 10,18 16,22 22,10 28,6"/>
+          <circle cx="28" cy="6" r="2" fill="var(--ember)"/>
+        </svg>
+      </div>
+      <div class="svc-num">03</div>
+      <div class="svc-name">Artist Development</div>
+      <div class="svc-desc">Monthly partnership. Sessions, mixing, strategy, direction.</div>
+      <div class="svc-price">$300 <small>/ mo</small></div>
+    </a>
   </div>
 </section>
+
+<!-- TIP JAR -->
 <section class="tip-section" data-reveal>
   <div class="tip-banner">
+    <!-- Subtle headphone art behind tip section -->
+    <div class="tip-banner-art">
+      <svg viewBox="0 0 120 80" width="160" height="110" xmlns="http://www.w3.org/2000/svg" fill="none" stroke="var(--ember)" stroke-width="1.5">
+        <path d="M20 50 Q20 15 60 15 Q100 15 100 50"/>
+        <rect x="10" y="48" width="14" height="22" rx="5"/>
+        <rect x="96" y="48" width="14" height="22" rx="5"/>
+      </svg>
+    </div>
     <div class="tip-left">
-      <span class="tip-jar-big">ð«</span>
+      <!-- SVG Tip Jar — glass jar with glowing coins -->
+      <svg class="tip-jar-svg" viewBox="0 0 54 62" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+        <!-- Lid -->
+        <rect x="10" y="2" width="34" height="9" rx="2.5" fill="rgba(200,75,10,.8)" stroke="#f5a623" stroke-width="1"/>
+        <rect x="14" y="4" width="26" height="2" rx="1" fill="rgba(245,166,35,.4)"/>
+        <!-- Jar body -->
+        <path d="M8 11 Q6 14 6 18 L6 52 Q6 57 10 58 L44 58 Q48 57 48 52 L48 18 Q48 14 46 11 Z" fill="rgba(200,75,10,.08)" stroke="#c84b0a" stroke-width="1.4"/>
+        <!-- Glass sheen left -->
+        <path d="M10 14 Q8 20 8 30 L8 50" stroke="rgba(245,240,232,.12)" stroke-width="2.5" stroke-linecap="round"/>
+        <!-- Coins inside -->
+        <ellipse cx="22" cy="46" rx="7" ry="3.5" fill="rgba(245,166,35,.55)" stroke="#f5a623" stroke-width=".8"/>
+        <ellipse cx="22" cy="44" rx="7" ry="3.5" fill="rgba(245,166,35,.7)" stroke="#f5a623" stroke-width=".8"/>
+        <line x1="22" y1="44" x2="22" y2="46" stroke="#c84b0a" stroke-width=".5"/>
+        <ellipse cx="33" cy="48" rx="6" ry="3" fill="rgba(232,114,12,.6)" stroke="#e8720c" stroke-width=".8"/>
+        <ellipse cx="33" cy="46" rx="6" ry="3" fill="rgba(232,114,12,.75)" stroke="#e8720c" stroke-width=".8"/>
+        <!-- Bill folded inside -->
+        <path d="M14 34 L38 34 L40 42 L12 42 Z" fill="rgba(58,138,90,.25)" stroke="rgba(58,138,90,.6)" stroke-width=".8"/>
+        <line x1="20" y1="36" x2="20" y2="40" stroke="rgba(58,138,90,.5)" stroke-width=".6"/>
+        <line x1="34" y1="36" x2="34" y2="40" stroke="rgba(58,138,90,.5)" stroke-width=".6"/>
+        <!-- Coin floating (entering jar slot) -->
+        <ellipse cx="27" cy="13" rx="5" ry="2.2" fill="rgba(245,166,35,.9)" stroke="#f5a623" stroke-width=".8"/>
+        <!-- Slot line on lid -->
+        <line x1="23" y1="6" x2="31" y2="6" stroke="rgba(5,4,3,.6)" stroke-width="1.5" stroke-linecap="round"/>
+        <!-- Jar label band -->
+        <rect x="8" y="22" width="38" height="10" rx="0" fill="rgba(200,75,10,.08)" stroke="rgba(200,75,10,.25)" stroke-width=".5"/>
+        <line x1="10" y1="27" x2="44" y2="27" stroke="rgba(200,75,10,.2)" stroke-width=".5"/>
+      </svg>
       <div class="tip-copy">
         <h3>Support Independent Music</h3>
-        <p>Every tip goes directly into making more - beats, sessions, and content.</p>
+        <p>Every tip goes directly into making more &mdash; beats, sessions, and content.</p>
       </div>
     </div>
     <div class="tip-amounts">
@@ -255,10 +572,12 @@
     </div>
   </div>
 </section>
+
+<!-- NEWSLETTER -->
 <section class="newsletter" data-reveal>
   <div>
     <h2 class="nl-heading">Stay in the <em>Loop</em></h2>
-    <p class="nl-sub">New beats, session availability, exclusive drops, and industry insights. No spam - just signal.</p>
+    <p class="nl-sub">New beats, session availability, exclusive drops, and industry insights. No spam &mdash; just signal.</p>
   </div>
   <div>
     <form id="ck-form" onsubmit="subCK(event)">
@@ -267,14 +586,19 @@
         <button class="nl-btn" type="submit">Subscribe</button>
       </div>
     </form>
-    <div class="nl-ok" id="nl-ok">YOU ARE IN - CHECK YOUR EMAIL</div>
+    <div class="nl-ok" id="nl-ok">YOU ARE IN &mdash; CHECK YOUR EMAIL</div>
     <div class="nl-note" id="nl-note">NO SPAM. UNSUBSCRIBE ANYTIME.</div>
   </div>
 </section>
+
+<!-- QUOTE -->
 <div class="quote" data-reveal>
+  <div class="quote-waveform" id="quote-waveform"></div>
   <p class="quote-text">Your music already has the <em>fire.</em><br>Let us make sure the world can hear it.</p>
-  <div class="quote-attr">Mac Dylan - Boise, Idaho</div>
+  <div class="quote-attr">Mac Dylan &mdash; Boise, Idaho</div>
 </div>
+
+<!-- SOCIAL -->
 <section class="social-section" data-reveal>
   <div class="social-label">Follow the Movement</div>
   <div class="social-circles">
@@ -288,6 +612,53 @@
 
 {% block extra_scripts %}
 <script>
+/* VU meter bars */
+(function(){
+  var wrap=document.getElementById('vu-bars');
+  var N=60;
+  var bars=[];
+  for(var i=0;i<N;i++){
+    var b=document.createElement('div');
+    b.className='vu-b';
+    var h=Math.floor((Math.sin(i*.35+1)*.5+.5)*70+15);
+    var r=.55+Math.random()*.45;
+    b.style.cssText='height:'+h+'%;animation:vuA'+(i%4)+' '+(0.7+Math.random()*.8).toFixed(2)+'s ease-in-out '+(Math.random()*.4).toFixed(2)+'s infinite;background:linear-gradient(to top,'+(h>60?'rgba(200,75,10,1)':'rgba(200,75,10,0.7)')+',rgba(245,166,35,0.4))';
+    wrap.appendChild(b);bars.push(b);
+  }
+  var style=document.createElement('style');
+  style.textContent='@keyframes vuA0{0%,100%{transform:scaleY(1)}50%{transform:scaleY(.3)}}@keyframes vuA1{0%,100%{transform:scaleY(.4)}50%{transform:scaleY(1)}}@keyframes vuA2{0%,100%{transform:scaleY(.7)}50%{transform:scaleY(.2)}}@keyframes vuA3{0%,100%{transform:scaleY(.2)}50%{transform:scaleY(.9)}}';
+  document.head.appendChild(style);
+})();
+
+/* Waveform dividers */
+(function(){
+  [1,2].forEach(function(n){
+    var wrap=document.getElementById('wave-div-'+n);
+    if(!wrap)return;
+    for(var i=0;i<90;i++){
+      var b=document.createElement('div');
+      b.className='wave-div-b';
+      var h=Math.floor((Math.sin(i*.22+n)*.5+.5)*80+10);
+      b.style.height=h+'%';
+      wrap.appendChild(b);
+    }
+  });
+})();
+
+/* Quote waveform */
+(function(){
+  var wrap=document.getElementById('quote-waveform');
+  if(!wrap)return;
+  for(var i=0;i<50;i++){
+    var b=document.createElement('div');
+    b.className='qwb';
+    var h=Math.floor((Math.sin(i*.4+.5)*.5+.5)*26+4);
+    b.style.cssText='width:4px;height:'+h+'px;border-radius:1px;background:linear-gradient(to top,rgba(200,75,10,.5),rgba(245,166,35,.2));flex-shrink:0';
+    wrap.appendChild(b);
+  }
+})();
+
+/* All existing functions */
 window.subCK = function(e) {
   e.preventDefault();
   var email = document.getElementById('ck-email').value.trim();
@@ -321,6 +692,16 @@ window.sendTipAmt = function() {
     .catch(function(){ alert('Checkout unavailable. Try again shortly.'); });
 };
 window.openTip = window.sendTipAmt;
+window.buyEbookModal = function() {
+  fetch('/payments/store-checkout', {
+    method: 'POST',
+    headers: {'Content-Type': 'application/json'},
+    body: JSON.stringify({product_id: 1, product_name: 'The Artist Is The Business', price: 27})
+  }).then(function(r){return r.json()}).then(function(d){
+    if (d.checkout_url) window.location.href = d.checkout_url;
+    else alert(d.error || 'Something went wrong. Please try again.');
+  }).catch(function(){alert('Connection error. Please try again.');});
+};
 window.openModal = function() {
   document.getElementById('ebook-modal').classList.add('open');
   document.body.style.overflow = 'hidden';

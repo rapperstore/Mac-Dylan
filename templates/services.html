@@ -1,19 +1,23 @@
 {% extends "base.html" %}
 {% block title %}Services - Mac Dylan{% endblock %}
 {% block extra_styles %}
-.svc-hero{padding:72px 48px 44px;border-bottom:1px solid var(--border);position:relative;overflow:hidden}
+.svc-hero{padding:72px 48px 44px;border-bottom:1px solid var(--border);position:relative;overflow:hidden;min-height:320px}
 .svc-hero::after{content:'SERVICES';position:absolute;right:-20px;bottom:-40px;font-family:'Bebas Neue',sans-serif;font-size:200px;color:rgba(200,75,10,.03);pointer-events:none;line-height:1}
 .svc-eyebrow{font-family:'Space Mono',monospace;font-size:9px;letter-spacing:.5em;color:var(--ember);text-transform:uppercase;margin-bottom:12px}
 .svc-heading{font-family:'Bebas Neue',sans-serif;font-size:clamp(48px,8vw,100px);line-height:.88;color:var(--white);margin-bottom:14px}
 .svc-heading em{color:var(--fire);font-style:normal}
 .svc-sub{font-size:15px;color:var(--ash);font-style:italic;line-height:1.7;max-width:520px}
+.svc-hero-art{position:absolute;right:60px;bottom:0;height:340px;opacity:.1;pointer-events:none;filter:drop-shadow(0 0 40px rgba(200,75,10,.6));animation:standSway 10s ease-in-out infinite}
+@keyframes standSway{0%,100%{transform:translateY(0) rotate(-.4deg)}50%{transform:translateY(-6px) rotate(.4deg)}}
+.hero-signal-bar{position:absolute;bottom:0;left:48px;right:280px;height:3px;background:linear-gradient(90deg,var(--ember),var(--flame),transparent);opacity:.25}
 .svc-wrap{max-width:1100px;margin:0 auto;padding:0 48px 80px}
 .svc-block{padding-top:48px}
 .svc-block-label{font-family:'Space Mono',monospace;font-size:8px;letter-spacing:.6em;color:var(--ember);text-transform:uppercase;margin-bottom:20px;display:flex;align-items:center;gap:14px}
 .svc-block-label::after{content:'';flex:1;height:1px;background:var(--border)}
-.svc-card{background:var(--card);border:1px solid var(--border);padding:28px 32px;position:relative}
+.svc-card{background:var(--card);border:1px solid var(--border);padding:28px 32px;position:relative;overflow:hidden}
 .svc-card::before{content:'';position:absolute;top:0;left:0;right:0;height:2px;background:linear-gradient(90deg,var(--ember),var(--flame));transform:scaleX(0);transform-origin:left;transition:transform .35s}
 .svc-card:hover::before{transform:scaleX(1)}
+.svc-card-art{position:absolute;right:0;top:0;bottom:0;width:220px;pointer-events:none;opacity:.07;display:flex;align-items:center;justify-content:center}
 .svc-card-head{display:grid;grid-template-columns:1fr auto;gap:20px;align-items:start;margin-bottom:16px}
 .svc-card-name{font-family:'Bebas Neue',sans-serif;font-size:28px;color:var(--white);letter-spacing:.04em;line-height:1;margin-bottom:4px}
 .svc-card-tag{font-family:'Space Mono',monospace;font-size:7px;letter-spacing:.3em;color:var(--ember);text-transform:uppercase}
@@ -62,10 +66,73 @@
 .dev-selected{display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:12px;background:var(--deep);border:1px solid var(--border);padding:14px 18px;margin-bottom:14px}
 .dev-sel-name{font-family:'Bebas Neue',sans-serif;font-size:20px;color:var(--white)}
 .dev-sel-sub{font-family:'Space Mono',monospace;font-size:7px;letter-spacing:.3em;color:var(--muted);text-transform:uppercase;margin-bottom:3px}
-@media(max-width:900px){.svc-wrap{padding:0 20px 60px}.svc-hero{padding:56px 20px 36px}.svc-includes,.svc-addons-row,.dev-tier-grid{grid-template-columns:1fr}.tier-select-row{flex-direction:column}.svc-card-head{grid-template-columns:1fr}}
+.svc-waveform-divider{display:flex;align-items:flex-end;gap:2px;height:28px;margin:36px 0 0;opacity:.15;padding:0 2px}
+.svc-waveform-divider .wbar{width:3px;background:var(--ember);border-radius:1px 1px 0 0;flex-shrink:0}
+@media(max-width:900px){.svc-wrap{padding:0 20px 60px}.svc-hero{padding:56px 20px 36px}.svc-includes,.svc-addons-row,.dev-tier-grid{grid-template-columns:1fr}.tier-select-row{flex-direction:column}.svc-card-head{grid-template-columns:1fr}.svc-hero-art{height:180px;right:10px;opacity:.07}.svc-card-art{display:none}}
 {% endblock %}
 {% block content %}
 <div class="svc-hero">
+  <!-- Microphone stand art -->
+  <svg class="svc-hero-art" viewBox="0 0 200 600" fill="none" xmlns="http://www.w3.org/2000/svg">
+    <!-- Stand base -->
+    <ellipse cx="100" cy="575" rx="70" ry="10" stroke="#c84b0a" stroke-width="1.5" fill="rgba(200,75,10,.05)"/>
+    <!-- Base legs -->
+    <line x1="100" y1="565" x2="30" y2="575" stroke="#c84b0a" stroke-width="1.5"/>
+    <line x1="100" y1="565" x2="100" y2="578" stroke="#c84b0a" stroke-width="1.5"/>
+    <line x1="100" y1="565" x2="170" y2="575" stroke="#c84b0a" stroke-width="1.5"/>
+    <!-- Main pole -->
+    <rect x="97" y="220" width="6" height="345" fill="#c84b0a" opacity=".8"/>
+    <!-- Boom arm horizontal -->
+    <rect x="60" y="218" width="80" height="4" rx="2" fill="#c84b0a" opacity=".7"/>
+    <!-- Boom arm counterweight -->
+    <rect x="155" y="213" width="18" height="14" rx="3" fill="#c84b0a" opacity=".5"/>
+    <!-- Shock mount top ring -->
+    <ellipse cx="88" cy="218" rx="22" ry="6" stroke="#c84b0a" stroke-width="1.5" fill="none"/>
+    <!-- Shock mount bottom ring -->
+    <ellipse cx="88" cy="120" rx="22" ry="6" stroke="#c84b0a" stroke-width="1.5" fill="none"/>
+    <!-- Shock mount side arms -->
+    <line x1="66" y1="218" x2="66" y2="120" stroke="#c84b0a" stroke-width="1.2" opacity=".6"/>
+    <line x1="110" y1="218" x2="110" y2="120" stroke="#c84b0a" stroke-width="1.2" opacity=".6"/>
+    <!-- Elastic suspension lines -->
+    <line x1="70" y1="214" x2="68" y2="170" stroke="#c84b0a" stroke-width=".7" stroke-dasharray="3,3"/>
+    <line x1="75" y1="214" x2="75" y2="168" stroke="#c84b0a" stroke-width=".7" stroke-dasharray="3,3"/>
+    <line x1="88" y1="214" x2="88" y2="166" stroke="#c84b0a" stroke-width=".7" stroke-dasharray="3,3"/>
+    <line x1="101" y1="214" x2="101" y2="168" stroke="#c84b0a" stroke-width=".7" stroke-dasharray="3,3"/>
+    <line x1="106" y1="214" x2="108" y2="170" stroke="#c84b0a" stroke-width=".7" stroke-dasharray="3,3"/>
+    <!-- Capsule grill outer -->
+    <ellipse cx="88" cy="80" rx="26" ry="42" stroke="#c84b0a" stroke-width="1.5" fill="rgba(200,75,10,.04)"/>
+    <!-- Capsule grill inner -->
+    <ellipse cx="88" cy="80" rx="20" ry="36" stroke="#c84b0a" stroke-width=".8" opacity=".5"/>
+    <!-- Grill lines horizontal -->
+    <line x1="62" y1="50" x2="114" y2="50" stroke="#c84b0a" stroke-width=".6" opacity=".4"/>
+    <line x1="62" y1="60" x2="114" y2="60" stroke="#c84b0a" stroke-width=".6" opacity=".4"/>
+    <line x1="62" y1="70" x2="114" y2="70" stroke="#c84b0a" stroke-width=".6" opacity=".4"/>
+    <line x1="62" y1="80" x2="114" y2="80" stroke="#c84b0a" stroke-width=".6" opacity=".4"/>
+    <line x1="62" y1="90" x2="114" y2="90" stroke="#c84b0a" stroke-width=".6" opacity=".4"/>
+    <line x1="62" y1="100" x2="114" y2="100" stroke="#c84b0a" stroke-width=".6" opacity=".4"/>
+    <line x1="62" y1="110" x2="114" y2="110" stroke="#c84b0a" stroke-width=".6" opacity=".4"/>
+    <!-- Grill vertical center lines -->
+    <line x1="81" y1="40" x2="81" y2="120" stroke="#c84b0a" stroke-width=".5" opacity=".3"/>
+    <line x1="88" y1="38" x2="88" y2="122" stroke="#c84b0a" stroke-width=".5" opacity=".3"/>
+    <line x1="95" y1="40" x2="95" y2="120" stroke="#c84b0a" stroke-width=".5" opacity=".3"/>
+    <!-- Capsule body transition -->
+    <rect x="82" y="118" width="12" height="8" rx="2" fill="#c84b0a" opacity=".6"/>
+    <!-- Mic body -->
+    <rect x="80" y="126" width="16" height="90" rx="3" fill="#c84b0a" opacity=".5"/>
+    <!-- Body detail bands -->
+    <rect x="80" y="138" width="16" height="2" fill="#c84b0a" opacity=".8"/>
+    <rect x="80" y="196" width="16" height="2" fill="#c84b0a" opacity=".8"/>
+    <!-- MAC DYLAN badge center -->
+    <rect x="83" y="155" width="10" height="24" rx="1" fill="rgba(200,75,10,.3)" stroke="#c84b0a" stroke-width=".5"/>
+    <!-- HPF pad switches -->
+    <rect x="80" y="203" width="7" height="4" rx="1" fill="#c84b0a" opacity=".6"/>
+    <rect x="89" y="203" width="7" height="4" rx="1" fill="#c84b0a" opacity=".6"/>
+    <!-- XLR housing -->
+    <rect x="83" y="215" width="10" height="8" rx="1" fill="#c84b0a" opacity=".5"/>
+    <!-- Cable -->
+    <path d="M88 223 C88 240 70 250 65 270 C60 290 75 310 80 330" stroke="#c84b0a" stroke-width="1.5" fill="none" opacity=".4"/>
+  </svg>
+  <div class="hero-signal-bar"></div>
   <div class="svc-eyebrow">Professional Services</div>
   <h1 class="svc-heading">Work With <em>Mac Dylan</em></h1>
   <p class="svc-sub">Mobile recording, mixing and mastering, and full artist development. Built for artists who take their craft seriously and designed to scale worldwide.</p>
@@ -75,6 +142,47 @@
   <div class="svc-block">
     <div class="svc-block-label">01 - Recording Session</div>
     <div class="svc-card">
+      <!-- Close-up condenser mic art (card background) -->
+      <div class="svc-card-art">
+        <svg viewBox="0 0 120 280" fill="none" xmlns="http://www.w3.org/2000/svg" style="height:100%;width:auto">
+          <!-- Shock mount rings -->
+          <ellipse cx="60" cy="30" rx="48" ry="10" stroke="#f5a623" stroke-width="2" fill="none"/>
+          <ellipse cx="60" cy="30" rx="36" ry="7" stroke="#f5a623" stroke-width="1" fill="none" opacity=".5"/>
+          <!-- Suspension cables -->
+          <line x1="12" y1="30" x2="14" y2="80" stroke="#f5a623" stroke-width="1.2" stroke-dasharray="4,4" opacity=".7"/>
+          <line x1="25" y1="27" x2="26" y2="80" stroke="#f5a623" stroke-width="1.2" stroke-dasharray="4,4" opacity=".7"/>
+          <line x1="60" y1="23" x2="60" y2="80" stroke="#f5a623" stroke-width="1.2" stroke-dasharray="4,4" opacity=".7"/>
+          <line x1="95" y1="27" x2="94" y2="80" stroke="#f5a623" stroke-width="1.2" stroke-dasharray="4,4" opacity=".7"/>
+          <line x1="108" y1="30" x2="106" y2="80" stroke="#f5a623" stroke-width="1.2" stroke-dasharray="4,4" opacity=".7"/>
+          <!-- Bottom shock ring -->
+          <ellipse cx="60" cy="82" rx="48" ry="10" stroke="#f5a623" stroke-width="2" fill="none"/>
+          <!-- Grill capsule -->
+          <ellipse cx="60" cy="150" rx="44" ry="72" stroke="#f5a623" stroke-width="2" fill="rgba(245,166,35,.03)"/>
+          <ellipse cx="60" cy="150" rx="36" ry="64" stroke="#f5a623" stroke-width="1" opacity=".4"/>
+          <!-- Horizontal grill lines -->
+          <line x1="16" y1="108" x2="104" y2="108" stroke="#f5a623" stroke-width=".8" opacity=".4"/>
+          <line x1="16" y1="122" x2="104" y2="122" stroke="#f5a623" stroke-width=".8" opacity=".4"/>
+          <line x1="16" y1="136" x2="104" y2="136" stroke="#f5a623" stroke-width=".8" opacity=".4"/>
+          <line x1="16" y1="150" x2="104" y2="150" stroke="#f5a623" stroke-width=".8" opacity=".4"/>
+          <line x1="16" y1="164" x2="104" y2="164" stroke="#f5a623" stroke-width=".8" opacity=".4"/>
+          <line x1="16" y1="178" x2="104" y2="178" stroke="#f5a623" stroke-width=".8" opacity=".4"/>
+          <line x1="16" y1="192" x2="104" y2="192" stroke="#f5a623" stroke-width=".8" opacity=".4"/>
+          <!-- Vertical center lines -->
+          <line x1="48" y1="82" x2="48" y2="218" stroke="#f5a623" stroke-width=".6" opacity=".25"/>
+          <line x1="60" y1="80" x2="60" y2="220" stroke="#f5a623" stroke-width=".6" opacity=".25"/>
+          <line x1="72" y1="82" x2="72" y2="218" stroke="#f5a623" stroke-width=".6" opacity=".25"/>
+          <!-- Body transition -->
+          <rect x="50" y="220" width="20" height="8" rx="2" fill="#f5a623" opacity=".7"/>
+          <!-- Body -->
+          <rect x="46" y="228" width="28" height="40" rx="3" fill="#f5a623" opacity=".5"/>
+          <rect x="46" y="238" width="28" height="2" fill="#f5a623" opacity=".9"/>
+          <rect x="46" y="256" width="28" height="2" fill="#f5a623" opacity=".9"/>
+          <!-- Indicator glow -->
+          <circle cx="60" cy="247" r="3" fill="#f5a623" opacity=".8"/>
+          <!-- XLR -->
+          <rect x="52" y="268" width="16" height="10" rx="2" fill="#f5a623" opacity=".5"/>
+        </svg>
+      </div>
       <div class="svc-card-head">
         <div>
           <div class="svc-card-name">Recording Session</div>
@@ -111,9 +219,59 @@
     </div>
   </div>
 
+  <!-- Waveform divider -->
+  <div class="svc-waveform-divider" id="svc-wave-1"></div>
+
   <div class="svc-block">
     <div class="svc-block-label">02 - Mix and Master</div>
     <div class="svc-card">
+      <!-- Mixing board channel strip art -->
+      <div class="svc-card-art">
+        <svg viewBox="0 0 140 320" fill="none" xmlns="http://www.w3.org/2000/svg" style="height:100%;width:auto">
+          <!-- Channel strip background -->
+          <rect x="10" y="8" width="120" height="304" rx="4" fill="rgba(200,75,10,.06)" stroke="#c84b0a" stroke-width="1"/>
+          <!-- Channel label top -->
+          <rect x="18" y="16" width="104" height="18" rx="2" fill="rgba(200,75,10,.15)" stroke="#c84b0a" stroke-width=".5"/>
+          <line x1="28" y1="25" x2="112" y2="25" stroke="#c84b0a" stroke-width=".8" opacity=".6"/>
+          <!-- EQ section -->
+          <text x="70" y="52" font-family="monospace" font-size="7" fill="#c84b0a" opacity=".7" text-anchor="middle" letter-spacing="2">EQ</text>
+          <circle cx="45" cy="68" r="10" stroke="#c84b0a" stroke-width="1" fill="rgba(200,75,10,.08)"/>
+          <line x1="45" y1="58" x2="45" y2="63" stroke="#c84b0a" stroke-width="1.5" stroke-linecap="round"/>
+          <circle cx="95" cy="68" r="10" stroke="#c84b0a" stroke-width="1" fill="rgba(200,75,10,.08)"/>
+          <line x1="95" y1="60" x2="98" y2="64" stroke="#c84b0a" stroke-width="1.5" stroke-linecap="round"/>
+          <circle cx="45" cy="96" r="10" stroke="#c84b0a" stroke-width="1" fill="rgba(200,75,10,.08)"/>
+          <line x1="45" y1="94" x2="50" y2="90" stroke="#c84b0a" stroke-width="1.5" stroke-linecap="round"/>
+          <circle cx="95" cy="96" r="10" stroke="#c84b0a" stroke-width="1" fill="rgba(200,75,10,.08)"/>
+          <line x1="95" y1="94" x2="90" y2="92" stroke="#c84b0a" stroke-width="1.5" stroke-linecap="round"/>
+          <!-- Separator -->
+          <line x1="18" y1="116" x2="122" y2="116" stroke="#c84b0a" stroke-width=".5" opacity=".4"/>
+          <!-- Dynamics -->
+          <text x="70" y="130" font-family="monospace" font-size="7" fill="#c84b0a" opacity=".7" text-anchor="middle" letter-spacing="2">COMP</text>
+          <circle cx="50" cy="148" r="12" stroke="#c84b0a" stroke-width="1" fill="rgba(200,75,10,.08)"/>
+          <line x1="50" y1="136" x2="53" y2="141" stroke="#c84b0a" stroke-width="1.5" stroke-linecap="round"/>
+          <circle cx="90" cy="148" r="12" stroke="#c84b0a" stroke-width="1" fill="rgba(200,75,10,.08)"/>
+          <line x1="90" y1="136" x2="87" y2="140" stroke="#c84b0a" stroke-width="1.5" stroke-linecap="round"/>
+          <!-- Separator -->
+          <line x1="18" y1="170" x2="122" y2="170" stroke="#c84b0a" stroke-width=".5" opacity=".4"/>
+          <!-- Fader track -->
+          <rect x="56" y="178" width="28" height="110" rx="2" fill="rgba(200,75,10,.05)" stroke="#c84b0a" stroke-width=".8"/>
+          <!-- Fader notches -->
+          <line x1="56" y1="195" x2="84" y2="195" stroke="#c84b0a" stroke-width=".4" opacity=".3"/>
+          <line x1="56" y1="215" x2="84" y2="215" stroke="#c84b0a" stroke-width=".4" opacity=".3"/>
+          <line x1="56" y1="235" x2="84" y2="235" stroke="#c84b0a" stroke-width=".4" opacity=".3"/>
+          <line x1="56" y1="255" x2="84" y2="255" stroke="#c84b0a" stroke-width=".4" opacity=".3"/>
+          <line x1="56" y1="275" x2="84" y2="275" stroke="#c84b0a" stroke-width=".4" opacity=".3"/>
+          <!-- Zero mark (unity) -->
+          <line x1="52" y1="245" x2="88" y2="245" stroke="#c84b0a" stroke-width=".8" opacity=".7"/>
+          <!-- Fader cap at unity -->
+          <rect x="48" y="238" width="44" height="14" rx="2" fill="rgba(200,75,10,.2)" stroke="#c84b0a" stroke-width="1.2"/>
+          <line x1="52" y1="245" x2="88" y2="245" stroke="#c84b0a" stroke-width=".6"/>
+          <!-- Mute/solo buttons -->
+          <rect x="22" y="290" width="22" height="14" rx="2" fill="rgba(200,75,10,.2)" stroke="#c84b0a" stroke-width=".8"/>
+          <rect x="50" y="290" width="22" height="14" rx="2" fill="rgba(58,138,90,.2)" stroke="#3a8a5a" stroke-width=".8"/>
+          <rect x="96" y="290" width="22" height="14" rx="2" fill="rgba(200,75,10,.4)" stroke="#c84b0a" stroke-width=".8"/>
+        </svg>
+      </div>
       <div class="svc-card-head">
         <div>
           <div class="svc-card-name">Mix and Master</div>
@@ -159,6 +317,9 @@
       </div>
     </div>
   </div>
+
+  <!-- Waveform divider -->
+  <div class="svc-waveform-divider" id="svc-wave-2"></div>
 
   <div class="svc-block">
     <div class="svc-block-label">03 - Artist Development</div>
@@ -226,6 +387,9 @@
     </div>
   </div>
 
+  <!-- Waveform divider -->
+  <div class="svc-waveform-divider" id="svc-wave-3"></div>
+
   <div class="svc-block">
     <div class="svc-block-label">04 - Beat Licensing</div>
     <div class="svc-card" style="display:flex;align-items:center;gap:28px;flex-wrap:wrap">
@@ -234,7 +398,15 @@
         <div class="svc-card-tag">145 Beats In Catalog - Instant Delivery</div>
         <p style="font-size:13px;color:var(--ash);font-style:italic;line-height:1.6;margin-top:10px">Basic, Premium, Trackout, and Exclusive licenses. Every beat tagged, BPM and key labeled. Stream previews in the browser and purchase the license that fits your project.</p>
       </div>
-      <div><a href="/beats/" class="svc-btn svc-btn-primary">Browse 145 Beats</a></div>
+      <div>
+        <!-- Headphone icon -->
+        <svg width="80" height="60" viewBox="0 0 80 60" fill="none" xmlns="http://www.w3.org/2000/svg" style="opacity:.2;display:block;margin-bottom:12px">
+          <path d="M10 35 C10 18 22 8 40 8 C58 8 70 18 70 35" stroke="#c84b0a" stroke-width="2.5" fill="none"/>
+          <rect x="4" y="30" width="12" height="22" rx="6" fill="rgba(200,75,10,.3)" stroke="#c84b0a" stroke-width="1.5"/>
+          <rect x="64" y="30" width="12" height="22" rx="6" fill="rgba(200,75,10,.3)" stroke="#c84b0a" stroke-width="1.5"/>
+        </svg>
+        <a href="/beats/" class="svc-btn svc-btn-primary">Browse 145 Beats</a>
+      </div>
     </div>
   </div>
 
@@ -242,6 +414,21 @@
 {% endblock %}
 {% block extra_scripts %}
 <script>
+(function(){
+  // Build waveform dividers
+  var ids=['svc-wave-1','svc-wave-2','svc-wave-3'];
+  ids.forEach(function(id){
+    var el=document.getElementById(id);
+    if(!el)return;
+    var bars=60,html='';
+    for(var i=0;i<bars;i++){
+      var t=i/bars,h=Math.round(8+Math.abs(Math.sin(t*Math.PI*5+1.2))*18+Math.random()*6);
+      html+='<div class="wbar" style="height:'+h+'px;opacity:'+(0.4+Math.abs(Math.sin(t*Math.PI*3))*.6)+'"></div>';
+    }
+    el.innerHTML=html;
+  });
+})();
+
 var devAmount=300,devName='Foundation - Artist Development Tier 1',mixAmount=150,mixName='Single Mix and Master';
 document.querySelectorAll('.rec-addon').forEach(function(el){
   el.addEventListener('change',function(){
@@ -282,6 +469,5 @@ window.bookService=function(type){
     else alert(d.error||'Something went wrong. Please try again.');
   }).catch(function(){alert('Connection error. Please try again.');});
 };
-
 </script>
 {% endblock %}

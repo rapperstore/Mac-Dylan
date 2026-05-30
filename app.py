@@ -30,15 +30,22 @@ def create_app():
     with app.app_context():
         db.create_all()
         from models import Beat, Product
+        # Cloudflare R2 URL for the full ebook PDF
+        EBOOK_R2_URL = 'https://pub-3d8b1c7a5e63475b90c0044ca074cba8.r2.dev/THE_ARTIST_IS_THE_BUSINESS.pdf'
         try:
-            if not Product.query.filter_by(name="The Artist Is The Business").first():
+            existing_ebook = Product.query.filter_by(name="The Artist Is The Business").first()
+            if not existing_ebook:
                 db.session.add(Product(
                     product_type="digital",
                     name="The Artist Is The Business",
                     description="The complete independent artist blueprint. 9 chapters covering branding, income streams, organic growth, AI leverage, and a 90-day execution plan.",
-                    price=27,tags="ebook,artist development,strategy",
-                    file_path="uploads/products/artist-is-the-business-v2.html",
-                    is_active=True,is_new=True))
+                    price=27, tags="ebook,artist development,strategy",
+                    file_path=EBOOK_R2_URL,
+                    is_active=True, is_new=True))
+                db.session.commit()
+            elif existing_ebook.file_path and not existing_ebook.file_path.startswith('http'):
+                # Patch old local-path records from previous deploys
+                existing_ebook.file_path = EBOOK_R2_URL
                 db.session.commit()
         except Exception:
             db.session.rollback()

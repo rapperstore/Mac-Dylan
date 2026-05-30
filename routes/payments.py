@@ -235,7 +235,11 @@ def success():
             if order_type == 'digital' and meta.get('product_id'):
                 p = Product.query.get(int(meta['product_id']))
                 if p and p.file_path:
-                    download_url = '/' + p.file_path
+                    # Support full https:// URLs (e.g. Cloudflare R2) and relative paths
+                    if p.file_path.startswith('http'):
+                        download_url = p.file_path
+                    else:
+                        download_url = '/' + p.file_path
         except Exception as e:
             current_app.logger.error('Success page error: ' + str(e))
     return render_template('success.html',

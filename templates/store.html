@@ -127,24 +127,20 @@
 {% endblock %}
 {% block extra_scripts %}
 <script>
-function buyEbook(){
-  fetch("/payments/store-checkout",{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify({product_id:1,quantity:1,price:27,product_name:"The Artist Is The Business"})})
-  .then(r=>r.json()).then(d=>{if(d.checkout_url)window.location.href=d.checkout_url;else alert(d.error||"Something went wrong.");}).catch(()=>alert("Connection error."));
-}
 window.buyEbook = function() {
+  var btn = document.querySelector('.ebook-btn-primary');
+  if (btn) { btn.textContent = 'Loading...'; btn.style.opacity = '.7'; }
   fetch('/payments/store-checkout', {
     method: 'POST',
     headers: {'Content-Type': 'application/json'},
     body: JSON.stringify({product_id: 1, product_name: 'The Artist Is The Business', price: 27})
   }).then(function(r){return r.json()}).then(function(d){
-    if (d.checkout_url) window.location.href = d.checkout_url;
-    else alert(d.error || 'Something went wrong.');
-  }).catch(function(){alert('Connection error. Please try again.');});
-};
-
-window.previewEbook = function(e) {
-  e.preventDefault();
-  alert('Full preview coming soon. Purchase now for instant access to all 9 chapters.');
+    if (d.checkout_url) { window.location.href = d.checkout_url; }
+    else { if(btn){btn.textContent='Get Instant Access - $27';btn.style.opacity='1';} alert(d.error || 'Something went wrong.'); }
+  }).catch(function(){
+    if(btn){btn.textContent='Get Instant Access - $27';btn.style.opacity='1';}
+    alert('Connection error. Please try again.');
+  });
 };
 window.buyProduct = function(id, name, price) {
   fetch('/payments/store-checkout', {
@@ -156,6 +152,5 @@ window.buyProduct = function(id, name, price) {
     else alert(d.error || 'Something went wrong.');
   }).catch(function(){alert('Connection error. Please try again.');});
 };
-
 </script>
 {% endblock %}
