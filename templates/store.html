@@ -309,7 +309,7 @@ window.buyEbook = function() {
   fetch('/payments/store-checkout', {
     method: 'POST',
     headers: {'Content-Type': 'application/json'},
-    body: JSON.stringify({product_id: 1, product_name: 'The Artist Is The Business', price: 27})
+    body: JSON.stringify({product_id: {{ ebook_id }}, product_name: 'The Artist Is The Business', price: 27})
   }).then(function(r){return r.json()}).then(function(d){
     if (d.checkout_url) { window.location.href = d.checkout_url; }
     else {

@@ -5,10 +5,13 @@ store_bp = Blueprint('store', __name__)
 
 @store_bp.route('/')
 def index():
-    digital = Product.query.filter_by(is_active=True, product_type='digital').order_by(Product.created_at.desc()).all()
-    merch   = Product.query.filter_by(is_active=True, product_type='merch').order_by(Product.created_at.desc()).all()
-    courses = Product.query.filter_by(is_active=True, product_type='course').order_by(Product.created_at.desc()).all()
-    return render_template('store.html', digital=digital, merch=merch, courses=courses)
+    ebook = Product.query.filter_by(name="The Artist Is The Business", is_active=True).first()
+    products = Product.query.filter_by(is_active=True).order_by(Product.created_at.desc()).all()
+    return render_template('store.html',
+        products=products,
+        ebook=ebook,
+        ebook_id=ebook.id if ebook else 1
+    )
 
 @store_bp.route('/api/products')
 def api_products():
