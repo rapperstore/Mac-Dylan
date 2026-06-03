@@ -366,25 +366,21 @@ window.selectBeat=function(id){
   setPI(false);
   if(beat.mp3){
     document.getElementById('np-ws-wrap').innerHTML='<div id="np-ws"></div>';
-    // Pre-generate waveform peaks from beat id — no CORS/fetch needed for visualization
+    // Pre-generate peaks — WaveSurfer draws from these, never fetches audio for decode
     var peaks=[];
     for(var pi=0;pi<200;pi++){peaks.push((Math.abs(Math.sin(beat.id*3.7+pi*0.31))*0.7+Math.abs(Math.sin(beat.id*1.2+pi*0.77))*0.3)*0.85+0.12);}
-    // Use a standalone audio element for playback — avoids all CORS restrictions
-    var audioEl=document.createElement('audio');
-    audioEl.src=beat.mp3;
-    audioEl.preload='metadata';
     ws=WaveSurfer.create({
       container:'#np-ws',
       waveColor:beat.free?'rgba(58,138,90,.45)':'rgba(107,90,80,.45)',
       progressColor:beat.free?'rgba(58,138,90,.9)':'rgba(200,75,10,.9)',
       height:48,barWidth:2,barGap:1,barRadius:1,interact:true,
-      media:audioEl,
+      url:beat.mp3,
       peaks:[peaks],
       duration:180
     });
     ws.setVolume(+document.getElementById('vol').value);
     ws.on('ready',function(){
-      var dur=audioEl.duration||ws.getDuration()||0;
+      var dur=ws.getDuration()||0;
       document.getElementById('np-dur').textContent=fmt(dur);
       ws.play();setPI(true);
     });
@@ -394,11 +390,6 @@ window.selectBeat=function(id){
       else{setPI(false);nextTrack();}
     });
     ws.on('error',function(err){console.warn('WaveSurfer:',err);});
-    // Update real duration once audio metadata loads
-    audioEl.addEventListener('loadedmetadata',function(){
-      document.getElementById('np-dur').textContent=fmt(audioEl.duration);
-      try{ws.setOptions({duration:audioEl.duration});}catch(e){}
-    });
     fetch('/beats/api/play/'+id,{method:'POST'});
   } else {
     document.getElementById('np-ws-wrap').innerHTML='<div style="height:48px;display:flex;align-items:center;gap:1px;padding:0 2px" id="np-static-bars"></div>';
