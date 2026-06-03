@@ -78,6 +78,11 @@ def sitemap():
     return Response(xml, mimetype='application/xml')
 
 
+@main_bp.route('/google35cbc8a6f0798c76.html')
+def google_verify():
+    return Response('google-site-verification: google35cbc8a6f0798c76.html', mimetype='text/html')
+
+
 @main_bp.route('/robots.txt')
 def robots():
     txt = (
