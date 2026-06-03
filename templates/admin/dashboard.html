@@ -113,6 +113,8 @@ body{display:flex;min-height:100vh;overflow-x:hidden}
     <div class="nav-group">Store</div>
     <button class="nav-item" onclick="showPanel('products',this)"><span class="nav-icon">◈</span><span>Products</span></button>
     <button class="nav-item" onclick="showPanel('add-product',this)"><span class="nav-icon">+</span><span>Add Product</span></button>
+    <div class="nav-group">Audience</div>
+    <a href="{{ url_for('admin.subscribers') }}" class="nav-item"><span class="nav-icon">✉</span><span>Subscribers</span></a>
     <div class="nav-group">Settings</div>
     <button class="nav-item" onclick="showPanel('digital',this)"><span class="nav-icon">↓</span><span>Digital Products</span></button>
     <button class="nav-item" onclick="showPanel('credits',this)"><span class="nav-icon">★</span><span>Credits</span></button>

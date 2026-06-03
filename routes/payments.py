@@ -232,6 +232,16 @@ def success():
                 order.amount_paid = order.amount_total
                 order.amount_balance = 0
                 db.session.commit()
+                if customer_email:
+                    try:
+                        from models import Subscriber
+                        existing = Subscriber.query.filter_by(email=customer_email).first()
+                        if not existing:
+                            sub = Subscriber(email=customer_email, source=order_type + '_purchase')
+                            db.session.add(sub)
+                            db.session.commit()
+                    except Exception:
+                        db.session.rollback()
             if order_type == 'digital' and meta.get('product_id'):
                 p = Product.query.get(int(meta['product_id']))
                 if p and p.file_path:

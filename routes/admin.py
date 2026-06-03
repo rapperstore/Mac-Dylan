@@ -247,3 +247,34 @@ def add_content():
 def delete_content(cid):
     c=Content.query.get_or_404(cid);db.session.delete(c);db.session.commit()
     return jsonify({"deleted":True})
+
+@admin_bp.route("/subscribers")
+@admin_required
+def subscribers():
+    from models import Subscriber
+    subs = Subscriber.query.order_by(Subscriber.created_at.desc()).all()
+    return render_template("admin/subscribers.html", subscribers=subs, total=len(subs))
+
+@admin_bp.route("/subscribers/export")
+@admin_required
+def export_subscribers():
+    import csv, io
+    from flask import Response
+    from models import Subscriber
+    subs = Subscriber.query.order_by(Subscriber.created_at.desc()).all()
+    out = io.StringIO()
+    w = csv.writer(out)
+    w.writerow(["ID", "Email", "Source", "Date", "Active"])
+    for s in subs:
+        w.writerow([s.id, s.email, s.source, s.created_at.strftime("%Y-%m-%d"), s.is_active])
+    return Response(out.getvalue(), mimetype="text/csv",
+        headers={"Content-Disposition": "attachment; filename=subscribers.csv"})
+
+@admin_bp.route("/subscribers/<int:sid>/delete", methods=["POST"])
+@admin_required
+def delete_subscriber(sid):
+    from models import Subscriber
+    s = Subscriber.query.get_or_404(sid)
+    db.session.delete(s)
+    db.session.commit()
+    return jsonify({"ok": True})

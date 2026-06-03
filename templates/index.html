@@ -170,6 +170,10 @@
 .modal-btn{display:inline-block;padding:14px 32px;background:var(--ember);color:#f5f0e8;font-family:'Space Mono',monospace;font-size:9px;letter-spacing:.3em;text-transform:uppercase;text-decoration:none;border:none;cursor:pointer;transition:all .25s}
 .modal-btn:hover{background:var(--fire);box-shadow:0 0 28px rgba(200,75,10,.4);color:#f5f0e8}
 
+/* ── REWARD DISPLAY ── */
+.nl-ok{padding:4px 0}
+#reward-code{user-select:all;cursor:text}
+
 /* ── RESPONSIVE ── */
 @media(max-width:900px){
   .hero{padding:0 24px 64px}
@@ -564,7 +568,19 @@
         <button class="nl-btn" type="submit">Subscribe</button>
       </div>
     </form>
-    <div class="nl-ok" id="nl-ok">YOU ARE IN &mdash; CHECK YOUR EMAIL</div>
+    <div class="nl-ok" id="nl-ok" style="display:none">
+      <div style="color:var(--green);font-family:'Space Mono',monospace;font-size:9px;letter-spacing:.4em;margin-bottom:14px">✓ YOU'RE IN — WELCOME TO THE FAMILY</div>
+      <div style="background:rgba(200,75,10,.08);border:1px solid rgba(200,75,10,.3);padding:16px 20px;margin-bottom:12px">
+        <div style="font-family:'Space Mono',monospace;font-size:7px;letter-spacing:.4em;color:rgba(200,75,10,.7);text-transform:uppercase;margin-bottom:8px">Your Welcome Gift — 15% Off Any Beat</div>
+        <div style="font-family:'Bebas Neue',sans-serif;font-size:28px;color:var(--fire);letter-spacing:.1em" id="reward-code">MACDYLAN15</div>
+        <div style="font-size:11px;color:rgba(200,180,150,.5);margin-top:4px;font-style:italic">Use at checkout · Any license · No expiry</div>
+      </div>
+      <div style="background:rgba(58,138,90,.06);border:1px solid rgba(58,138,90,.2);padding:14px 20px">
+        <div style="font-family:'Space Mono',monospace;font-size:7px;letter-spacing:.4em;color:rgba(58,138,90,.7);text-transform:uppercase;margin-bottom:8px">Free Beat Download</div>
+        <a id="reward-beat-link" href="#" target="_blank" style="font-family:'Bebas Neue',sans-serif;font-size:18px;color:#3a8a5a;letter-spacing:.06em;text-decoration:none" id="reward-beat-title">Afterlife</a>
+        <div style="font-size:11px;color:rgba(200,180,150,.5);margin-top:4px;font-style:italic">Yours free · No strings</div>
+      </div>
+    </div>
     <div class="nl-note" id="nl-note">NO SPAM. UNSUBSCRIBE ANYTIME.</div>
   </div>
 </section>
@@ -623,18 +639,27 @@ window.subCK = function(e) {
   e.preventDefault();
   var email = document.getElementById('ck-email').value.trim();
   if (!email) return;
-  fetch('https://mac-dylan.kit.com/b5923233e5/subscriptions', {
-    method: 'POST', headers: {'Content-Type': 'application/x-www-form-urlencoded'},
-    body: 'email_address=' + encodeURIComponent(email)
-  }).then(function(r){
-    if (!r.ok) throw new Error('Subscription failed');
-    document.getElementById('ck-form').style.display = 'none';
-    document.getElementById('nl-ok').style.display = 'block';
-    document.getElementById('nl-note').style.display = 'none';
-  }).catch(function(){
-    document.getElementById('nl-note').textContent = 'SOMETHING WENT WRONG. PLEASE TRY AGAIN.';
-    document.getElementById('nl-note').style.color = 'var(--fire)';
-  });
+  fetch('/subscribe', {
+    method: 'POST',
+    headers: {'Content-Type': 'application/json'},
+    body: JSON.stringify({email: email})
+  }).then(function(r){ return r.json(); })
+    .then(function(d){
+      if (d.ok) {
+        document.getElementById('ck-form').style.display = 'none';
+        document.getElementById('nl-note').style.display = 'none';
+        var beatLink = document.getElementById('reward-beat-link');
+        if (beatLink && d.beat_url) beatLink.href = d.beat_url;
+        if (beatLink && d.beat_title) beatLink.textContent = d.beat_title;
+        document.getElementById('nl-ok').style.display = 'block';
+      } else {
+        document.getElementById('nl-note').textContent = 'SOMETHING WENT WRONG. PLEASE TRY AGAIN.';
+        document.getElementById('nl-note').style.color = 'var(--fire)';
+      }
+    }).catch(function(){
+      document.getElementById('nl-note').textContent = 'SOMETHING WENT WRONG. PLEASE TRY AGAIN.';
+      document.getElementById('nl-note').style.color = 'var(--fire)';
+    });
 };
 window.selTip = function(amt, btn) {
   document.querySelectorAll('.ta-btn').forEach(function(b){ b.classList.remove('active'); });
