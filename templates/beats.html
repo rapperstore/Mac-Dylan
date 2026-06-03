@@ -1,14 +1,89 @@
 
 {% extends "base.html" %}
-{% block title %}Beats — Mac Dylan{% endblock %}
+{% block title %}Buy Beats Online — Mac Dylan | Boise Idaho Hip Hop Producer{% endblock %}
+
+{% block seo_meta %}
+<meta name="description" content="Stream and license 146+ original hip-hop beats by Mac Dylan — Boise Idaho's best music producer. Beats from $29. Instant MP3 download. WAV &amp; stems available.">
+<link rel="canonical" href="https://www.macdylan.com/beats/">
+<meta name="keywords" content="buy beats online, hip hop beats Boise Idaho, beats for sale, license beats, Mac Dylan beats, trap beats, rap beats Idaho, music producer beats Boise">
+{% endblock %}
 
 {% block og_meta %}
-<meta property="og:title" content=" Beats by Mac Dylan — Stream and License">
-<meta property="og:description" content="146 original Hip Hop beats. Stream free previews, license instantly. MP3 on purchase.">
+<meta property="og:site_name" content="Mac Dylan">
+<meta property="og:locale" content="en_US">
+<meta property="og:title" content="Buy Beats — Mac Dylan | Boise Idaho Hip Hop Producer">
+<meta property="og:description" content="Stream and license 146+ original hip-hop beats. From $29. Instant MP3 download on purchase. Boise, Idaho.">
 <meta property="og:url" content="https://www.macdylan.com/beats/">
 <meta property="og:type" content="website">
+<meta property="og:image" content="https://www.macdylan.com/static/book-cover.png">
 <meta name="twitter:card" content="summary_large_image">
-<meta name="twitter:title" content=" Beats by Mac Dylan">
+<meta name="twitter:title" content="Buy Beats — Mac Dylan | Boise Idaho">
+<meta name="twitter:description" content="146+ original hip-hop beats from $29. Stream free, license instantly. Boise, Idaho.">
+<meta name="twitter:image" content="https://www.macdylan.com/static/book-cover.png">
+
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@graph": [
+    {
+      "@type": "BreadcrumbList",
+      "itemListElement": [
+        {"@type": "ListItem", "position": 1, "name": "Home", "item": "https://www.macdylan.com/"},
+        {"@type": "ListItem", "position": 2, "name": "Beats", "item": "https://www.macdylan.com/beats/"}
+      ]
+    },
+    {
+      "@type": "ItemList",
+      "name": "Mac Dylan Beats",
+      "description": "Original hip-hop beats available to license from Boise Idaho producer Mac Dylan",
+      "url": "https://www.macdylan.com/beats/",
+      "numberOfItems": {{ beats | length if beats else 146 }},
+      "itemListElement": [
+        {% for beat in beats[:10] %}
+        {
+          "@type": "ListItem",
+          "position": {{ loop.index }},
+          "item": {
+            "@type": "MusicRecording",
+            "name": "{{ beat.title }}",
+            "byArtist": {"@type": "MusicGroup", "name": "Mac Dylan"},
+            "inAlbum": {"@type": "MusicAlbum", "name": "Mac Dylan Beat Catalog"},
+            "offers": {
+              "@type": "Offer",
+              "price": "{{ beat.price_basic }}",
+              "priceCurrency": "USD",
+              "availability": "https://schema.org/InStock",
+              "seller": {"@type": "Person", "name": "Mac Dylan"}
+            }
+          }
+        }{% if not loop.last %},{% endif %}
+        {% endfor %}
+      ]
+    },
+    {
+      "@type": "Service",
+      "name": "Beat Licensing by Mac Dylan",
+      "description": "License original hip-hop beats produced by Mac Dylan of Boise, Idaho. Basic MP3 lease, Premium WAV lease, Trackout lease, and Exclusive rights available.",
+      "provider": {
+        "@type": "Person",
+        "name": "Mac Dylan",
+        "address": {"@type": "PostalAddress", "addressLocality": "Boise", "addressRegion": "ID", "addressCountry": "US"}
+      },
+      "areaServed": "Worldwide",
+      "hasOfferCatalog": {
+        "@type": "OfferCatalog",
+        "name": "Beat License Tiers",
+        "itemListElement": [
+          {"@type": "Offer", "name": "Basic Lease (MP3)", "price": "29", "priceCurrency": "USD"},
+          {"@type": "Offer", "name": "Premium Lease (WAV)", "price": "49", "priceCurrency": "USD"},
+          {"@type": "Offer", "name": "Trackout Lease (Stems)", "price": "99", "priceCurrency": "USD"},
+          {"@type": "Offer", "name": "Exclusive Rights", "price": "299", "priceCurrency": "USD"}
+        ]
+      }
+    }
+  ]
+}
+</script>
 {% endblock %}
 {% block extra_styles %}
 /* ===== BEATS PAGE ===== */

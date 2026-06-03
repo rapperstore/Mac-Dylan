@@ -1,5 +1,115 @@
 {% extends "base.html" %}
-{% block title %}Services - Mac Dylan{% endblock %}
+{% block title %}Music Production Services Boise Idaho — Mac Dylan | Recording, Mixing & Artist Dev{% endblock %}
+
+{% block seo_meta %}
+<meta name="description" content="Book Mac Dylan — Boise Idaho's best music producer. Professional recording sessions, mix engineering, audio mastering, and full artist development. Book online today.">
+<link rel="canonical" href="https://www.macdylan.com/services/">
+<meta name="keywords" content="music production services Boise Idaho, recording studio Boise, mix engineer Boise Idaho, audio mastering Boise, artist development Idaho, book music producer Boise, Mac Dylan services">
+{% endblock %}
+
+{% block og_meta %}
+<meta property="og:site_name" content="Mac Dylan">
+<meta property="og:locale" content="en_US">
+<meta property="og:title" content="Music Production Services — Mac Dylan | Boise Idaho">
+<meta property="og:description" content="Professional recording, mixing, mastering &amp; artist development by Mac Dylan. Boise Idaho's premier music producer. Book your session today.">
+<meta property="og:url" content="https://www.macdylan.com/services/">
+<meta property="og:type" content="website">
+<meta property="og:image" content="https://www.macdylan.com/static/book-cover.png">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Book Mac Dylan — Boise Idaho Music Producer">
+<meta name="twitter:description" content="Recording, mixing, mastering &amp; artist development. Boise, Idaho. Book online.">
+<meta name="twitter:image" content="https://www.macdylan.com/static/book-cover.png">
+
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@graph": [
+    {
+      "@type": "BreadcrumbList",
+      "itemListElement": [
+        {"@type": "ListItem", "position": 1, "name": "Home", "item": "https://www.macdylan.com/"},
+        {"@type": "ListItem", "position": 2, "name": "Services", "item": "https://www.macdylan.com/services/"}
+      ]
+    },
+    {
+      "@type": "ProfessionalService",
+      "name": "Mac Dylan Music Production",
+      "description": "Professional music production, recording, mixing, mastering and artist development services in Boise, Idaho.",
+      "url": "https://www.macdylan.com/services/",
+      "telephone": "+12083915292",
+      "priceRange": "$$",
+      "address": {
+        "@type": "PostalAddress",
+        "addressLocality": "Boise",
+        "addressRegion": "ID",
+        "addressCountry": "US"
+      },
+      "geo": {
+        "@type": "GeoCoordinates",
+        "latitude": 43.6150,
+        "longitude": -116.2023
+      },
+      "areaServed": [
+        {"@type": "City", "name": "Boise"},
+        {"@type": "State", "name": "Idaho"},
+        {"@type": "Country", "name": "United States"}
+      ],
+      "hasOfferCatalog": {
+        "@type": "OfferCatalog",
+        "name": "Music Production Services",
+        "itemListElement": [
+          {
+            "@type": "Offer",
+            "itemOffered": {
+              "@type": "Service",
+              "name": "Recording Session",
+              "description": "Professional studio recording session with Mac Dylan in Boise, Idaho"
+            }
+          },
+          {
+            "@type": "Offer",
+            "itemOffered": {
+              "@type": "Service",
+              "name": "Mix Engineering",
+              "description": "Professional audio mixing and mix-down service"
+            }
+          },
+          {
+            "@type": "Offer",
+            "itemOffered": {
+              "@type": "Service",
+              "name": "Audio Mastering",
+              "description": "Professional audio mastering for streaming platforms and distribution"
+            }
+          },
+          {
+            "@type": "Offer",
+            "itemOffered": {
+              "@type": "Service",
+              "name": "Artist Development",
+              "description": "Full artist development coaching: brand building, growth strategy, income streams"
+            }
+          },
+          {
+            "@type": "Offer",
+            "itemOffered": {
+              "@type": "Service",
+              "name": "Beat Production",
+              "description": "Custom beat production tailored to the artist's sound and vision"
+            }
+          }
+        ]
+      },
+      "review": {
+        "@type": "Review",
+        "reviewBody": "Best music producer in Boise. The mixes are always on point.",
+        "author": {"@type": "Person", "name": "Local Artist"}
+      }
+    }
+  ]
+}
+</script>
+{% endblock %}
 {% block extra_styles %}
 .svc-hero{padding:72px 48px 44px;border-bottom:1px solid var(--border);position:relative;overflow:hidden;min-height:320px}
 .svc-hero::after{content:'SERVICES';position:absolute;right:-20px;bottom:-40px;font-family:'Bebas Neue',sans-serif;font-size:200px;color:rgba(200,75,10,.03);pointer-events:none;line-height:1}

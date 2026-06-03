@@ -1,6 +1,7 @@
 import urllib.request
 import urllib.parse
-from flask import Blueprint, render_template, request, jsonify
+from datetime import datetime
+from flask import Blueprint, render_template, request, jsonify, Response
 from database import db
 from models import Beat, Credit, Subscriber
 
@@ -53,5 +54,40 @@ def subscribe():
         'beat_url': 'https://pub-3d8b1c7a5e63475b90c0044ca074cba8.r2.dev/Afterlife%20%5B117BPM%20A%23%20Min%5D.mp3',
         'beat_title': 'Afterlife'
     })
+
+
+@main_bp.route('/sitemap.xml')
+def sitemap():
+    today = datetime.utcnow().strftime('%Y-%m-%d')
+    pages = [
+        ('https://www.macdylan.com/', '1.0', 'weekly'),
+        ('https://www.macdylan.com/beats/', '0.9', 'daily'),
+        ('https://www.macdylan.com/services/', '0.9', 'monthly'),
+        ('https://www.macdylan.com/store/', '0.9', 'weekly'),
+    ]
+    xml = '<?xml version="1.0" encoding="UTF-8"?>\n'
+    xml += '<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n'
+    for url, priority, freq in pages:
+        xml += f'  <url>\n'
+        xml += f'    <loc>{url}</loc>\n'
+        xml += f'    <lastmod>{today}</lastmod>\n'
+        xml += f'    <changefreq>{freq}</changefreq>\n'
+        xml += f'    <priority>{priority}</priority>\n'
+        xml += f'  </url>\n'
+    xml += '</urlset>'
+    return Response(xml, mimetype='application/xml')
+
+
+@main_bp.route('/robots.txt')
+def robots():
+    txt = (
+        'User-agent: *\n'
+        'Allow: /\n'
+        'Disallow: /admin/\n'
+        'Disallow: /payments/\n'
+        '\n'
+        'Sitemap: https://www.macdylan.com/sitemap.xml\n'
+    )
+    return Response(txt, mimetype='text/plain')
 
 

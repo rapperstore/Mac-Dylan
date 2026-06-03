@@ -1,14 +1,136 @@
 {% extends "base.html" %}
-{% block title %}Mac Dylan — Mix Engineer · Producer · Artist Developer{% endblock %}
+{% block title %}Mac Dylan — Boise Idaho Music Producer | Beats, Mixing & Artist Development{% endblock %}
+
+{% block seo_meta %}
+<meta name="description" content="Mac Dylan is Boise Idaho's best music producer, mix engineer &amp; artist developer. License beats from $29, book professional recording &amp; mixing sessions, and grow your music career.">
+<link rel="canonical" href="https://www.macdylan.com/">
+<meta name="keywords" content="Boise music producer, music producer Boise Idaho, buy beats Boise, hip hop beats Idaho, mix engineer Boise, recording studio Boise, artist development Boise, Mac Dylan producer, beat store Boise Idaho, music production Boise">
+{% endblock %}
 
 {% block og_meta %}
-<meta property="og:title" content="Mac Dylan — Mix Engineer · Producer · Artist Developer">
-<meta property="og:description" content="Professional recording, mixing, mastering and artist development based in Boise, Idaho. 146 original beats available to license.">
+<meta property="og:site_name" content="Mac Dylan">
+<meta property="og:locale" content="en_US">
+<meta property="og:title" content="Mac Dylan — Boise Idaho's Best Music Producer">
+<meta property="og:description" content="Boise Idaho's premier music producer, mix engineer &amp; artist developer. 146+ beats to license from $29. Professional recording, mixing, mastering, and artist development.">
 <meta property="og:url" content="https://www.macdylan.com/">
 <meta property="og:type" content="website">
+<meta property="og:image" content="https://www.macdylan.com/static/book-cover.png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
 <meta name="twitter:card" content="summary_large_image">
-<meta name="twitter:title" content="Mac Dylan — Producer · Mix Engineer">
-<meta name="twitter:description" content="146 beats, mixing, mastering, artist development. Boise, Idaho.">
+<meta name="twitter:site" content="@macdylan">
+<meta name="twitter:title" content="Mac Dylan — Boise Idaho's Best Music Producer">
+<meta name="twitter:description" content="146+ beats to license from $29. Mixing, mastering &amp; artist development. Boise, Idaho.">
+<meta name="twitter:image" content="https://www.macdylan.com/static/book-cover.png">
+
+<!-- JSON-LD Structured Data -->
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@graph": [
+    {
+      "@type": "WebSite",
+      "@id": "https://www.macdylan.com/#website",
+      "url": "https://www.macdylan.com/",
+      "name": "Mac Dylan",
+      "description": "Boise Idaho music producer, mix engineer and artist developer",
+      "potentialAction": {
+        "@type": "SearchAction",
+        "target": {
+          "@type": "EntryPoint",
+          "urlTemplate": "https://www.macdylan.com/beats/?q={search_term_string}"
+        },
+        "query-input": "required name=search_term_string"
+      }
+    },
+    {
+      "@type": ["LocalBusiness", "MusicGroup"],
+      "@id": "https://www.macdylan.com/#business",
+      "name": "Mac Dylan",
+      "alternateName": "Mac Dylan Music",
+      "description": "Boise Idaho's best music producer, mix engineer, and artist developer. Professional beats, recording, mixing, mastering, and full artist development services.",
+      "url": "https://www.macdylan.com/",
+      "logo": "https://www.macdylan.com/static/favicon-180.png",
+      "image": "https://www.macdylan.com/static/book-cover.png",
+      "telephone": "+12083915292",
+      "priceRange": "$$",
+      "address": {
+        "@type": "PostalAddress",
+        "addressLocality": "Boise",
+        "addressRegion": "ID",
+        "addressCountry": "US",
+        "postalCode": "83701"
+      },
+      "geo": {
+        "@type": "GeoCoordinates",
+        "latitude": 43.6150,
+        "longitude": -116.2023
+      },
+      "areaServed": [
+        {"@type": "City", "name": "Boise"},
+        {"@type": "State", "name": "Idaho"},
+        {"@type": "Country", "name": "United States"}
+      ],
+      "serviceType": [
+        "Music Production",
+        "Beat Licensing",
+        "Mix Engineering",
+        "Mastering",
+        "Artist Development",
+        "Recording Sessions"
+      ],
+      "sameAs": [
+        "https://soundcloud.com/macdylan4ever",
+        "https://aeralabs.io"
+      ],
+      "openingHoursSpecification": {
+        "@type": "OpeningHoursSpecification",
+        "dayOfWeek": ["Monday","Tuesday","Wednesday","Thursday","Friday","Saturday","Sunday"],
+        "opens": "09:00",
+        "closes": "22:00"
+      },
+      "hasOfferCatalog": {
+        "@type": "OfferCatalog",
+        "name": "Mac Dylan Music Services",
+        "itemListElement": [
+          {
+            "@type": "Offer",
+            "itemOffered": {"@type": "Service", "name": "Beat Licensing", "description": "License professional hip-hop beats starting at $29"},
+            "priceSpecification": {"@type": "PriceSpecification", "minPrice": 29, "maxPrice": 299, "priceCurrency": "USD"}
+          },
+          {
+            "@type": "Offer",
+            "itemOffered": {"@type": "Service", "name": "Mix Engineering", "description": "Professional mixing and mastering services"},
+            "priceSpecification": {"@type": "PriceSpecification", "minPrice": 75, "priceCurrency": "USD"}
+          },
+          {
+            "@type": "Offer",
+            "itemOffered": {"@type": "Service", "name": "Artist Development", "description": "Full artist development coaching and branding strategy"},
+            "priceSpecification": {"@type": "PriceSpecification", "minPrice": 150, "priceCurrency": "USD"}
+          }
+        ]
+      }
+    },
+    {
+      "@type": "Person",
+      "@id": "https://www.macdylan.com/#person",
+      "name": "Mac Dylan",
+      "jobTitle": "Music Producer & Mix Engineer",
+      "description": "Boise Idaho music producer, mix engineer, and artist development coach with 146+ original beats available to license.",
+      "url": "https://www.macdylan.com/",
+      "telephone": "+12083915292",
+      "address": {
+        "@type": "PostalAddress",
+        "addressLocality": "Boise",
+        "addressRegion": "ID",
+        "addressCountry": "US"
+      },
+      "knowsAbout": ["Music Production", "Hip Hop", "Beat Making", "Mix Engineering", "Audio Mastering", "Artist Development", "Music Business"],
+      "sameAs": ["https://soundcloud.com/macdylan4ever"]
+    }
+  ]
+}
+</script>
 {% endblock %}
 {% block extra_styles %}
 /* ── HERO ── */

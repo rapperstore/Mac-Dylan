@@ -2,13 +2,39 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">    <link rel="icon" type="image/x-icon" href="/static/favicon.ico">
-  <link rel="icon" type="image/png" sizes="32x32" href="/static/favicon-32.png">
-  <link rel="apple-touch-icon" sizes="180x180" href="/static/favicon-180.png">
-  <link rel="icon" type="image/svg+xml" href="/static/favicon.svg">
-  <meta name="theme-color" content="#0d0a07">
-  {% block og_meta %}{% endblock %}
-<title>{% block title %}Mac Dylan{% endblock %}</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<link rel="icon" type="image/x-icon" href="/static/favicon.ico">
+<link rel="icon" type="image/png" sizes="32x32" href="/static/favicon-32.png">
+<link rel="apple-touch-icon" sizes="180x180" href="/static/favicon-180.png">
+<link rel="icon" type="image/svg+xml" href="/static/favicon.svg">
+<meta name="theme-color" content="#0d0a07">
+<meta name="robots" content="index, follow, max-snippet:-1, max-image-preview:large, max-video-preview:-1">
+<meta name="author" content="Mac Dylan">
+<meta name="geo.region" content="US-ID">
+<meta name="geo.placename" content="Boise, Idaho">
+<meta name="geo.position" content="43.6150;-116.2023">
+<meta name="ICBM" content="43.6150, -116.2023">
+{% block seo_meta %}
+<meta name="description" content="Mac Dylan — Boise Idaho's premier music producer, mix engineer &amp; artist developer. 146+ beats to license, professional recording, mixing, mastering and artist development services.">
+<link rel="canonical" href="https://www.macdylan.com{{ request.path }}">
+{% endblock %}
+{% block og_meta %}
+<meta property="og:site_name" content="Mac Dylan">
+<meta property="og:locale" content="en_US">
+<meta property="og:title" content="Mac Dylan — Boise Idaho Music Producer">
+<meta property="og:description" content="Boise Idaho's premier music producer, mix engineer &amp; artist developer. 146+ beats to license, professional recording, mixing, mastering and artist development.">
+<meta property="og:url" content="https://www.macdylan.com{{ request.path }}">
+<meta property="og:type" content="website">
+<meta property="og:image" content="https://www.macdylan.com/static/book-cover.png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:site" content="@macdylan">
+<meta name="twitter:title" content="Mac Dylan — Boise Idaho Music Producer">
+<meta name="twitter:description" content="146+ beats to license. Professional mixing, mastering &amp; artist development. Boise, Idaho.">
+<meta name="twitter:image" content="https://www.macdylan.com/static/book-cover.png">
+{% endblock %}
+<title>{% block title %}Mac Dylan — Boise Idaho Music Producer & Beat Store{% endblock %}</title>
 <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,400&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
 <style>
 *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
