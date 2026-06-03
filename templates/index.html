@@ -201,54 +201,8 @@
     <div class="modal-topbar"></div>
     <button class="modal-close" onclick="closeModal()">&#215;</button>
     <div class="modal-cover">
-      <!-- 3D Book Cover SVG -->
       <div class="modal-book-wrap">
-        <svg class="modal-book-3d" viewBox="0 0 110 152" fill="none" xmlns="http://www.w3.org/2000/svg">
-          <!-- Spine -->
-          <rect x="0" y="0" width="12" height="152" rx="1" fill="url(#spineGrad)"/>
-          <defs>
-            <linearGradient id="spineGrad" x1="0" y1="0" x2="12" y2="0" gradientUnits="userSpaceOnUse">
-              <stop offset="0%" stop-color="#050403"/>
-              <stop offset="100%" stop-color="#140c06"/>
-            </linearGradient>
-            <linearGradient id="coverGrad" x1="12" y1="0" x2="110" y2="152" gradientUnits="userSpaceOnUse">
-              <stop offset="0%" stop-color="#1a0e06"/>
-              <stop offset="50%" stop-color="#0d0804"/>
-              <stop offset="100%" stop-color="#1e1008"/>
-            </linearGradient>
-            <linearGradient id="topBarGrad" x1="12" y1="0" x2="110" y2="0" gradientUnits="userSpaceOnUse">
-              <stop offset="0%" stop-color="#c84b0a"/>
-              <stop offset="50%" stop-color="#f5a623"/>
-              <stop offset="100%" stop-color="#c84b0a"/>
-            </linearGradient>
-          </defs>
-          <!-- Cover face -->
-          <rect x="12" y="0" width="98" height="152" rx="1" fill="url(#coverGrad)" stroke="rgba(200,75,10,.5)" stroke-width=".8"/>
-          <!-- Top color bar -->
-          <rect x="12" y="0" width="98" height="4" fill="url(#topBarGrad)"/>
-          <!-- Spine highlight line -->
-          <line x1="12" y1="0" x2="12" y2="152" stroke="rgba(200,75,10,.6)" stroke-width=".5"/>
-          <!-- Radial glow on cover -->
-          <ellipse cx="61" cy="76" rx="55" ry="60" fill="none" stroke="rgba(200,75,10,.08)" stroke-width="20"/>
-          <!-- THE -->
-          <text x="61" y="28" font-family="monospace" font-size="7" fill="rgba(184,168,152,.7)" text-anchor="middle" letter-spacing="3">THE</text>
-          <!-- ARTIST -->
-          <text x="61" y="58" font-family="'Bebas Neue', sans-serif" font-size="28" fill="#f5f0e8" text-anchor="middle" letter-spacing="1">ARTIST</text>
-          <!-- divider line + IS THE -->
-          <line x1="24" y1="66" x2="44" y2="66" stroke="#c84b0a" stroke-width=".8"/>
-          <text x="61" y="70" font-family="monospace" font-size="6" fill="#f5f0e8" text-anchor="middle" letter-spacing="2">IS THE</text>
-          <line x1="78" y1="66" x2="98" y2="66" stroke="#c84b0a" stroke-width=".8"/>
-          <!-- BUSINESS -->
-          <text x="61" y="96" font-family="'Bebas Neue', sans-serif" font-size="26" fill="#c84b0a" text-anchor="middle" letter-spacing="1">BUSINESS</text>
-          <!-- Subtitle -->
-          <text x="61" y="112" font-family="serif" font-size="6.5" fill="rgba(184,168,152,.65)" text-anchor="middle" font-style="italic">A Real-World Guide to Branding,</text>
-          <text x="61" y="121" font-family="serif" font-size="6.5" fill="rgba(184,168,152,.65)" text-anchor="middle" font-style="italic">Growth, and Income</text>
-          <!-- Author line -->
-          <line x1="30" y1="132" x2="92" y2="132" stroke="rgba(200,75,10,.35)" stroke-width=".6"/>
-          <text x="61" y="143" font-family="monospace" font-size="6" fill="#c84b0a" text-anchor="middle" letter-spacing="2">MAC DYLAN</text>
-          <!-- Page edge illusion -->
-          <rect x="108" y="2" width="2" height="148" fill="rgba(245,240,232,.06)" rx=".5"/>
-        </svg>
+        <img src="/static/book-cover.png" alt="The Artist Is The Business" style="width:120px;height:auto;border-radius:3px;display:block;transform:perspective(700px) rotateY(-14deg) rotateX(3deg);box-shadow:-4px 6px 20px rgba(0,0,0,.9),0 0 30px rgba(200,75,10,.25),4px 0 10px rgba(0,0,0,.6)">
       </div>
       <div class="modal-cover-text">
         <span class="modal-eyebrow">Mac Dylan Presents</span>

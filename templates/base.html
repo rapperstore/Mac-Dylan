@@ -33,6 +33,20 @@ nav{position:fixed;top:0;left:0;right:0;z-index:200;padding:18px 48px;display:fl
 .nav-links a{font-family:'Space Mono',monospace;font-size:9px;letter-spacing:.35em;color:var(--muted);text-decoration:none;text-transform:uppercase;transition:color .2s}.nav-links a:hover,.nav-links a.active{color:var(--fire)}
 .nav-phone{font-family:'Space Mono',monospace;font-size:9px;letter-spacing:.2em;color:var(--ash);text-decoration:none;transition:color .2s}.nav-phone:hover{color:var(--fire)}
 .nav-cta{padding:8px 18px;border:1px solid var(--ember);color:var(--ember)!important;transition:all .2s!important}.nav-cta:hover{background:var(--ember);color:var(--white)!important}
+/* ── HAMBURGER ── */
+.mob-btn{display:none;background:none;border:none;padding:6px;flex-direction:column;justify-content:center;gap:5px;width:32px;height:32px;flex-shrink:0}
+.mob-btn span{display:block;height:1.5px;background:var(--white);border-radius:1px;transition:all .3s}
+/* ── MOBILE FULLSCREEN MENU ── */
+.mob-menu{position:fixed;inset:0;z-index:500;background:rgba(5,4,3,.98);backdrop-filter:blur(16px);display:flex;flex-direction:column;align-items:center;justify-content:center;gap:0;transform:translateX(100%);transition:transform .38s cubic-bezier(.4,0,.2,1);padding:40px 24px}
+.mob-menu.open{transform:translateX(0)}
+.mob-menu-close{position:absolute;top:18px;right:20px;background:none;border:none;color:var(--muted);font-size:26px;line-height:1;padding:4px 8px;transition:color .2s}
+.mob-menu-close:hover{color:var(--fire)}
+.mob-nav-link{font-family:'Bebas Neue',sans-serif;font-size:52px;line-height:1.1;color:var(--white);text-decoration:none;letter-spacing:.05em;transition:color .18s;padding:6px 0;display:block;text-align:center}
+.mob-nav-link:hover{color:var(--fire)}
+.mob-nav-link.cta{color:var(--ember);margin-top:8px}
+.mob-nav-divider{width:40px;height:1px;background:rgba(200,75,10,.2);margin:16px auto}
+.mob-nav-admin{font-family:'Space Mono',monospace;font-size:8px;letter-spacing:.4em;color:rgba(200,75,10,.3);text-transform:uppercase;text-decoration:none;margin-top:20px;transition:color .2s;display:block;text-align:center}
+.mob-nav-admin:hover{color:var(--ember)}
 footer{border-top:1px solid var(--border);padding:48px;display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:20px}
 .footer-logo{font-family:'Bebas Neue',sans-serif;font-size:16px;letter-spacing:.1em;color:var(--ash)}.footer-logo span{color:var(--ember)}
 .footer-links{display:flex;gap:20px}.footer-links a{font-family:'Space Mono',monospace;font-size:8px;letter-spacing:.28em;color:var(--muted);text-transform:uppercase;text-decoration:none;transition:color .2s}.footer-links a:hover{color:var(--white)}
@@ -40,7 +54,7 @@ footer{border-top:1px solid var(--border);padding:48px;display:flex;justify-cont
 .footer-copy{font-family:'Space Mono',monospace;font-size:8px;letter-spacing:.2em;color:var(--muted);text-transform:uppercase}
 @keyframes burnIn{from{opacity:0;transform:translateY(20px);filter:blur(3px)}to{opacity:1;transform:translateY(0);filter:blur(0)}}
 {% block extra_styles %}{% endblock %}
-@media(max-width:900px){nav{padding:14px 20px}.nav-links li:not(:last-child){display:none}.nav-phone{display:none}footer{padding:32px 20px;flex-direction:column;gap:16px;text-align:center}.footer-links{flex-wrap:wrap;justify-content:center}}
+@media(max-width:900px){nav{padding:14px 20px}.nav-links{display:none}.nav-phone{display:none}.mob-btn{display:flex}footer{padding:32px 20px;flex-direction:column;gap:16px;text-align:center}.footer-links{flex-wrap:wrap;justify-content:center}}
 </style>
 </head>
 <body>
@@ -57,7 +71,23 @@ footer{border-top:1px solid var(--border);padding:48px;display:flex;justify-cont
     <li><a href="{{ url_for('services.index') }}" class="nav-cta">Book Now</a></li>
   </ul>
   <a href="tel:2083915292" class="nav-phone">(208) 391-5292</a>
+  <button class="mob-btn" onclick="toggleMob()" aria-label="Open menu">
+    <span></span><span></span><span></span>
+  </button>
 </nav>
+
+<!-- Mobile fullscreen menu -->
+<div class="mob-menu" id="mob-menu">
+  <button class="mob-menu-close" onclick="toggleMob()" aria-label="Close menu">✕</button>
+  <a href="{{ url_for('main.index') }}" class="mob-nav-link" onclick="toggleMob()">Home</a>
+  <div class="mob-nav-divider"></div>
+  <a href="{{ url_for('beats.index') }}" class="mob-nav-link" onclick="toggleMob()">Beats</a>
+  <a href="{{ url_for('store.index') }}" class="mob-nav-link" onclick="toggleMob()">Store</a>
+  <a href="{{ url_for('services.index') }}" class="mob-nav-link cta" onclick="toggleMob()">Book Now</a>
+  <div class="mob-nav-divider"></div>
+  <a href="tel:2083915292" class="mob-nav-link" style="font-size:28px;color:var(--ash)" onclick="toggleMob()">(208) 391-5292</a>
+  <a href="/admin" class="mob-nav-admin">Admin</a>
+</div>
 
 {% block content %}{% endblock %}
 
@@ -72,6 +102,7 @@ footer{border-top:1px solid var(--border);padding:48px;display:flex;justify-cont
   </div>
   <div class="footer-phone"><a href="tel:2083915292">(208) 391-5292</a></div>
   <div class="footer-copy">© 2026 Mac Dylan LLC · Boise, Idaho</div>
+  <a href="/admin" style="font-family:'Space Mono',monospace;font-size:7px;letter-spacing:.35em;color:rgba(200,75,10,.25);text-transform:uppercase;text-decoration:none;transition:color .2s" onmouseover="this.style.color='rgba(200,75,10,.6)'" onmouseout="this.style.color='rgba(200,75,10,.25)'">Admin</a>
 </footer>
 
 </div>
@@ -100,6 +131,20 @@ footer{border-top:1px solid var(--border);padding:48px;display:flex;justify-cont
 })();
 </script>
 
+<script>
+function toggleMob(){
+  var m=document.getElementById('mob-menu');
+  var btn=document.querySelector('.mob-btn');
+  var open=m.classList.toggle('open');
+  document.body.style.overflow=open?'hidden':'';
+  // Animate hamburger to X
+  var spans=btn.querySelectorAll('span');
+  if(open){spans[0].style.cssText='transform:translateY(6.5px) rotate(45deg)';spans[1].style.cssText='opacity:0';spans[2].style.cssText='transform:translateY(-6.5px) rotate(-45deg)'}
+  else{spans[0].style.cssText='';spans[1].style.cssText='';spans[2].style.cssText=''}
+}
+// Close on backdrop click
+document.getElementById('mob-menu').addEventListener('click',function(e){if(e.target===this)toggleMob()});
+</script>
 {% block extra_scripts %}{% endblock %}
 </body>
 </html>
