@@ -44,6 +44,7 @@
   transform-style:preserve-3d;
   transform:rotateY(28deg) rotateX(3deg);
   animation:b3dFloat 6s ease-in-out infinite;
+  background:#050508;
   filter:
     drop-shadow(-18px 36px 70px rgba(0,0,0,.99))
     drop-shadow(-6px 12px 28px rgba(0,0,0,.85))
@@ -67,11 +68,13 @@
 .b3d-spine::after{content:'';position:absolute;top:8%;bottom:8%;right:4px;width:1px;background:rgba(200,75,10,.2)}
 .b3d-spine-label{writing-mode:vertical-lr;transform:rotate(180deg);font-family:'Space Mono',monospace;font-size:5px;letter-spacing:.25em;color:rgba(200,75,10,.35);white-space:nowrap;text-transform:uppercase;position:relative;z-index:1}
 
-/* FRONT COVER — clean, no background bleed */
+/* FRONT COVER — pinned to front plane, no bleed */
 .b3d-front{
   position:absolute;inset:0;
   overflow:hidden;
   backface-visibility:hidden;
+  transform:translateZ(0.2px);
+  background:#050508;
 }
 .b3d-cover-img{width:100%;height:100%;object-fit:cover;display:block}
 /* Subtle edge darkening — simulates book binding depth */
