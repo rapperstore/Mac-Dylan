@@ -230,7 +230,8 @@
   .store-wrap{padding:48px 24px 72px}
   .store-hero{padding:72px 24px 48px}
   .ebook-card{grid-template-columns:1fr}
-  .ebook-stage{min-height:420px;padding:48px 24px 36px}
+  .ebook-stage{min-height:360px;padding:44px 24px 32px}
+  .b3d-scene{transform:scale(.78);transform-origin:center top;margin-bottom:-52px}
   .ebook-info{padding:36px 28px}
   .ebook-chapters{grid-template-columns:1fr}
   .ebook-title{font-size:38px}
@@ -238,24 +239,40 @@
   .trust-divider{display:none}
 }
 @media(max-width:480px){
-  .store-hero{padding:52px 16px 36px}
-  .store-wrap{padding:32px 16px 56px}
-  .store-eyebrow{font-size:7px}
-  .store-heading{font-size:clamp(28px,9vw,42px)}
-  .ebook-stage{min-height:260px;padding:36px 16px 28px}
-  .ebook-title{font-size:24px;letter-spacing:.02em}
-  .ebook-subtitle{font-size:11px}
-  .ebook-price{font-size:36px}
-  .ebook-price-note{font-size:8px}
-  .ebook-info{padding:24px 16px}
-  .ebook-btn{width:100%;text-align:center;padding:14px 20px;font-size:7px}
-  .ebook-btns{flex-direction:column;gap:8px}
-  .ebook-desc{font-size:14px}
-  .ebook-chapters{gap:6px}
-  .ebook-ch-item{font-size:10px;padding:8px 12px}
-  .trust-bar{flex-direction:column;align-items:center;gap:12px;text-align:center}
-  .trust-item{font-size:9px}
-  .products-grid{grid-template-columns:1fr}
+  .store-hero{padding:52px 16px 32px}
+  .store-heading{font-size:clamp(36px,11vw,52px)}
+  .store-sub{font-size:13px}
+  .store-wrap{padding:28px 0 56px}
+  .section-label{padding:0 16px;font-size:7px}
+  .ebook-card{border-left:none;border-right:none;border-radius:0}
+  .ebook-stage{min-height:300px;padding:36px 16px 20px}
+  .b3d-scene{transform:scale(.62);transform-origin:center top;margin-bottom:-88px}
+  .b3d-reflection{height:36px;opacity:.12}
+  .b3d-stars{margin-top:2px;gap:3px}
+  .b3d-stars svg{width:11px;height:11px}
+  .b3d-caption{font-size:6px;margin-top:4px}
+  .stage-badge{font-size:6px;padding:4px 10px;top:14px;left:14px}
+  .ebook-info{padding:28px 16px 24px}
+  .ebook-tag{font-size:6px;margin-bottom:10px}
+  .ebook-title{font-size:32px;line-height:.92;margin-bottom:6px}
+  .ebook-subtitle{font-size:13px;margin-bottom:14px}
+  .ebook-desc{font-size:13px;line-height:1.8;margin-bottom:20px;padding-left:12px}
+  .ebook-chapters{grid-template-columns:1fr;gap:1px;margin-bottom:20px}
+  .ebook-chapter{padding:10px 14px;gap:10px}
+  .ebook-ch-num{font-size:6px}
+  .ebook-ch-title{font-size:12px}
+  .ebook-price-row{padding:14px 0;margin-bottom:18px;gap:12px}
+  .ebook-price{font-size:48px}
+  .ebook-price-note{font-size:7px}
+  .ebook-price-includes{font-size:10px}
+  .ebook-btns{flex-direction:column;gap:10px}
+  .ebook-btn{width:100%;justify-content:center;padding:15px 20px;font-size:8px;letter-spacing:.25em}
+  .trust-bar{flex-direction:column;align-items:center;gap:14px;padding:20px 16px 36px;text-align:center}
+  .trust-item{font-size:8px;gap:8px}
+  .products-grid{grid-template-columns:1fr;border-left:none;border-right:none}
+  .prod-card{padding:24px 16px}
+  .prod-name{font-size:24px}
+  .prod-price{font-size:32px}
 }
 
 {% endblock %}
