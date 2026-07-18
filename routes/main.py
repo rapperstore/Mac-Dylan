@@ -1,9 +1,10 @@
+import re
 import urllib.request
 import urllib.parse
 from datetime import datetime
-from flask import Blueprint, render_template, request, jsonify, Response
+from flask import Blueprint, render_template, request, jsonify, Response, current_app
 from database import db
-from models import Beat, Credit, Subscriber
+from models import Beat, Credit, Subscriber, PhoneLead
 
 main_bp = Blueprint('main', __name__)
 
@@ -53,6 +54,67 @@ def subscribe():
         'code': 'MACDYLAN15',
         'beat_url': 'https://pub-3d8b1c7a5e63475b90c0044ca074cba8.r2.dev/Afterlife%20%5B117BPM%20A%23%20Min%5D.mp3',
         'beat_title': 'Afterlife'
+    })
+
+
+@main_bp.route('/free-beat', methods=['POST'])
+def free_beat():
+    data = request.get_json() or {}
+    raw_phone = (data.get('phone') or '').strip()
+    beat_id   = data.get('beat_id')
+
+    # Normalize to digits only, then E.164
+    digits = re.sub(r'\D', '', raw_phone)
+    if len(digits) == 10:
+        digits = '1' + digits
+    if len(digits) != 11 or digits[0] != '1':
+        return jsonify({'ok': False, 'error': 'Enter a valid US phone number'}), 400
+    phone = '+' + digits
+
+    # One free beat per phone number
+    if PhoneLead.query.filter_by(phone=phone).first():
+        return jsonify({'ok': False, 'error': 'This number has already claimed a free beat'}), 400
+
+    # Look up the beat
+    beat = Beat.query.get(beat_id) if beat_id else None
+    if not beat or not beat.is_active:
+        return jsonify({'ok': False, 'error': 'Beat not found'}), 400
+
+    lead = PhoneLead(
+        phone=phone,
+        beat_id=beat.id,
+        beat_title=beat.title,
+        beat_url=beat.mp3_path,
+    )
+    db.session.add(lead)
+
+    sms_sent = False
+    sid = current_app.config.get('TWILIO_ACCOUNT_SID')
+    token = current_app.config.get('TWILIO_AUTH_TOKEN')
+    from_num = current_app.config.get('TWILIO_FROM_NUMBER')
+
+    if sid and token and from_num:
+        try:
+            from twilio.rest import Client
+            msg = (
+                f"Mac Dylan here! Your free beat is ready:\n\n"
+                f"🎵 {beat.title}\n"
+                f"{beat.mp3_path}\n\n"
+                f"License it at macdylan.com/beats 🔥"
+            )
+            Client(sid, token).messages.create(body=msg, from_=from_num, to=phone)
+            lead.sms_sent = True
+            sms_sent = True
+        except Exception as e:
+            current_app.logger.error(f'Twilio error: {e}')
+
+    db.session.commit()
+
+    return jsonify({
+        'ok': True,
+        'sms_sent': sms_sent,
+        'beat_title': beat.title,
+        'beat_url': beat.mp3_path,
     })
 
 

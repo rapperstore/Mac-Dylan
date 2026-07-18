@@ -4,7 +4,7 @@ from functools import wraps
 from flask import Blueprint,render_template,request,redirect,url_for,session,jsonify,current_app
 from werkzeug.utils import secure_filename
 from database import db
-from models import Beat,Order,Product,Content,Credit
+from models import Beat,Order,Product,Content,Credit,PhoneLead
 
 admin_bp = Blueprint("admin",__name__)
 
@@ -311,3 +311,19 @@ def toggle_credit(cid):
 def delete_credit(cid):
     c=Credit.query.get_or_404(cid);db.session.delete(c);db.session.commit()
     return jsonify({"deleted":True})
+
+
+@admin_bp.route("/leads")
+@admin_required
+def leads():
+    all_leads = PhoneLead.query.order_by(PhoneLead.created_at.desc()).all()
+    return render_template("admin/leads.html", leads=all_leads, total=len(all_leads))
+
+
+@admin_bp.route("/leads/<int:lid>/delete", methods=["POST"])
+@admin_required
+def delete_lead(lid):
+    l = PhoneLead.query.get_or_404(lid)
+    db.session.delete(l)
+    db.session.commit()
+    return jsonify({"deleted": True})

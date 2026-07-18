@@ -261,6 +261,39 @@
   <p class="hero-sub">{{ beats|length }} original beats. Stream free, license instantly. MP3 delivered on purchase. WAV and stems available on request.</p>
 </div>
 
+<!-- SMS FREE BEAT BANNER -->
+<div id="sms-banner" style="background:linear-gradient(135deg,rgba(200,75,10,.12),rgba(232,114,12,.06));border-bottom:1px solid rgba(200,75,10,.3);padding:18px 48px;display:flex;align-items:center;justify-content:space-between;gap:20px;flex-wrap:wrap">
+  <div style="display:flex;align-items:center;gap:16px">
+    <div style="font-size:28px;line-height:1">📱</div>
+    <div>
+      <div style="font-family:'Bebas Neue',sans-serif;font-size:20px;letter-spacing:.08em;color:var(--white);line-height:1">Get a Free Beat</div>
+      <div style="font-family:'Space Mono',monospace;font-size:8px;letter-spacing:.25em;color:var(--ash);text-transform:uppercase;margin-top:3px">Leave your number · Pick any beat · We text it to you · One time per number</div>
+    </div>
+  </div>
+  <button onclick="openSmsModal(null)" style="font-family:'Space Mono',monospace;font-size:9px;letter-spacing:.3em;text-transform:uppercase;padding:12px 24px;background:var(--ember);color:var(--white);border:none;cursor:pointer;white-space:nowrap;transition:background .2s" onmouseover="this.style.background='var(--fire)'" onmouseout="this.style.background='var(--ember)'">Claim Your Free Beat →</button>
+</div>
+
+<!-- SMS MODAL -->
+<div id="sms-modal" style="display:none;position:fixed;inset:0;z-index:10000;align-items:center;justify-content:center;background:rgba(0,0,0,.88);backdrop-filter:blur(10px)" onclick="if(event.target===this)closeSmsModal()">
+  <div style="background:#110d08;border:1px solid rgba(200,75,10,.4);max-width:460px;width:92%;position:relative">
+    <div style="padding:20px 24px 16px;border-bottom:1px solid rgba(200,75,10,.15);display:flex;align-items:center;justify-content:space-between">
+      <div style="font-family:'Bebas Neue',sans-serif;font-size:26px;letter-spacing:.06em;color:var(--white)">Claim Your Free Beat</div>
+      <button onclick="closeSmsModal()" style="background:none;border:none;color:var(--muted);cursor:pointer;font-size:22px;line-height:1;padding:0">×</button>
+    </div>
+    <div style="padding:22px 24px">
+      <div style="font-family:'Space Mono',monospace;font-size:8px;letter-spacing:.3em;color:var(--muted);text-transform:uppercase;margin-bottom:6px">Choose a Beat</div>
+      <select id="sms-beat-select" style="width:100%;padding:10px 12px;background:var(--deep);border:1px solid var(--border);color:var(--white);font-family:'Space Mono',monospace;font-size:9px;margin-bottom:16px;outline:none;cursor:pointer">
+        <option value="">— Select a beat —</option>
+      </select>
+      <div style="font-family:'Space Mono',monospace;font-size:8px;letter-spacing:.3em;color:var(--muted);text-transform:uppercase;margin-bottom:6px">Your Phone Number</div>
+      <input id="sms-phone" type="tel" placeholder="(208) 555-0123" style="width:100%;padding:10px 12px;background:var(--deep);border:1px solid var(--border);color:var(--white);font-family:'Space Mono',monospace;font-size:13px;margin-bottom:6px;outline:none;transition:border-color .2s" onfocus="this.style.borderColor='var(--ember)'" onblur="this.style.borderColor='var(--border)'">
+      <div style="font-size:11px;color:var(--muted);font-style:italic;margin-bottom:20px">US numbers only · One free beat per number · No spam, ever</div>
+      <div id="sms-msg" style="display:none;padding:10px 14px;font-family:'Space Mono',monospace;font-size:8px;letter-spacing:.2em;margin-bottom:14px"></div>
+      <button onclick="submitSms()" id="sms-submit" style="width:100%;padding:13px;background:var(--ember);color:var(--white);border:none;font-family:'Space Mono',monospace;font-size:9px;letter-spacing:.35em;text-transform:uppercase;cursor:pointer;transition:background .2s" onmouseover="this.style.background='var(--fire)'" onmouseout="this.style.background='var(--ember)'">Send Me the Beat →</button>
+    </div>
+  </div>
+</div>
+
 <div class="filter-bar">
   <input id="beat-search" type="text" placeholder="Search beats..." oninput="doSearch(this.value)" style="padding:5px 10px;background:var(--deep);border:1px solid var(--border);color:var(--ash);font-family:'Space Mono',monospace;font-size:9px;outline:none;flex:1;max-width:200px;transition:border-color .2s" onfocus="this.style.borderColor='var(--ember)'" onblur="this.style.borderColor='var(--border)'">
   <div style="width:1px;height:16px;background:var(--border);margin:0 2px;flex-shrink:0"></div>
@@ -650,5 +683,97 @@ render();
 })();
 
 })(); // end main IIFE
+
+// ---- SMS FREE BEAT FUNNEL ----
+(function(){
+  // Populate beat select on page load
+  var BEAT_DATA = {{ beats | tojson | safe }};
+
+  window.openSmsModal = function(beatId) {
+    var sel = document.getElementById('sms-beat-select');
+    sel.innerHTML = '<option value="">— Select a beat —</option>';
+    BEAT_DATA.forEach(function(b) {
+      if (!b.is_active) return;
+      var opt = document.createElement('option');
+      opt.value = b.id;
+      opt.textContent = b.title + ' [' + b.bpm + ' BPM · ' + b.key + ']';
+      if (beatId && b.id === beatId) opt.selected = true;
+      sel.appendChild(opt);
+    });
+    var msg = document.getElementById('sms-msg');
+    msg.style.display = 'none';
+    document.getElementById('sms-phone').value = '';
+    document.getElementById('sms-submit').disabled = false;
+    document.getElementById('sms-submit').textContent = 'Send Me the Beat →';
+    document.getElementById('sms-modal').style.display = 'flex';
+    document.body.style.overflow = 'hidden';
+  };
+
+  window.closeSmsModal = function() {
+    document.getElementById('sms-modal').style.display = 'none';
+    document.body.style.overflow = '';
+  };
+
+  window.submitSms = function() {
+    var phone = document.getElementById('sms-phone').value.trim();
+    var beatId = parseInt(document.getElementById('sms-beat-select').value);
+    var msg = document.getElementById('sms-msg');
+    var btn = document.getElementById('sms-submit');
+
+    if (!beatId) {
+      showSmsMsg('error', 'Please select a beat first.');
+      return;
+    }
+    if (!phone) {
+      showSmsMsg('error', 'Please enter your phone number.');
+      return;
+    }
+
+    btn.disabled = true;
+    btn.textContent = 'Sending...';
+
+    fetch('/free-beat', {
+      method: 'POST',
+      headers: {'Content-Type': 'application/json'},
+      body: JSON.stringify({phone: phone, beat_id: beatId})
+    })
+    .then(function(r) { return r.json(); })
+    .then(function(d) {
+      if (d.ok) {
+        if (d.sms_sent) {
+          showSmsMsg('ok', '✓ Sent! Check your texts for the download link.');
+        } else {
+          // Twilio not configured — show download link directly
+          showSmsMsg('ok', '✓ Here\'s your free beat: ' + d.beat_title);
+          var dl = document.createElement('a');
+          dl.href = d.beat_url;
+          dl.download = d.beat_title + '.mp3';
+          dl.style.cssText = 'display:block;margin-top:10px;font-family:\'Space Mono\',monospace;font-size:9px;letter-spacing:.3em;color:var(--green);text-transform:uppercase';
+          dl.textContent = '↓ Download MP3';
+          document.getElementById('sms-msg').appendChild(dl);
+        }
+        btn.textContent = 'Done!';
+      } else {
+        showSmsMsg('error', d.error || 'Something went wrong. Try again.');
+        btn.disabled = false;
+        btn.textContent = 'Send Me the Beat →';
+      }
+    })
+    .catch(function() {
+      showSmsMsg('error', 'Connection error. Please try again.');
+      btn.disabled = false;
+      btn.textContent = 'Send Me the Beat →';
+    });
+  };
+
+  function showSmsMsg(type, text) {
+    var el = document.getElementById('sms-msg');
+    el.style.display = 'block';
+    el.style.background = type === 'ok' ? 'rgba(58,138,90,.1)' : 'rgba(200,74,74,.1)';
+    el.style.border = '1px solid ' + (type === 'ok' ? 'rgba(58,138,90,.4)' : 'rgba(200,74,74,.4)');
+    el.style.color = type === 'ok' ? '#3a8a5a' : '#c84a4a';
+    el.textContent = text;
+  }
+})();
 </script>
 {% endblock %}

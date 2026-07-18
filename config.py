@@ -28,6 +28,11 @@ class Config:
     # ── ConvertKit ──
     CONVERTKIT_FORM_ID = os.environ.get('CONVERTKIT_FORM_ID', '9292507')
 
+    # ── Twilio (SMS) ──
+    TWILIO_ACCOUNT_SID  = os.environ.get('TWILIO_ACCOUNT_SID')
+    TWILIO_AUTH_TOKEN   = os.environ.get('TWILIO_AUTH_TOKEN')
+    TWILIO_FROM_NUMBER  = os.environ.get('TWILIO_FROM_NUMBER')  # e.g. +12085551234
+
     # ── Domain (used in Stripe success/cancel URLs) ──
     DOMAIN = os.environ.get('DOMAIN', 'http://localhost:5000')
 

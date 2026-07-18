@@ -161,3 +161,14 @@ class Subscriber(db.Model):
     reward_sent = db.Column(db.Boolean, default=False)
     is_active   = db.Column(db.Boolean, default=True)
     created_at  = db.Column(db.DateTime, default=datetime.utcnow)
+
+
+class PhoneLead(db.Model):
+    __tablename__ = 'phone_leads'
+    id         = db.Column(db.Integer, primary_key=True)
+    phone      = db.Column(db.String(20), unique=True, nullable=False)
+    beat_id    = db.Column(db.Integer, db.ForeignKey('beats.id'), nullable=True)
+    beat_title = db.Column(db.String(120))
+    beat_url   = db.Column(db.String(500))
+    sms_sent   = db.Column(db.Boolean, default=False)
+    created_at = db.Column(db.DateTime, default=datetime.utcnow)
