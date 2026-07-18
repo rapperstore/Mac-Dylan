@@ -4,7 +4,7 @@ from functools import wraps
 from flask import Blueprint,render_template,request,redirect,url_for,session,jsonify,current_app
 from werkzeug.utils import secure_filename
 from database import db
-from models import Beat,Order,Product,Content
+from models import Beat,Order,Product,Content,Credit
 
 admin_bp = Blueprint("admin",__name__)
 
@@ -42,6 +42,7 @@ def dashboard():
         beats_count=Beat.query.filter_by(is_active=True).count(),
         products_count=Product.query.filter_by(is_active=True).count(),
         recent_orders=Order.query.order_by(Order.created_at.desc()).limit(10).all(),
+        all_orders=Order.query.order_by(Order.created_at.desc()).all(),
         beats=Beat.query.order_by(Beat.play_count.desc()).limit(10).all())
 
 @admin_bp.route("/api/stats")
@@ -278,3 +279,35 @@ def delete_subscriber(sid):
     db.session.delete(s)
     db.session.commit()
     return jsonify({"ok": True})
+
+@admin_bp.route("/credits")
+@admin_required
+def list_credits():
+    cs=Credit.query.order_by(Credit.sort_order.asc(),Credit.created_at.desc()).all()
+    return jsonify([{"id":c.id,"artist":c.artist,"role":c.role,"track_name":c.track_name,
+        "year":c.year,"is_active":c.is_active,"sort_order":c.sort_order} for c in cs])
+
+@admin_bp.route("/credits/add",methods=["POST"])
+@admin_required
+def add_credit():
+    d=request.get_json() or {}
+    artist=d.get("artist","").strip()
+    if not artist:
+        return jsonify({"success":False,"error":"Artist name required"})
+    c=Credit(artist=artist,role=d.get("role","").strip(),
+        track_name=d.get("track_name","").strip(),year=d.get("year","").strip(),
+        is_active=bool(d.get("is_active",True)),sort_order=int(d.get("sort_order",0) or 0))
+    db.session.add(c);db.session.commit()
+    return jsonify({"success":True,"id":c.id})
+
+@admin_bp.route("/credits/<int:cid>/toggle",methods=["POST"])
+@admin_required
+def toggle_credit(cid):
+    c=Credit.query.get_or_404(cid);c.is_active=not c.is_active;db.session.commit()
+    return jsonify({"is_active":c.is_active})
+
+@admin_bp.route("/credits/<int:cid>/delete",methods=["POST"])
+@admin_required
+def delete_credit(cid):
+    c=Credit.query.get_or_404(cid);db.session.delete(c);db.session.commit()
+    return jsonify({"deleted":True})

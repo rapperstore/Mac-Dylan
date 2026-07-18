@@ -35,6 +35,9 @@
 <meta name="twitter:image" content="https://www.macdylan.com/static/book-cover.png">
 {% endblock %}
 <title>{% block title %}Mac Dylan — Boise Idaho Music Producer & Beat Store{% endblock %}</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="dns-prefetch" href="https://pub-3d8b1c7a5e63475b90c0044ca074cba8.r2.dev">
 <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,400&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
 <style>
 *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
@@ -123,8 +126,8 @@ footer{border-top:1px solid var(--border);padding:48px;display:flex;justify-cont
     <a href="{{ url_for('beats.index') }}">Beats</a>
     <a href="{{ url_for('store.index') }}">Store</a>
     <a href="{{ url_for('services.index') }}">Book</a>
-    <a href="https://aeralabs.io" target="_blank">Aeralabs</a>
-    <a href="https://soundcloud.com/macdylan4ever" target="_blank">SoundCloud</a>
+    <a href="https://aeralabs.io" target="_blank" rel="noopener noreferrer">Aeralabs</a>
+    <a href="https://soundcloud.com/macdylan4ever" target="_blank" rel="noopener noreferrer">SoundCloud</a>
   </div>
   <div class="footer-phone"><a href="tel:2083915292">(208) 391-5292</a></div>
   <div class="footer-copy">© 2026 Mac Dylan LLC · Boise, Idaho</div>

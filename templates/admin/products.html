@@ -52,7 +52,24 @@ tr:last-child td{border-bottom:none} tr:hover td{background:var(--card2)}
 .a-ok{background:rgba(58,138,90,.1);border:1px solid var(--green);color:var(--green);display:block}
 .a-err{background:rgba(200,74,74,.1);border:1px solid var(--red);color:var(--red);display:block}
 .empty{text-align:center;padding:24px;color:var(--muted);font-style:italic;font-size:13px}
-@media(max-width:900px){.sb{display:none}.main{margin-left:0}.content{padding:14px}.two{grid-template-columns:1fr}.fi-2,.fi-4{grid-template-columns:1fr}}
+.hbtn{display:none}
+.sb-backdrop{display:none}
+@media(max-width:900px){
+  .sb{transform:translateX(-100%);transition:transform .25s ease;z-index:200;box-shadow:8px 0 32px rgba(0,0,0,.5)}
+  .sb.open{transform:translateX(0)}
+  .main{margin-left:0}
+  .hbtn{display:flex;align-items:center;justify-content:center;width:34px;height:34px;background:transparent;border:1px solid var(--borderl);color:var(--white);font-size:15px;cursor:pointer;flex-shrink:0;margin-right:10px}
+  .sb-backdrop{display:block;position:fixed;inset:0;background:rgba(0,0,0,.6);z-index:150;opacity:0;pointer-events:none;transition:opacity .2s}
+  .sb-backdrop.show{opacity:1;pointer-events:auto}
+  .content{padding:14px}
+  .two{grid-template-columns:1fr}
+  .fi-2,.fi-4{grid-template-columns:1fr}
+}
+@media(max-width:480px){
+  .topbar{padding:10px 12px}
+  .topbar-title{font-size:17px}
+  th,td{padding:7px 8px;font-size:11px}
+}
 
 </style>
 </head>
@@ -73,9 +90,13 @@ tr:last-child td{border-bottom:none} tr:hover td{background:var(--card2)}
   </nav>
   <div class="sb-foot"><a href="/" target="_blank">← View Site</a></div>
 </aside>
+<div class="sb-backdrop" onclick="toggleSidebar()"></div>
 <div class="main">
   <div class="topbar">
-    <div class="topbar-title">Products</div>
+    <div style="display:flex;align-items:center">
+      <button class="hbtn" onclick="toggleSidebar()" aria-label="Menu">☰</button>
+      <div class="topbar-title">Products</div>
+    </div>
     <div style="display:flex;gap:8px">
       <a href="/" target="_blank" class="btn btn-g">View Site</a>
     </div>
@@ -115,6 +136,7 @@ tr:last-child td{border-bottom:none} tr:hover td{background:var(--card2)}
   </div>
 </div>
 <script>
+function toggleSidebar(){document.querySelector('.sb').classList.toggle('open');document.querySelector('.sb-backdrop').classList.toggle('show');}
 function pa(t,m){var a=document.getElementById('a-prod');a.textContent=m;a.className='alert '+(t==='ok'?'a-ok':'a-err');setTimeout(function(){a.className='alert';},4000)}
 function loadProds(){
   fetch('/admin/products/list').then(r=>r.json()).then(function(ps){
