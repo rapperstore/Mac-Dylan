@@ -25,14 +25,14 @@
 <meta property="og:description" content="Producer. Mix Engineer. Artist Developer.">
 <meta property="og:url" content="https://www.macdylan.com{{ request.path }}">
 <meta property="og:type" content="website">
-<meta property="og:image" content="https://www.macdylan.com/static/book-cover.png">
+<meta property="og:image" content="https://www.macdylan.com/static/og-main.jpg">
 <meta property="og:image:width" content="1200">
 <meta property="og:image:height" content="630">
 <meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:site" content="@macdylan">
 <meta name="twitter:title" content="Mac Dylan">
 <meta name="twitter:description" content="Producer. Mix Engineer. Artist Developer.">
-<meta name="twitter:image" content="https://www.macdylan.com/static/book-cover.png">
+<meta name="twitter:image" content="https://www.macdylan.com/static/og-main.jpg">
 {% endblock %}
 <title>{% block title %}Mac Dylan — Boise Idaho Music Producer & Beat Store{% endblock %}</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -85,6 +85,16 @@ footer{border-top:1px solid var(--border);padding:48px;display:flex;justify-cont
 {% block extra_styles %}{% endblock %}
 @media(max-width:900px){nav{padding:14px 20px}.nav-links{display:none}.nav-phone{display:none}.mob-btn{display:flex}footer{padding:32px 20px;flex-direction:column;gap:16px;text-align:center}.footer-links{flex-wrap:wrap;justify-content:center}}
 </style>
+{% if config.GA_MEASUREMENT_ID %}
+<script async src="https://www.googletagmanager.com/gtag/js?id={{ config.GA_MEASUREMENT_ID }}"></script>
+<script>
+window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments)}
+gtag('js',new Date());gtag('config','{{ config.GA_MEASUREMENT_ID }}');
+window.trackEvent=function(name,params){gtag('event',name,params||{})};
+</script>
+{% else %}
+<script>window.trackEvent=function(){};</script>
+{% endif %}
 </head>
 <body>
 <canvas id="fire-canvas"></canvas>

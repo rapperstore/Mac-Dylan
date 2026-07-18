@@ -15,11 +15,11 @@
 <meta property="og:description" content="Original hip-hop beats. Stream free. License instantly from $29.">
 <meta property="og:url" content="https://www.macdylan.com/beats/">
 <meta property="og:type" content="website">
-<meta property="og:image" content="https://www.macdylan.com/static/book-cover.png">
+<meta property="og:image" content="https://www.macdylan.com/static/og-beats.jpg">
 <meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:title" content="Mac Dylan — Beats">
 <meta name="twitter:description" content="Original hip-hop beats. Stream free. License instantly from $29.">
-<meta name="twitter:image" content="https://www.macdylan.com/static/book-cover.png">
+<meta name="twitter:image" content="https://www.macdylan.com/static/og-beats.jpg">
 
 <script type="application/ld+json">
 {
@@ -419,7 +419,7 @@
 {% endblock %}
 
 {% block extra_scripts %}
-<script src="https://unpkg.com/wavesurfer.js@7/dist/wavesurfer.min.js"></script>
+<script src="/static/wavesurfer.min.js"></script>
 <script>
 (function(){
 
@@ -440,6 +440,7 @@ BEATS = BEATS.map(function(b){
   };
 });
 
+window.SMS_BEATS = BEATS;
 var currentId=null, ws=null, looping=false, shareOpen=false;
 var activeGenre=null, activeBpmMin=null, activeBpmMax=null, freeOnly=false, searchQ="";
 var npRaf=null;
@@ -530,6 +531,8 @@ window.selectBeat=function(id){
     });
     ws.on('error',function(err){console.warn('WaveSurfer:',err);});
     fetch('/beats/api/play/'+id,{method:'POST'});
+    var _tb=BEATS.find(function(x){return x.id===id});
+    if(_tb)trackEvent('beat_play',{beat_title:_tb.title,beat_id:id});
   } else {
     document.getElementById('np-ws-wrap').innerHTML='<div style="height:48px;display:flex;align-items:center;gap:1px;padding:0 2px" id="np-static-bars"></div>';
     var c=document.getElementById('np-static-bars');
@@ -583,6 +586,7 @@ window.shareNative=function(){
 // ---- PURCHASE ----
 window.buyLic=function(id,type,price,amt){
   var beat=BEATS.find(function(b){return b.id===id});if(!beat)return;
+  trackEvent('begin_checkout',{beat_id:id,license:type,value:amt,currency:'USD'});
   fetch('/payments/beat-checkout',{method:'POST',headers:{'Content-Type':'application/json'},
     body:JSON.stringify({beat_id:id,license:type,price:amt})})
   .then(function(r){return r.json()}).then(function(d){
@@ -667,7 +671,7 @@ window.bMiniLic = function(){ if(window._cur) window.bOpenLease(null, window._cu
 
 window.bOpenLease=function(ev,id){if(ev)ev.stopPropagation();var b=BEATS.find(function(x){return x.id===id});if(!b)return;if(currentId!==id)selectBeat(id);document.getElementById("lm-title").textContent=b.title+(b.free?" — Free":" — Choose License");var html="";b.lics.forEach(function(l){var f2=l.t==="free",fn=f2?"bDlFree("+b.id+")":"bBuy("+b.id+',"'+l.t+'",'+l.a+")";html+='<div class="ltier"><div class="ltier-top"><div class="ltier-name">'+l.n+'</div><div class="ltier-price'+(f2?" fp":"")+'">'+l.p+'</div></div><div class="ltier-desc">'+l.d+'</div><button class="lcta'+(f2?" fp":"")+'" onclick="'+fn+'">'+(f2?"Download Free MP3":"Buy — "+l.p+" → Instant MP3")+"</button></div>";});document.getElementById("lm-body").innerHTML=html;document.getElementById("leasepop").style.display="flex";};
 window.bCloseLease=function(){document.getElementById("leasepop").style.display="none";};
-window.bBuy=function(id,type,amt){bCloseLease();fetch("/payments/beat-checkout",{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify({beat_id:id,license:type,price:amt})}).then(function(r){return r.json();}).then(function(d){if(d.checkout_url)window.location.href=d.checkout_url;else alert(d.error||"Something went wrong.");}).catch(function(){alert("Connection error.");});};
+window.bBuy=function(id,type,amt){bCloseLease();trackEvent('begin_checkout',{beat_id:id,license:type,value:amt,currency:'USD'});fetch("/payments/beat-checkout",{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify({beat_id:id,license:type,price:amt})}).then(function(r){return r.json();}).then(function(d){if(d.checkout_url)window.location.href=d.checkout_url;else alert(d.error||"Something went wrong.");}).catch(function(){alert("Connection error.");});};
 window.bDlFree=function(id){bCloseLease();var b=null,i;for(i=0;i<BEATS.length;i++){if(BEATS[i].id===id){b=BEATS[i];break;}}if(b&&b.mp3){var a=document.createElement("a");a.href=b.mp3;a.download=b.title+".mp3";document.body.appendChild(a);a.click();document.body.removeChild(a);}else alert("File not available.");};
 render();
 
@@ -686,14 +690,10 @@ render();
 
 // ---- SMS FREE BEAT FUNNEL ----
 (function(){
-  // Populate beat select on page load
-  var BEAT_DATA = {{ beats | tojson | safe }};
-
   window.openSmsModal = function(beatId) {
     var sel = document.getElementById('sms-beat-select');
     sel.innerHTML = '<option value="">— Select a beat —</option>';
-    BEAT_DATA.forEach(function(b) {
-      if (!b.is_active) return;
+    (window.SMS_BEATS || []).forEach(function(b) {
       var opt = document.createElement('option');
       opt.value = b.id;
       opt.textContent = b.title + ' [' + b.bpm + ' BPM · ' + b.key + ']';
@@ -740,6 +740,7 @@ render();
     .then(function(r) { return r.json(); })
     .then(function(d) {
       if (d.ok) {
+        trackEvent('sms_beat_claim', {beat_title: d.beat_title});
         if (d.sms_sent) {
           showSmsMsg('ok', '✓ Sent! Check your texts for the download link.');
         } else {

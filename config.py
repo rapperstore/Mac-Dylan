@@ -17,6 +17,12 @@ class Config:
     SQLALCHEMY_DATABASE_URI = raw_db or 'sqlite:////tmp/macdylan.db'
     SQLALCHEMY_TRACK_MODIFICATIONS = False
 
+    # ── Static asset caching (30 days) ──
+    SEND_FILE_MAX_AGE_DEFAULT = 2592000
+
+    # ── Analytics ──
+    GA_MEASUREMENT_ID = os.environ.get('GA_MEASUREMENT_ID')  # e.g. G-XXXXXXXXXX
+
     # ── Stripe ──
     STRIPE_SECRET_KEY      = os.environ.get('STRIPE_SECRET_KEY')
     STRIPE_PUBLISHABLE_KEY = os.environ.get('STRIPE_PUBLISHABLE_KEY')

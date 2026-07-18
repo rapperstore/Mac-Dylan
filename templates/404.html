@@ -1,0 +1,30 @@
+{% extends "base.html" %}
+{% block title %}Page Not Found — Mac Dylan{% endblock %}
+{% block seo_meta %}<meta name="robots" content="noindex">{% endblock %}
+
+{% block extra_styles %}
+.nf-wrap{min-height:70vh;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;padding:80px 24px;position:relative;overflow:hidden}
+.nf-wrap::after{content:'404';position:absolute;left:50%;top:50%;transform:translate(-50%,-50%);font-family:'Bebas Neue',sans-serif;font-size:min(58vw,480px);color:rgba(200,75,10,.05);pointer-events:none;line-height:1}
+.nf-eyebrow{font-family:'Space Mono',monospace;font-size:9px;letter-spacing:.5em;color:var(--ember);text-transform:uppercase;margin-bottom:18px;position:relative}
+.nf-title{font-family:'Bebas Neue',sans-serif;font-size:clamp(44px,8vw,88px);line-height:.92;color:var(--white);position:relative}
+.nf-title span{color:transparent;-webkit-text-stroke:1px var(--ember)}
+.nf-sub{font-size:17px;font-style:italic;color:var(--ash);margin:18px 0 34px;max-width:420px;line-height:1.7;position:relative}
+.nf-links{display:flex;gap:12px;flex-wrap:wrap;justify-content:center;position:relative}
+.nf-btn{display:inline-block;padding:13px 28px;font-family:'Space Mono',monospace;font-size:9px;letter-spacing:.3em;text-transform:uppercase;text-decoration:none;transition:all .25s}
+.nf-btn.f{background:var(--ember);color:#f5f0e8}.nf-btn.f:hover{background:var(--fire)}
+.nf-btn.g{background:transparent;color:#b8a898;border:1px solid rgba(200,75,10,.28)}.nf-btn.g:hover{border-color:var(--ember);color:var(--fire)}
+{% endblock %}
+
+{% block content %}
+<div class="nf-wrap">
+  <div class="nf-eyebrow">Track Not Found</div>
+  <h1 class="nf-title">This one's <span>off the record</span></h1>
+  <p class="nf-sub">The page you're looking for doesn't exist — but the beats do. Pick a direction and keep moving.</p>
+  <div class="nf-links">
+    <a href="/beats/" class="nf-btn f">Browse Beats</a>
+    <a href="/services/" class="nf-btn g">Book a Session</a>
+    <a href="/store/" class="nf-btn g">Visit the Store</a>
+    <a href="/" class="nf-btn g">Home</a>
+  </div>
+</div>
+{% endblock %}

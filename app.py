@@ -26,6 +26,19 @@ def create_app():
         if request.host in ('macdylan.com', 'macdylan.com:443', 'macdylan.com:80'):
             return redirect('https://www.macdylan.com' + request.full_path.rstrip('?'), 301)
 
+    @app.after_request
+    def security_headers(resp):
+        resp.headers.setdefault('Strict-Transport-Security', 'max-age=31536000; includeSubDomains')
+        resp.headers.setdefault('X-Content-Type-Options', 'nosniff')
+        resp.headers.setdefault('X-Frame-Options', 'SAMEORIGIN')
+        resp.headers.setdefault('Referrer-Policy', 'strict-origin-when-cross-origin')
+        return resp
+
+    @app.errorhandler(404)
+    def not_found(e):
+        from flask import render_template
+        return render_template('404.html'), 404
+
     app.register_blueprint(main_bp)
     app.register_blueprint(beats_bp,url_prefix="/beats")
     app.register_blueprint(services_bp,url_prefix="/services")
