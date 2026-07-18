@@ -47,6 +47,13 @@ def create_app():
     app.register_blueprint(admin_bp,url_prefix="/admin")
     with app.app_context():
         db.create_all()
+        # Lightweight migration: add columns create_all() can't add to existing tables
+        try:
+            from sqlalchemy import text
+            db.session.execute(text("ALTER TABLE credits ADD COLUMN video_url VARCHAR(500)"))
+            db.session.commit()
+        except Exception:
+            db.session.rollback()  # column already exists
         from models import Beat, Product
         # Cloudflare R2 URL for the full ebook PDF
         EBOOK_R2_URL = 'https://pub-3d8b1c7a5e63475b90c0044ca074cba8.r2.dev/THE_ARTIST_IS_THE_BUSINESS.pdf'
