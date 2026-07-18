@@ -1,6 +1,6 @@
 import os
 import stripe
-from flask import Flask
+from flask import Flask, request, redirect
 from database import db
 from config import Config
 
@@ -21,6 +21,11 @@ def create_app():
     from routes.store    import store_bp
     from routes.payments import payments_bp
     from routes.admin    import admin_bp
+    @app.before_request
+    def redirect_apex_to_www():
+        if request.host in ('macdylan.com', 'macdylan.com:443', 'macdylan.com:80'):
+            return redirect('https://www.macdylan.com' + request.full_path.rstrip('?'), 301)
+
     app.register_blueprint(main_bp)
     app.register_blueprint(beats_bp,url_prefix="/beats")
     app.register_blueprint(services_bp,url_prefix="/services")
