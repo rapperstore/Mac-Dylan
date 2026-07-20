@@ -253,7 +253,8 @@ def create_app():
         try:
             import urllib.parse as _up
             from models import Album, Track
-            base = (os.environ.get("SHIBUYA_BASE_URL") or "").rstrip("/")
+            base = (os.environ.get("SHIBUYA_BASE_URL")
+                    or "https://pub-e11b657d879b4e85905f893b132ad300.r2.dev").rstrip("/")
             if os.environ.get("SEED_SHIBUYA") == "1" and base:
                 if not Album.query.filter_by(title="SHIBUYA TRAP").first():
                     cover = base + "/" + _up.quote("206B498F-E539-4F1F-A869-C72AEB6FE3A8.png")

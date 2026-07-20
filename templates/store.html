@@ -90,6 +90,27 @@
 /* ═══════════════════════════════════════════
    EBOOK CARD — LUXURY
 ═══════════════════════════════════════════ */
+/* ── ALBUM (physical formats coming soon) ── */
+.album-card{display:grid;grid-template-columns:300px 1fr;gap:34px;background:var(--card);border:1px solid rgba(200,75,10,.18);padding:34px;margin-bottom:64px;align-items:start}
+.album-art{width:100%;aspect-ratio:1;border-radius:10px;overflow:hidden;background:linear-gradient(135deg,var(--ember),#5a2206);display:flex;align-items:center;justify-content:center;box-shadow:0 18px 44px rgba(0,0,0,.6)}
+.album-art img{width:100%;height:100%;object-fit:cover;display:block}
+.album-art span{font-family:'Bebas Neue',sans-serif;font-size:84px;color:#fff}
+.album-eyebrow{font-family:'Space Mono',monospace;font-size:8px;letter-spacing:.35em;color:var(--ember);text-transform:uppercase;margin-bottom:8px}
+.album-name{font-family:'Bebas Neue',sans-serif;font-size:clamp(34px,5vw,54px);line-height:.98;color:var(--white);letter-spacing:.02em;margin-bottom:10px}
+.album-desc{font-size:14.5px;color:var(--ash);line-height:1.75;font-style:italic;margin-bottom:22px;max-width:52ch}
+.album-formats{display:grid;gap:1px;background:var(--border);border:1px solid var(--border);margin-bottom:22px}
+.fmt{background:var(--deep);padding:12px 16px;display:flex;align-items:center;justify-content:space-between;gap:14px;flex-wrap:wrap}
+.fmt-name{font-family:'Bebas Neue',sans-serif;font-size:16px;letter-spacing:.04em;color:var(--white)}
+.fmt-status{font-family:'Space Mono',monospace;font-size:8px;letter-spacing:.22em;text-transform:uppercase;color:var(--green)}
+.fmt-status.soon{color:var(--muted);border:1px solid var(--borderl);padding:3px 9px;border-radius:99px}
+.fmt-live{background:rgba(58,138,90,.05)}
+.album-cta{display:flex;gap:10px;flex-wrap:wrap;margin-bottom:16px}
+.album-btn{display:inline-flex;align-items:center;gap:7px;padding:12px 24px;font-family:'Space Mono',monospace;font-size:9px;letter-spacing:.28em;text-transform:uppercase;text-decoration:none;border-radius:99px;transition:all .22s}
+.album-btn.f{background:var(--ember);color:#f5f0e8}.album-btn.f:hover{background:var(--fire)}
+.album-btn.g{background:transparent;color:var(--ash);border:1px solid var(--borderl)}.album-btn.g:hover{border-color:var(--ember);color:var(--fire)}
+.album-note{font-size:12.5px;color:var(--muted);font-style:italic;line-height:1.65;max-width:50ch}
+@media(max-width:820px){.album-card{grid-template-columns:1fr;gap:24px;padding:24px}.album-art{max-width:260px;margin:0 auto}}
+@media(max-width:480px){.album-card{border-left:none;border-right:none;padding:20px 16px}}
 .ebook-card{display:grid;grid-template-columns:380px 1fr;background:var(--card);border:1px solid rgba(200,75,10,.18);margin-bottom:72px;position:relative;overflow:hidden}
 .ebook-card::before{content:'';position:absolute;top:0;left:0;right:0;height:1px;background:linear-gradient(90deg,transparent,rgba(200,75,10,.5),transparent);z-index:1}
 
@@ -289,6 +310,41 @@
 </div>
 
 <div class="store-wrap">
+
+  {% if album %}
+  <div class="section-label">On Vinyl &amp; CD</div>
+  <div class="album-card">
+    <div class="album-art">
+      {% if album.cover_url %}
+        <img src="{{ album.cover_url }}" alt="{{ album.title }} album cover" loading="lazy">
+      {% else %}<span>{{ album.title[0] }}</span>{% endif %}
+    </div>
+    <div class="album-info">
+      <div class="album-eyebrow">{{ album.year }}{% if album.year %} · {% endif %}{{ album_tracks }} track{{ 's' if album_tracks != 1 else '' }}</div>
+      <h2 class="album-name">{{ album.title }}</h2>
+      {% if album.description %}<p class="album-desc">{{ album.description }}</p>{% endif %}
+      <div class="album-formats">
+        <div class="fmt fmt-live">
+          <div class="fmt-name">Digital &mdash; Streaming</div>
+          <div class="fmt-status">Available now</div>
+        </div>
+        <div class="fmt">
+          <div class="fmt-name">Compact Disc</div>
+          <div class="fmt-status soon">Coming soon</div>
+        </div>
+        <div class="fmt">
+          <div class="fmt-name">Vinyl LP</div>
+          <div class="fmt-status soon">Coming soon</div>
+        </div>
+      </div>
+      <div class="album-cta">
+        <a href="{{ url_for('main.index') }}#music" class="album-btn f">&#9654; Stream the Album</a>
+        <a href="https://soundcloud.com/macdylan/sets/shibuya-trap" target="_blank" rel="noopener noreferrer" class="album-btn g">On SoundCloud</a>
+      </div>
+      <p class="album-note">Physical pressings are in the works. Join the list on the homepage and you'll hear the moment CDs and vinyl go up.</p>
+    </div>
+  </div>
+  {% endif %}
 
   <div class="section-label">Featured Release</div>
 
