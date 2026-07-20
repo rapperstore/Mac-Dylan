@@ -131,6 +131,20 @@ body{display:flex;min-height:100vh;overflow-x:hidden}
   .td-actions{display:flex;flex-wrap:wrap;gap:4px}
   .td-actions .btn-sm{padding:6px 8px;font-size:6px}
 }
+/* ── ANALYTICS ── */
+.an-card{background:var(--card);border:1px solid var(--border);padding:20px 22px}
+.an-row{margin-bottom:14px}.an-row:last-child{margin-bottom:0}
+.an-row-top{display:flex;justify-content:space-between;align-items:baseline;margin-bottom:5px}
+.an-label{font-family:'Space Mono',monospace;font-size:9px;letter-spacing:.18em;color:var(--ash);text-transform:uppercase;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;max-width:70%}
+.an-val{font-family:'Bebas Neue',sans-serif;font-size:16px;color:var(--white);letter-spacing:.04em}
+.an-val small{font-family:'Space Mono',monospace;font-size:8px;color:var(--muted);letter-spacing:.1em;margin-left:4px}
+.an-bar{height:8px;background:var(--deep);border:1px solid var(--border);overflow:hidden}
+.an-fill{height:100%;background:linear-gradient(90deg,var(--ember),var(--flame));transition:width .5s ease}
+.an-funnel-step{display:flex;align-items:center;gap:12px;margin-bottom:10px}
+.an-funnel-step:last-child{margin-bottom:0}
+.an-funnel-meta{flex:1;min-width:0}
+.an-funnel-pct{font-family:'Space Mono',monospace;font-size:8px;color:var(--flame);letter-spacing:.14em;white-space:nowrap}
+.an-empty{font-family:'Space Mono',monospace;font-size:9px;letter-spacing:.14em;color:var(--muted);text-transform:uppercase;padding:8px 0}
 /* ── UNIVERSAL EDIT MODAL ── */
 .edit-modal{display:none;position:fixed;inset:0;z-index:1000;background:rgba(0,0,0,.82);backdrop-filter:blur(6px);align-items:center;justify-content:center;padding:20px;overflow-y:auto}
 .edit-modal.open{display:flex}
@@ -160,6 +174,7 @@ body{display:flex;min-height:100vh;overflow-x:hidden}
   <nav class="sidebar-nav">
     <div class="nav-group">Overview</div>
     <button class="nav-item active" onclick="showPanel('dashboard',this)"><span class="nav-icon">◈</span><span>Dashboard</span></button>
+    <button class="nav-item" onclick="showPanel('analytics',this)"><span class="nav-icon">📊</span><span>Analytics</span></button>
     <button class="nav-item" onclick="showPanel('orders',this)"><span class="nav-icon">◻</span><span>Orders</span></button>
     <div class="nav-group">Music</div>
     <button class="nav-item" onclick="showPanel('beats',this)"><span class="nav-icon">♩</span><span>Beats</span></button>
@@ -251,6 +266,33 @@ body{display:flex;min-height:100vh;overflow-x:hidden}
             </table>
           </div>
         </div>
+      </div>
+    </div>
+
+    <!-- ═══ ANALYTICS ═══ -->
+    <div class="panel" id="panel-analytics">
+      <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:16px;gap:8px;flex-wrap:wrap">
+        <div class="td-mono" id="an-updated">Loading analytics…</div>
+        <button class="btn btn-ghost btn-sm" onclick="loadAnalytics()">↻ Refresh</button>
+      </div>
+      <div class="stat-grid" id="an-stats"></div>
+      <div class="two-col" style="margin-top:22px">
+        <div>
+          <div class="sec-lbl">Conversion Funnel</div>
+          <div class="an-card" id="an-funnel"></div>
+        </div>
+        <div>
+          <div class="sec-lbl">Revenue by Type</div>
+          <div class="an-card" id="an-revenue"></div>
+        </div>
+      </div>
+      <div style="margin-top:22px">
+        <div class="sec-lbl">Top Beats by Plays</div>
+        <div class="an-card" id="an-topbeats"></div>
+      </div>
+      <div style="margin-top:22px">
+        <div class="sec-lbl">Website Traffic</div>
+        <div class="an-card" id="an-traffic"></div>
       </div>
     </div>
 
@@ -635,9 +677,9 @@ body{display:flex;min-height:100vh;overflow-x:hidden}
 (function(){
 'use strict';
 
-var PANELS = ['dashboard','orders','beats','upload-beat','products','add-product','credits','settings'];
+var PANELS = ['dashboard','analytics','orders','beats','upload-beat','products','add-product','credits','settings'];
 var TITLES = {
-  dashboard:'Dashboard', orders:'Orders', beats:'Beats',
+  dashboard:'Dashboard', analytics:'Analytics', orders:'Orders', beats:'Beats',
   'upload-beat':'Upload Beat', products:'Store Products',
   'add-product':'Add Product', credits:'Credits', settings:'Settings'
 };
@@ -861,6 +903,68 @@ function updateProductRow(btn, data){
   d.tags=data.tags; d.new=data.is_new?'1':'0'; d.active=data.is_active?'1':'0';
 }
 
+/* ── ANALYTICS ── */
+function statCard(val, label, cls){
+  return '<div class="stat-card"><div class="stat-value '+(cls||'')+'">'+val+'</div><div class="stat-label">'+label+'</div></div>';
+}
+function bar(label, valHtml, pct){
+  return '<div class="an-row"><div class="an-row-top"><span class="an-label">'+label+'</span>'+
+    '<span class="an-val">'+valHtml+'</span></div>'+
+    '<div class="an-bar"><div class="an-fill" style="width:'+Math.max(2,Math.min(100,pct))+'%"></div></div></div>';
+}
+window.loadAnalytics = function(){
+  document.getElementById('an-updated').textContent = 'Loading analytics…';
+  fetch('/admin/api/analytics').then(function(r){return r.json();}).then(function(a){
+    document.getElementById('an-updated').textContent =
+      'Updated ' + new Date().toLocaleString() + ' · first-party data';
+
+    document.getElementById('an-stats').innerHTML =
+      statCard(a.total_plays.toLocaleString(), 'Total Beat Plays', 'blue') +
+      statCard(a.subscribers.total.toLocaleString(), 'Email Subscribers', 'green') +
+      statCard(a.leads.total.toLocaleString(), 'Phone Leads', 'white') +
+      statCard('$'+a.revenue_total.toLocaleString(), 'Revenue (Paid)', '');
+
+    // Funnel — scale bars to the top of funnel (plays)
+    var f = a.funnel, top = Math.max(f.plays, 1);
+    var steps = [
+      ['Beat Plays', f.plays, 'blue'],
+      ['Free-Beat Claims', f.leads, ''],
+      ['Email Signups', f.subscribers, 'green'],
+      ['Paid Orders', f.orders, '']
+    ];
+    document.getElementById('an-funnel').innerHTML = steps.map(function(s){
+      var pct = f.plays ? Math.round(s[1]/top*100) : 0;
+      var conv = f.plays ? ((s[1]/top*100).toFixed(1)+'% of plays') : '—';
+      return '<div class="an-funnel-step"><div class="an-funnel-meta">'+
+        bar(s[0], s[1].toLocaleString(), pct)+'</div>'+
+        '<span class="an-funnel-pct">'+conv+'</span></div>';
+    }).join('');
+
+    // Revenue by type
+    var rb = a.revenue_by_type, rmax = Math.max(rb.beat, rb.session, rb.store, 1);
+    var rlabels = {beat:'Beat Licenses', session:'Sessions', store:'Store / Ebook'};
+    var rhtml = Object.keys(rlabels).map(function(k){
+      return bar(rlabels[k], '$'+(rb[k]||0).toLocaleString(), (rb[k]||0)/rmax*100);
+    }).join('');
+    document.getElementById('an-revenue').innerHTML = (rb.beat||rb.session||rb.store) ? rhtml
+      : '<div class="an-empty">No paid revenue yet</div>';
+
+    // Top beats
+    var tb = a.top_beats || [], tmax = tb.length ? Math.max.apply(null, tb.map(function(b){return b.plays;})) : 1;
+    document.getElementById('an-topbeats').innerHTML = tb.length ? tb.map(function(b){
+      return bar(b.title, b.plays.toLocaleString()+' <small>plays · '+b.sales+' sold</small>', b.plays/(tmax||1)*100);
+    }).join('') : '<div class="an-empty">No beats yet</div>';
+
+    // Traffic (Google Analytics)
+    document.getElementById('an-traffic').innerHTML = a.ga_configured
+      ? '<div class="an-row-top"><span class="an-label" style="max-width:100%">Google Analytics is connected — pageviews, sources &amp; live visitors are tracked.</span></div>'+
+        '<a href="https://analytics.google.com/" target="_blank" rel="noopener noreferrer" class="btn btn-fire btn-sm" style="margin-top:12px">Open Google Analytics →</a>'
+      : '<div class="an-empty" style="line-height:1.8">Traffic analytics not connected yet.<br>Add a <b style="color:var(--flame)">GA_MEASUREMENT_ID</b> environment variable in Railway (from analytics.google.com) to track visitors, sources, and pageviews.</div>';
+  }).catch(function(){
+    document.getElementById('an-updated').textContent = 'Could not load analytics.';
+  });
+};
+
 /* ── ORDER ACTIONS ── */
 window.completeOrder = function(id, btn) {
   fetch('/admin/orders/' + id + '/complete', { method: 'POST' })
@@ -896,7 +1000,7 @@ window.loadCredits=function(){fetch('/admin/credits').then(function(r){return r.
 window.addCredit=function(){var artist=document.getElementById('cr-artist').value.trim();if(!artist){showAlert('alert-credits','error','Artist name required');return;}fetch('/admin/credits/add',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({artist:artist,role:document.getElementById('cr-role').value,track_name:document.getElementById('cr-track').value.trim(),year:document.getElementById('cr-year').value.trim(),video_url:document.getElementById('cr-video').value.trim(),is_active:true,sort_order:0})}).then(function(r){return r.json()}).then(function(d){if(d.success){showAlert('alert-credits','success','Credit added');document.getElementById('cr-artist').value='';document.getElementById('cr-track').value='';document.getElementById('cr-year').value='';document.getElementById('cr-video').value='';loadCredits();}});};
 window.deleteCredit=function(id,btn){if(!confirm('Delete?'))return;fetch('/admin/credits/'+id+'/delete',{method:'POST'}).then(function(r){return r.json()}).then(function(d){if(d.deleted)btn.closest('tr').remove();});};
 window.toggleCredit=function(id,btn){fetch('/admin/credits/'+id+'/toggle',{method:'POST'}).then(function(r){return r.json()}).then(function(d){btn.textContent=d.is_active?'Hide':'Show';});};
-var _oSP=window.showPanel;window.showPanel=function(id,n){_oSP(id,n);if(id==='credits')loadCredits();};
+var _oSP=window.showPanel;window.showPanel=function(id,n){_oSP(id,n);if(id==='credits')loadCredits();if(id==='analytics')loadAnalytics();};
 
 
 })();

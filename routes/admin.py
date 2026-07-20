@@ -1,10 +1,11 @@
 import os
 import hmac
+from datetime import datetime, timedelta
 from functools import wraps
 from flask import Blueprint,render_template,request,redirect,url_for,session,jsonify,current_app
 from werkzeug.utils import secure_filename
 from database import db
-from models import Beat,Order,Product,Content,Credit,PhoneLead
+from models import Beat,Order,Product,Content,Credit,PhoneLead,Subscriber
 
 admin_bp = Blueprint("admin",__name__)
 
@@ -54,6 +55,50 @@ def api_stats():
         "plays":db.session.query(db.func.sum(Beat.play_count)).scalar() or 0,
         "products":Product.query.filter_by(is_active=True).count(),
         "sessions":Order.query.filter_by(order_type="session").count()})
+
+@admin_bp.route("/api/analytics")
+@admin_required
+def api_analytics():
+    now = datetime.utcnow()
+    d7  = now - timedelta(days=7)
+    d30 = now - timedelta(days=30)
+
+    def since(model, dt):
+        try: return model.query.filter(model.created_at >= dt).count()
+        except Exception: return 0
+
+    # Revenue (paid orders), in dollars
+    paid_cents = db.session.query(db.func.sum(Order.amount_paid)).filter_by(status="paid").scalar() or 0
+    rev_by_type = {}
+    for t in ("beat", "session", "store"):
+        c = db.session.query(db.func.sum(Order.amount_paid)).filter_by(status="paid", order_type=t).scalar() or 0
+        rev_by_type[t] = round(c / 100)
+
+    total_plays = db.session.query(db.func.sum(Beat.play_count)).scalar() or 0
+    total_sales = db.session.query(db.func.sum(Beat.sale_count)).scalar() or 0
+
+    top_beats = [{"title": b.title, "plays": b.play_count or 0, "sales": b.sale_count or 0}
+                 for b in Beat.query.order_by(Beat.play_count.desc()).limit(8).all()]
+
+    subs_total  = Subscriber.query.count()
+    leads_total = PhoneLead.query.count()
+    orders_paid = Order.query.filter_by(status="paid").count()
+
+    return jsonify({
+        "revenue_total": round(paid_cents / 100),
+        "revenue_by_type": rev_by_type,
+        "total_plays": total_plays,
+        "total_sales": total_sales,
+        "top_beats": top_beats,
+        "subscribers": {"total": subs_total, "d7": since(Subscriber, d7), "d30": since(Subscriber, d30)},
+        "leads": {"total": leads_total, "d7": since(PhoneLead, d7), "d30": since(PhoneLead, d30)},
+        "orders": {"total": Order.query.count(), "paid": orders_paid,
+                   "pending": Order.query.filter_by(status="pending").count(),
+                   "d7": since(Order, d7), "d30": since(Order, d30)},
+        "funnel": {"plays": total_plays, "leads": leads_total,
+                   "subscribers": subs_total, "orders": orders_paid},
+        "ga_configured": bool(current_app.config.get("GA_MEASUREMENT_ID")),
+    })
 
 @admin_bp.route("/orders")
 @admin_required
