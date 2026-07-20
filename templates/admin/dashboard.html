@@ -355,7 +355,7 @@ body{display:flex;min-height:100vh;overflow-x:hidden}
               {% for b in beats %}
               <tr>
                 <td class="td-mono">{{ '%02d'|format(b.id) }}</td>
-                <td class="td-title">{{ b.title }}</td>
+                <td class="td-title">{{ b.title }}{% if b.video_url %} <span style="color:var(--fire);font-size:10px" title="Has video story">▶</span>{% endif %}</td>
                 <td class="td-mono">{{ b.bpm }}</td>
                 <td class="td-mono">{{ b.key }}</td>
                 <td><span class="badge badge-beat" style="font-size:7px">{{ b.genre }}</span></td>
@@ -369,6 +369,7 @@ body{display:flex;min-height:100vh;overflow-x:hidden}
                     data-pb="{{ b.price_basic }}" data-pp="{{ b.price_premium }}"
                     data-pt="{{ b.price_trackout }}" data-pe="{{ b.price_exclusive }}"
                     data-featured="{{ 1 if b.is_featured else 0 }}" data-active="{{ 1 if b.is_active else 0 }}"
+                    data-video="{{ b.video_url|e }}"
                     onclick="openEditBeat(this)">Edit</button>
                   <button class="btn btn-ghost btn-sm" onclick="toggleBeat({{ b.id }},this)">{{ 'Hide' if b.is_active else 'Show' }}</button>
                   <button class="btn btn-danger btn-sm" onclick="deleteBeat({{ b.id }},this)">Delete</button>
@@ -470,6 +471,10 @@ body{display:flex;min-height:100vh;overflow-x:hidden}
               </div>
               <div class="file-name" id="cover-fn">No file selected</div>
               <img id="cover-prev" style="display:none;width:72px;height:72px;object-fit:cover;margin-top:8px;border:1px solid var(--border)">
+            </div>
+            <div class="form-field full">
+              <label class="field-label">Video Story URL (optional)</label>
+              <input class="fi" type="text" name="video_url" id="bt-video" placeholder="https://youtube.com/watch?v=... — cinematic video for this beat">
             </div>
             <div class="form-field full">
               <div class="checks-row">
@@ -822,6 +827,7 @@ window.openEditBeat = function(btn){
     tf('Mood','mood',d.mood)+
     tf('Basic $','price_basic',d.pb,'number')+ tf('Premium $','price_premium',d.pp,'number')+
     tf('Trackout $','price_trackout',d.pt,'number')+ tf('Exclusive $','price_exclusive',d.pe,'number')+
+    '<div class="ef-full">'+tf('Video Story URL (YouTube)','video_url',d.video||'')+'</div>'+
     '<div class="ef-full" style="display:flex;gap:20px;margin-top:4px">'+chk('Featured','is_featured',d.featured==='1')+chk('Live','is_active',d.active==='1')+'</div>';
   openEdit('Edit Beat');
 };
@@ -887,12 +893,14 @@ window.saveEdit = function(){
 };
 function updateBeatRow(btn, data){
   var tds = btn.closest('tr').children;
-  tds[1].textContent = data.title; tds[2].textContent = data.bpm;
+  tds[1].innerHTML = esc(data.title) + (data.video_url
+    ? ' <span style="color:var(--fire);font-size:10px" title="Has video story">▶</span>' : '');
+  tds[2].textContent = data.bpm;
   tds[3].textContent = data.key; tds[4].querySelector('.badge').textContent = data.genre;
   var d = btn.dataset;
   d.title=data.title; d.bpm=data.bpm; d.key=data.key; d.genre=data.genre; d.mood=data.mood;
   d.pb=data.price_basic; d.pp=data.price_premium; d.pt=data.price_trackout; d.pe=data.price_exclusive;
-  d.featured=data.is_featured?'1':'0'; d.active=data.is_active?'1':'0';
+  d.featured=data.is_featured?'1':'0'; d.active=data.is_active?'1':'0'; d.video=data.video_url||'';
 }
 function updateProductRow(btn, data){
   var tds = btn.closest('tr').children;

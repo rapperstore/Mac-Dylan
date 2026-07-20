@@ -142,7 +142,8 @@ def beats_api_list():
         "price_basic":b.price_basic,"price_premium":b.price_premium,
         "price_trackout":b.price_trackout,"price_exclusive":b.price_exclusive,
         "is_active":b.is_active,"is_featured":b.is_featured,
-        "mp3_path":b.mp3_path or "","wav_path":b.wav_path or ""}
+        "mp3_path":b.mp3_path or "","wav_path":b.wav_path or "",
+        "video_url":b.video_url or ""}
         for b in Beat.query.order_by(Beat.created_at.desc()).all()])
 
 @admin_bp.route("/beats/upload",methods=["POST"])
@@ -167,6 +168,7 @@ def upload_beat():
         is_active=request.form.get("active")=="1",
         is_featured=request.form.get("featured")=="1",
         is_free=request.form.get("free")=="1",
+        video_url=request.form.get("video_url","").strip(),
         mp3_path=sf("mp3_preview","beats",{"mp3","wav"}),
         wav_path=sf("wav_file","beats",{"wav","aiff"}),
         stems_path=sf("stems_file","beats",{"zip"}),
@@ -206,6 +208,7 @@ def edit_beat(bid):
         b.price_exclusive=int(d.get("price_exclusive",b.price_exclusive) or 299)
         b.is_featured=bool(d.get("is_featured",b.is_featured))
         b.is_active=bool(d.get("is_active",b.is_active))
+        b.video_url=(d.get("video_url",b.video_url) or "").strip()
         db.session.commit();return jsonify({"success":True})
     except Exception as e:
         return jsonify({"success":False,"error":str(e)})

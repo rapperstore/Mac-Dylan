@@ -24,6 +24,7 @@ class Beat(db.Model):
     wav_path        = db.Column(db.String(300))   # premium + trackout
     stems_path      = db.Column(db.String(300))   # trackout + exclusive (zip)
     cover_path      = db.Column(db.String(300))   # cover art
+    video_url       = db.Column(db.String(500))   # cinematic video story (YouTube URL)
 
     # Stats
     play_count      = db.Column(db.Integer, default=0)
@@ -51,6 +52,7 @@ class Beat(db.Model):
             'price_exclusive': self.price_exclusive,
             'mp3_path':        self.mp3_path,
             'cover_path':      self.cover_path,
+            'video_url':       self.video_url,
             'play_count':      self.play_count,
             'sale_count':      self.sale_count,
             'is_active':       self.is_active,
