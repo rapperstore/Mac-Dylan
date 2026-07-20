@@ -164,6 +164,36 @@ class Subscriber(db.Model):
     created_at  = db.Column(db.DateTime, default=datetime.utcnow)
 
 
+class Album(db.Model):
+    __tablename__ = 'albums'
+    id          = db.Column(db.Integer, primary_key=True)
+    title       = db.Column(db.String(200), nullable=False)
+    year        = db.Column(db.String(10))
+    cover_url   = db.Column(db.String(500))   # hosted cover image (R2/URL)
+    price       = db.Column(db.Integer, default=0)  # whole-album price ($); 0 = not sold as album
+    description = db.Column(db.Text)
+    is_active   = db.Column(db.Boolean, default=True)
+    sort_order  = db.Column(db.Integer, default=0)
+    created_at  = db.Column(db.DateTime, default=datetime.utcnow)
+    tracks      = db.relationship('Track', backref='album', cascade='all, delete-orphan',
+                                  order_by='Track.track_number')
+
+
+class Track(db.Model):
+    __tablename__ = 'tracks'
+    id           = db.Column(db.Integer, primary_key=True)
+    album_id     = db.Column(db.Integer, db.ForeignKey('albums.id'), nullable=True)
+    title        = db.Column(db.String(200), nullable=False)
+    audio_url    = db.Column(db.String(500))   # hosted audio (R2/URL) — full or preview
+    cover_url    = db.Column(db.String(500))   # optional; falls back to album cover
+    price        = db.Column(db.Integer, default=0)  # individual track price ($); 0 = not sold alone
+    duration     = db.Column(db.String(10))    # e.g. "3:24"
+    track_number = db.Column(db.Integer, default=1)
+    is_active    = db.Column(db.Boolean, default=True)
+    play_count   = db.Column(db.Integer, default=0)
+    created_at   = db.Column(db.DateTime, default=datetime.utcnow)
+
+
 class PhoneLead(db.Model):
     __tablename__ = 'phone_leads'
     id         = db.Column(db.Integer, primary_key=True)

@@ -5,7 +5,7 @@ from functools import wraps
 from flask import Blueprint,render_template,request,redirect,url_for,session,jsonify,current_app
 from werkzeug.utils import secure_filename
 from database import db
-from models import Beat,Order,Product,Content,Credit,PhoneLead,Subscriber
+from models import Beat,Order,Product,Content,Credit,PhoneLead,Subscriber,Album,Track
 
 admin_bp = Blueprint("admin",__name__)
 
@@ -401,6 +401,121 @@ def toggle_credit(cid):
 @admin_required
 def delete_credit(cid):
     c=Credit.query.get_or_404(cid);db.session.delete(c);db.session.commit()
+    return jsonify({"deleted":True})
+
+
+# ═══════════════ MUSIC — Albums & Tracks ═══════════════
+def _track_dict(t):
+    return {"id":t.id,"album_id":t.album_id,"title":t.title,"audio_url":t.audio_url or "",
+        "cover_url":t.cover_url or "","price":t.price or 0,"duration":t.duration or "",
+        "track_number":t.track_number or 1,"is_active":t.is_active,"play_count":t.play_count or 0}
+
+def _album_dict(a):
+    return {"id":a.id,"title":a.title,"year":a.year or "","cover_url":a.cover_url or "",
+        "price":a.price or 0,"description":a.description or "","is_active":a.is_active,
+        "sort_order":a.sort_order or 0,
+        "tracks":[_track_dict(t) for t in sorted(a.tracks, key=lambda x:(x.track_number or 0))]}
+
+@admin_bp.route("/music")
+@admin_required
+def music():
+    albums = Album.query.order_by(Album.sort_order.asc(), Album.created_at.desc()).all()
+    singles = Track.query.filter_by(album_id=None).order_by(Track.created_at.desc()).all()
+    return render_template("admin/music.html", albums=albums, singles=singles)
+
+@admin_bp.route("/albums")
+@admin_required
+def list_albums():
+    albums = Album.query.order_by(Album.sort_order.asc(), Album.created_at.desc()).all()
+    return jsonify([_album_dict(a) for a in albums])
+
+@admin_bp.route("/albums/add", methods=["POST"])
+@admin_required
+def add_album():
+    d = request.get_json() or {}
+    title = (d.get("title") or "").strip()
+    if not title:
+        return jsonify({"success":False,"error":"Album title required"})
+    a = Album(title=title, year=(d.get("year") or "").strip(),
+        cover_url=(d.get("cover_url") or "").strip(),
+        price=int(d.get("price",0) or 0), description=(d.get("description") or "").strip(),
+        is_active=bool(d.get("is_active",True)), sort_order=int(d.get("sort_order",0) or 0))
+    db.session.add(a); db.session.commit()
+    return jsonify({"success":True,"id":a.id})
+
+@admin_bp.route("/albums/<int:aid>/edit", methods=["POST"])
+@admin_required
+def edit_album(aid):
+    a = Album.query.get_or_404(aid); d = request.get_json() or {}
+    title = (d.get("title") or a.title).strip()
+    if not title:
+        return jsonify({"success":False,"error":"Album title required"})
+    a.title=title; a.year=(d.get("year",a.year) or "").strip()
+    a.cover_url=(d.get("cover_url",a.cover_url) or "").strip()
+    a.price=int(d.get("price",a.price) or 0)
+    a.description=(d.get("description",a.description) or "").strip()
+    a.is_active=bool(d.get("is_active",a.is_active))
+    a.sort_order=int(d.get("sort_order",a.sort_order) or 0)
+    db.session.commit()
+    return jsonify({"success":True})
+
+@admin_bp.route("/albums/<int:aid>/toggle", methods=["POST"])
+@admin_required
+def toggle_album(aid):
+    a = Album.query.get_or_404(aid); a.is_active=not a.is_active; db.session.commit()
+    return jsonify({"is_active":a.is_active})
+
+@admin_bp.route("/albums/<int:aid>/delete", methods=["POST"])
+@admin_required
+def delete_album(aid):
+    a = Album.query.get_or_404(aid); db.session.delete(a); db.session.commit()
+    return jsonify({"deleted":True})
+
+@admin_bp.route("/tracks/add", methods=["POST"])
+@admin_required
+def add_track():
+    d = request.get_json() or {}
+    title = (d.get("title") or "").strip()
+    if not title:
+        return jsonify({"success":False,"error":"Track title required"})
+    aid = d.get("album_id")
+    t = Track(album_id=int(aid) if aid else None, title=title,
+        audio_url=(d.get("audio_url") or "").strip(),
+        cover_url=(d.get("cover_url") or "").strip(),
+        price=int(d.get("price",0) or 0), duration=(d.get("duration") or "").strip(),
+        track_number=int(d.get("track_number",1) or 1),
+        is_active=bool(d.get("is_active",True)))
+    db.session.add(t); db.session.commit()
+    return jsonify({"success":True,"id":t.id})
+
+@admin_bp.route("/tracks/<int:tid>/edit", methods=["POST"])
+@admin_required
+def edit_track(tid):
+    t = Track.query.get_or_404(tid); d = request.get_json() or {}
+    title = (d.get("title") or t.title).strip()
+    if not title:
+        return jsonify({"success":False,"error":"Track title required"})
+    t.title=title; t.audio_url=(d.get("audio_url",t.audio_url) or "").strip()
+    t.cover_url=(d.get("cover_url",t.cover_url) or "").strip()
+    t.price=int(d.get("price",t.price) or 0)
+    t.duration=(d.get("duration",t.duration) or "").strip()
+    t.track_number=int(d.get("track_number",t.track_number) or 1)
+    t.is_active=bool(d.get("is_active",t.is_active))
+    if "album_id" in d:
+        t.album_id=int(d["album_id"]) if d["album_id"] else None
+    db.session.commit()
+    return jsonify({"success":True})
+
+@admin_bp.route("/tracks/<int:tid>/toggle", methods=["POST"])
+@admin_required
+def toggle_track(tid):
+    t = Track.query.get_or_404(tid); t.is_active=not t.is_active; db.session.commit()
+    return jsonify({"is_active":t.is_active})
+
+@admin_bp.route("/tracks/<int:tid>/delete", methods=["POST"])
+@admin_required
+def delete_track(tid):
+    t = Track.query.get_or_404(tid); db.session.delete(t); db.session.commit()
     return jsonify({"deleted":True})
 
 

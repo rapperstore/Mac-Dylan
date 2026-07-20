@@ -1,0 +1,243 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Music — Admin</title>
+<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Space+Mono:wght@400;700&family=Cormorant+Garamond:ital,wght@0,300;0,400&display=swap" rel="stylesheet">
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{--black:#050403;--deep:#080604;--ember:#c84b0a;--fire:#e8720c;--flame:#f5a623;--ash:#b8a898;--white:#f5f0e8;--muted:#7a6a5a;--card:#0f0c09;--card2:#160f0b;--border:#1e1a16;--borderl:#2a231e;--green:#3a8a5a;--red:#c84a4a;--blue:#4a7ac8}
+body{background:var(--black);color:var(--white);font-family:'Cormorant Garamond',serif;display:flex;min-height:100vh}
+a{color:inherit;text-decoration:none} button{cursor:pointer}
+.sb{width:200px;min-height:100vh;background:var(--deep);border-right:1px solid var(--border);position:fixed;top:0;left:0;bottom:0;z-index:100;display:flex;flex-direction:column;overflow-y:auto}
+.sb-logo{padding:20px;border-bottom:1px solid var(--border);font-family:'Bebas Neue',sans-serif;font-size:17px;letter-spacing:.1em}.sb-logo span{color:var(--fire)}
+.sb-sub{font-family:'Space Mono',monospace;font-size:7px;letter-spacing:.3em;color:var(--muted);text-transform:uppercase;margin-top:2px}
+.sb-nav{flex:1;padding:12px 0}
+.sb-grp{font-family:'Space Mono',monospace;font-size:7px;letter-spacing:.4em;color:var(--muted);text-transform:uppercase;padding:10px 18px 4px}
+.sb-item{display:flex;align-items:center;gap:8px;padding:9px 18px;font-family:'Space Mono',monospace;font-size:8px;letter-spacing:.2em;text-transform:uppercase;color:var(--muted);transition:all .15s;border-left:2px solid transparent}
+.sb-item:hover{color:var(--white);background:rgba(200,75,10,.05)}
+.sb-item.on{color:var(--fire);border-left-color:var(--ember);background:rgba(200,75,10,.06)}
+.sb-foot{padding:14px 18px;border-top:1px solid var(--border)}
+.sb-foot a{font-family:'Space Mono',monospace;font-size:7px;letter-spacing:.2em;color:var(--muted);text-transform:uppercase;transition:color .2s}.sb-foot a:hover{color:var(--fire)}
+.main{margin-left:200px;flex:1;display:flex;flex-direction:column}
+.topbar{padding:14px 28px;background:var(--deep);border-bottom:1px solid var(--border);display:flex;justify-content:space-between;align-items:center;position:sticky;top:0;z-index:50}
+.topbar-title{font-family:'Bebas Neue',sans-serif;font-size:20px;letter-spacing:.06em}
+.content{padding:28px;flex:1}
+.two{display:grid;grid-template-columns:340px 1fr;gap:24px;align-items:start}
+.sec{font-family:'Space Mono',monospace;font-size:7px;letter-spacing:.5em;color:var(--ember);text-transform:uppercase;margin-bottom:14px;display:flex;align-items:center;gap:8px}.sec::after{content:'';flex:1;height:1px;background:var(--border)}
+.card{background:var(--card);border:1px solid var(--border);padding:18px;margin-bottom:20px}
+.lbl{font-family:'Space Mono',monospace;font-size:7px;letter-spacing:.3em;color:var(--muted);text-transform:uppercase;margin-bottom:4px;display:block}
+.fi{width:100%;padding:8px 10px;background:var(--deep);border:1px solid var(--border);color:var(--white);font-family:'Space Mono',monospace;font-size:11px;margin-bottom:10px;transition:border-color .2s}
+.fi:focus{outline:none;border-color:var(--ember)}
+.fi-2{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.btn{font-family:'Space Mono',monospace;font-size:7px;letter-spacing:.2em;text-transform:uppercase;padding:8px 14px;border:none;transition:all .2s;cursor:pointer}
+.btn-f{background:var(--ember);color:var(--white)}.btn-f:hover{background:var(--fire)}
+.btn-g{background:transparent;border:1px solid var(--borderl);color:var(--muted)}.btn-g:hover{border-color:var(--ember);color:var(--fire)}
+.btn-d{background:transparent;border:1px solid rgba(200,74,74,.3);color:var(--red)}.btn-d:hover{background:var(--red);color:var(--white)}
+.btn-sm{padding:4px 9px;font-size:7px}
+.hint{font-size:11px;color:var(--muted);font-style:italic;margin:-4px 0 12px}
+.alb{background:var(--card);border:1px solid var(--border);margin-bottom:16px}
+.alb-hd{display:flex;align-items:center;gap:14px;padding:14px 16px;border-bottom:1px solid var(--border)}
+.alb-cover{width:52px;height:52px;border-radius:6px;overflow:hidden;flex-shrink:0;background:linear-gradient(135deg,var(--ember),#5a2206);display:flex;align-items:center;justify-content:center;font-family:'Bebas Neue',sans-serif;font-size:22px;color:#fff}
+.alb-cover img{width:100%;height:100%;object-fit:cover}
+.alb-meta{flex:1;min-width:0}
+.alb-title{font-family:'Bebas Neue',sans-serif;font-size:19px;color:var(--white);letter-spacing:.03em}
+.alb-sub{font-family:'Space Mono',monospace;font-size:8px;letter-spacing:.16em;color:var(--muted);text-transform:uppercase;margin-top:2px}
+.alb-actions{display:flex;gap:6px;flex-wrap:wrap}
+.trk{display:flex;align-items:center;gap:12px;padding:9px 16px;border-bottom:1px solid var(--border);font-size:13px;color:var(--ash)}
+.trk:last-child{border-bottom:none}
+.trk-idx{font-family:'Space Mono',monospace;font-size:10px;color:var(--muted);width:20px;text-align:center}
+.trk-t{flex:1;color:var(--white);font-family:'Bebas Neue',sans-serif;font-size:15px;letter-spacing:.03em;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.trk-m{font-family:'Space Mono',monospace;font-size:8px;color:var(--muted)}
+.badge{font-family:'Space Mono',monospace;font-size:7px;letter-spacing:.2em;text-transform:uppercase;padding:2px 7px;border:1px solid}
+.b-on{color:var(--green);border-color:var(--green)}.b-off{color:var(--muted);border-color:var(--borderl)}
+.addtrk{padding:12px 16px;border-top:1px dashed var(--border);background:var(--deep)}
+.empty{text-align:center;padding:24px;color:var(--muted);font-style:italic;font-size:13px}
+.alert{padding:8px 12px;font-family:'Space Mono',monospace;font-size:8px;letter-spacing:.15em;margin-bottom:12px;display:none}
+.a-ok{background:rgba(58,138,90,.1);border:1px solid var(--green);color:var(--green);display:block}
+.a-err{background:rgba(200,74,74,.1);border:1px solid var(--red);color:var(--red);display:block}
+.hbtn{display:none}.sb-backdrop{display:none}
+@media(max-width:900px){
+  .sb{transform:translateX(-100%);transition:transform .25s ease;z-index:200;box-shadow:8px 0 32px rgba(0,0,0,.5)}
+  .sb.open{transform:translateX(0)}
+  .main{margin-left:0}
+  .hbtn{display:flex;align-items:center;justify-content:center;width:34px;height:34px;background:transparent;border:1px solid var(--borderl);color:var(--white);font-size:15px;cursor:pointer;flex-shrink:0;margin-right:10px}
+  .sb-backdrop{display:block;position:fixed;inset:0;background:rgba(0,0,0,.6);z-index:150;opacity:0;pointer-events:none;transition:opacity .2s}
+  .sb-backdrop.show{opacity:1;pointer-events:auto}
+  .content{padding:14px}.two{grid-template-columns:1fr}.fi-2{grid-template-columns:1fr}
+}
+.edit-modal{display:none;position:fixed;inset:0;z-index:1000;background:rgba(0,0,0,.82);backdrop-filter:blur(6px);align-items:center;justify-content:center;padding:20px;overflow-y:auto}
+.edit-modal.open{display:flex}
+.edit-box{background:var(--card);border:1px solid var(--borderl);width:100%;max-width:520px;max-height:92vh;display:flex;flex-direction:column}
+.edit-hd{display:flex;align-items:center;justify-content:space-between;padding:16px 20px;border-bottom:1px solid var(--border);font-family:'Bebas Neue',sans-serif;font-size:20px;color:var(--white)}
+.edit-x{background:none;border:none;color:var(--muted);font-size:24px;cursor:pointer}
+.edit-bd{padding:18px 20px;overflow-y:auto}
+.edit-ft{display:flex;gap:10px;padding:14px 20px;border-top:1px solid var(--border)}
+@media(max-width:560px){.edit-box{max-width:100%;height:100vh;max-height:100vh}}
+</style>
+</head>
+<body>
+<aside class="sb">
+  <div class="sb-logo">Mac<span>Dylan</span><div class="sb-sub">Admin</div></div>
+  <nav class="sb-nav">
+    <div class="sb-grp">Overview</div>
+    <a href="/admin/" class="sb-item"><span>◈</span>Dashboard</a>
+    <a href="/admin/orders" class="sb-item"><span>◻</span>Orders</a>
+    <div class="sb-grp">Music</div>
+    <a href="/admin/beats" class="sb-item"><span>♩</span>Beats</a>
+    <a href="/admin/music" class="sb-item on"><span>♫</span>Music &amp; Albums</a>
+    <div class="sb-grp">Store</div>
+    <a href="/admin/products" class="sb-item"><span>◈</span>Products</a>
+    <a href="/admin/content" class="sb-item"><span>▶</span>Content</a>
+    <div class="sb-grp">Audience</div>
+    <a href="/admin/subscribers" class="sb-item"><span>✉</span>Subscribers</a>
+    <a href="/admin/leads" class="sb-item"><span>📱</span>Phone Leads</a>
+    <div class="sb-grp">Account</div>
+    <a href="/admin/logout" class="sb-item"><span>→</span>Log Out</a>
+  </nav>
+  <div class="sb-foot"><a href="/#music" target="_blank">← View Player</a></div>
+</aside>
+<div class="sb-backdrop" onclick="toggleSidebar()"></div>
+<div class="main">
+  <div class="topbar">
+    <div style="display:flex;align-items:center">
+      <button class="hbtn" onclick="toggleSidebar()" aria-label="Menu">☰</button>
+      <div class="topbar-title">Music &amp; Albums</div>
+    </div>
+    <a href="/#music" target="_blank" class="btn btn-g">View Player</a>
+  </div>
+  <div class="content">
+    <div id="a-msg" class="alert"></div>
+    <div class="two">
+      <div>
+        <div class="sec">New Album</div>
+        <div class="card">
+          <label class="lbl">Album Title *</label><input class="fi" id="al-title" placeholder="e.g. Late Nights, Vol. 1">
+          <div class="fi-2">
+            <div><label class="lbl">Year</label><input class="fi" id="al-year" placeholder="2026"></div>
+            <div><label class="lbl">Album Price ($)</label><input class="fi" id="al-price" type="number" placeholder="0 = not sold"></div>
+          </div>
+          <label class="lbl">Cover Image URL</label><input class="fi" id="al-cover" placeholder="https://...r2.dev/cover.jpg">
+          <label class="lbl">Description</label><textarea class="fi" id="al-desc" rows="2" style="resize:vertical;font-family:inherit;font-size:13px"></textarea>
+          <button class="btn btn-f" style="width:100%" onclick="addAlbum()">Add Album</button>
+        </div>
+        <p class="hint">Tip: host audio &amp; covers on Cloudflare R2 and paste the URLs here — uploads to the server don't survive redeploys.</p>
+      </div>
+      <div>
+        <div class="sec">Albums &amp; Tracks</div>
+        <div id="albums"><div class="empty">Loading…</div></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- EDIT MODAL -->
+<div class="edit-modal" id="edit-modal" onclick="if(event.target===this)closeEdit()">
+  <div class="edit-box">
+    <div class="edit-hd"><span id="edit-title">Edit</span><button class="edit-x" onclick="closeEdit()">×</button></div>
+    <div class="edit-bd" id="edit-bd"></div>
+    <div class="edit-ft"><button class="btn btn-f" onclick="saveEdit()">Save Changes</button><button class="btn btn-g" onclick="closeEdit()">Cancel</button></div>
+  </div>
+</div>
+
+<script>
+function toggleSidebar(){document.querySelector('.sb').classList.toggle('open');document.querySelector('.sb-backdrop').classList.toggle('show');}
+function msg(t,m){var a=document.getElementById('a-msg');a.textContent=m;a.className='alert '+(t==='ok'?'a-ok':'a-err');setTimeout(function(){a.className='alert';},4000);}
+function esc(s){return String(s==null?'':s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/"/g,'&quot;');}
+var ALBUMS=[];
+
+function load(){
+  fetch('/admin/albums').then(r=>r.json()).then(function(a){
+    ALBUMS=a;var box=document.getElementById('albums');
+    if(!a.length){box.innerHTML='<div class="empty">No albums yet — create one on the left.</div>';return;}
+    box.innerHTML=a.map(function(al){
+      var tracks=al.tracks.map(function(t,i){
+        return '<div class="trk"><div class="trk-idx">'+(t.track_number||i+1)+'</div>'+
+          '<div class="trk-t">'+esc(t.title)+'</div>'+
+          '<div class="trk-m">'+(t.duration||'—')+(t.price?' · $'+t.price:'')+'</div>'+
+          '<span class="badge '+(t.is_active?'b-on':'b-off')+'">'+(t.is_active?'On':'Off')+'</span>'+
+          '<button class="btn btn-g btn-sm" onclick="editTrack('+t.id+')">Edit</button>'+
+          '<button class="btn btn-d btn-sm" onclick="delTrack('+t.id+')">Del</button></div>';
+      }).join('') || '<div class="empty" style="padding:12px">No tracks yet</div>';
+      var cover=al.cover_url?'<img src="'+esc(al.cover_url)+'">':esc(al.title.charAt(0));
+      return '<div class="alb"><div class="alb-hd"><div class="alb-cover">'+cover+'</div>'+
+        '<div class="alb-meta"><div class="alb-title">'+esc(al.title)+'</div>'+
+        '<div class="alb-sub">'+(al.year?esc(al.year)+' · ':'')+al.tracks.length+' tracks'+(al.price?' · album $'+al.price:'')+'</div></div>'+
+        '<span class="badge '+(al.is_active?'b-on':'b-off')+'">'+(al.is_active?'Live':'Hidden')+'</span>'+
+        '<div class="alb-actions"><button class="btn btn-g btn-sm" onclick="editAlbum('+al.id+')">Edit</button>'+
+        '<button class="btn btn-g btn-sm" onclick="toggleAlbum('+al.id+',this)">'+(al.is_active?'Hide':'Show')+'</button>'+
+        '<button class="btn btn-d btn-sm" onclick="delAlbum('+al.id+')">Delete</button></div></div>'+
+        tracks+
+        '<div class="addtrk"><div class="fi-2"><input class="fi" id="nt-title-'+al.id+'" placeholder="Track title" style="margin:0">'+
+        '<input class="fi" id="nt-audio-'+al.id+'" placeholder="Audio URL (R2)" style="margin:0"></div>'+
+        '<div class="fi-2" style="margin-top:8px"><input class="fi" id="nt-dur-'+al.id+'" placeholder="Duration e.g. 3:24" style="margin:0">'+
+        '<input class="fi" id="nt-price-'+al.id+'" type="number" placeholder="Track price $ (0=none)" style="margin:0"></div>'+
+        '<button class="btn btn-f btn-sm" style="margin-top:8px" onclick="addTrack('+al.id+')">+ Add Track</button></div></div>';
+    }).join('');
+  });
+}
+function addAlbum(){
+  var title=document.getElementById('al-title').value.trim();
+  if(!title){msg('err','Album title required');return;}
+  fetch('/admin/albums/add',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({
+    title:title,year:document.getElementById('al-year').value.trim(),
+    cover_url:document.getElementById('al-cover').value.trim(),
+    price:parseInt(document.getElementById('al-price').value)||0,
+    description:document.getElementById('al-desc').value.trim()
+  })}).then(r=>r.json()).then(function(d){
+    if(d.success){msg('ok','Album added');['al-title','al-year','al-cover','al-desc','al-price'].forEach(function(id){document.getElementById(id).value='';});load();}
+    else msg('err',d.error||'Failed');
+  });
+}
+function addTrack(aid){
+  var title=document.getElementById('nt-title-'+aid).value.trim();
+  if(!title){msg('err','Track title required');return;}
+  fetch('/admin/tracks/add',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({
+    album_id:aid,title:title,
+    audio_url:document.getElementById('nt-audio-'+aid).value.trim(),
+    duration:document.getElementById('nt-dur-'+aid).value.trim(),
+    price:parseInt(document.getElementById('nt-price-'+aid).value)||0,
+    track_number:(ALBUMS.find(function(x){return x.id===aid;})||{tracks:[]}).tracks.length+1
+  })}).then(r=>r.json()).then(function(d){
+    if(d.success){msg('ok','Track added');load();}else msg('err',d.error||'Failed');
+  });
+}
+function toggleAlbum(id,btn){fetch('/admin/albums/'+id+'/toggle',{method:'POST'}).then(r=>r.json()).then(function(){load();});}
+function delAlbum(id){if(!confirm('Delete this album and all its tracks?'))return;fetch('/admin/albums/'+id+'/delete',{method:'POST'}).then(r=>r.json()).then(function(){load();});}
+function delTrack(id){if(!confirm('Delete this track?'))return;fetch('/admin/tracks/'+id+'/delete',{method:'POST'}).then(r=>r.json()).then(function(){load();});}
+
+/* ── EDIT MODAL ── */
+var editCtx=null;
+function tf(l,n,v,t){return '<label class="lbl">'+l+'</label><input class="fi" name="'+n+'" type="'+(t||'text')+'" value="'+esc(v)+'">';}
+function openEdit(title){document.getElementById('edit-title').textContent=title;document.getElementById('edit-modal').classList.add('open');}
+function closeEdit(){document.getElementById('edit-modal').classList.remove('open');editCtx=null;}
+function editAlbum(id){
+  var a=ALBUMS.find(function(x){return x.id===id;});if(!a)return;editCtx={type:'album',id:id};
+  document.getElementById('edit-bd').innerHTML=
+    tf('Title','title',a.title)+
+    '<div class="fi-2">'+tf('Year','year',a.year)+tf('Album Price ($)','price',a.price,'number')+'</div>'+
+    tf('Cover URL','cover_url',a.cover_url)+
+    '<label class="lbl">Description</label><textarea class="fi" name="description" rows="2" style="resize:vertical;font-family:inherit;font-size:13px">'+esc(a.description)+'</textarea>';
+  openEdit('Edit Album');
+}
+function editTrack(id){
+  var t=null;ALBUMS.forEach(function(a){a.tracks.forEach(function(x){if(x.id===id)t=x;});});if(!t)return;editCtx={type:'track',id:id};
+  document.getElementById('edit-bd').innerHTML=
+    tf('Title','title',t.title)+
+    tf('Audio URL','audio_url',t.audio_url)+
+    tf('Cover URL (optional)','cover_url',t.cover_url)+
+    '<div class="fi-2">'+tf('Duration','duration',t.duration)+tf('Track #','track_number',t.track_number,'number')+'</div>'+
+    tf('Track Price ($)','price',t.price,'number');
+  openEdit('Edit Track');
+}
+function saveEdit(){
+  if(!editCtx)return;var data={};
+  document.querySelectorAll('#edit-bd [name]').forEach(function(f){data[f.name]=f.value;});
+  var url=editCtx.type==='album'?'/admin/albums/'+editCtx.id+'/edit':'/admin/tracks/'+editCtx.id+'/edit';
+  fetch(url,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(data)})
+    .then(r=>r.json()).then(function(d){if(d.success){closeEdit();msg('ok','Saved');load();}else msg('err',d.error||'Failed');});
+}
+load();
+</script>
+</body>
+</html>

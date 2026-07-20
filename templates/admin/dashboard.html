@@ -179,6 +179,7 @@ body{display:flex;min-height:100vh;overflow-x:hidden}
     <div class="nav-group">Music</div>
     <button class="nav-item" onclick="showPanel('beats',this)"><span class="nav-icon">♩</span><span>Beats</span></button>
     <button class="nav-item" onclick="showPanel('upload-beat',this)"><span class="nav-icon">+</span><span>Upload Beat</span></button>
+    <a href="{{ url_for('admin.music') }}" class="nav-item"><span class="nav-icon">♫</span><span>Music &amp; Albums</span></a>
     <div class="nav-group">Store</div>
     <button class="nav-item" onclick="showPanel('products',this)"><span class="nav-icon">◈</span><span>Products</span></button>
     <button class="nav-item" onclick="showPanel('add-product',this)"><span class="nav-icon">+</span><span>Add Product</span></button>

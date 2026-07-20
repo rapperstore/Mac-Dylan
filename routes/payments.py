@@ -2,7 +2,7 @@ import stripe
 import json
 from flask import Blueprint, request, jsonify, render_template, current_app
 from database import db
-from models import Order, Beat, Product
+from models import Order, Beat, Product, Album, Track
 
 payments_bp = Blueprint('payments', __name__)
 
@@ -163,6 +163,52 @@ def store_checkout():
         )
         db.session.add(order)
         db.session.commit()
+        return jsonify({'checkout_url': session.url})
+    except Exception as e:
+        return jsonify({'error': str(e)}), 500
+
+
+@payments_bp.route('/music-checkout', methods=['POST'])
+def music_checkout():
+    data = request.get_json() or {}
+    kind = data.get('kind')  # 'track' or 'album'
+    item_id = data.get('id')
+    domain = get_domain()
+    try:
+        if kind == 'album':
+            item = Album.query.get(item_id)
+            if not item or not item.price:
+                return jsonify({'error': 'Album not available for purchase'}), 400
+            name = item.title + ' (Full Album)'
+            price = item.price
+            desc = 'Mac Dylan — full album download. Delivered after purchase.'
+        else:
+            item = Track.query.get(item_id)
+            if not item or not item.price:
+                return jsonify({'error': 'Track not available for purchase'}), 400
+            name = item.title + ' (Single)'
+            price = item.price
+            desc = 'Mac Dylan — track download. Delivered after purchase.'
+        session = stripe.checkout.Session.create(
+            payment_method_types=['card'],
+            customer_creation='always',
+            line_items=[{
+                'price_data': {
+                    'currency': 'usd',
+                    'product_data': {'name': name, 'description': desc},
+                    'unit_amount': price * 100,
+                },
+                'quantity': 1,
+            }],
+            mode='payment',
+            success_url=domain + '/payments/success?session_id={CHECKOUT_SESSION_ID}',
+            cancel_url=domain + '/#music',
+            metadata={'order_type': 'music', 'music_kind': kind, 'item_id': str(item_id), 'item_name': name}
+        )
+        order = Order(order_type='music', product_name=name,
+            amount_total=price * 100, amount_paid=0, amount_balance=price * 100,
+            status='pending', stripe_session_id=session.id)
+        db.session.add(order); db.session.commit()
         return jsonify({'checkout_url': session.url})
     except Exception as e:
         return jsonify({'error': str(e)}), 500

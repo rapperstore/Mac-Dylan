@@ -4,7 +4,7 @@ import urllib.parse
 from datetime import datetime
 from flask import Blueprint, render_template, request, jsonify, Response, current_app
 from database import db
-from models import Beat, Credit, Subscriber, PhoneLead
+from models import Beat, Credit, Subscriber, PhoneLead, Album, Track
 
 main_bp = Blueprint('main', __name__)
 
@@ -17,7 +17,39 @@ def index():
     credits = Credit.query.filter_by(is_active=True).order_by(
         Credit.sort_order.asc(), Credit.created_at.desc()
     ).limit(12).all()
-    return render_template('index.html', beats=beats, credits=credits)
+    albums = Album.query.filter_by(is_active=True).order_by(
+        Album.sort_order.asc(), Album.created_at.desc()
+    ).all()
+    singles = Track.query.filter_by(album_id=None, is_active=True).order_by(
+        Track.created_at.desc()
+    ).all()
+    music = []
+    music_data = []
+    for a in albums:
+        tracks = [t for t in sorted(a.tracks, key=lambda x: (x.track_number or 0)) if t.is_active]
+        if tracks:
+            music.append({'album': a, 'tracks': tracks})
+            music_data.append({
+                'id': a.id, 'title': a.title, 'year': a.year or '',
+                'cover_url': a.cover_url or '', 'price': a.price or 0,
+                'description': a.description or '',
+                'tracks': [{
+                    'id': t.id, 'title': t.title, 'audio_url': t.audio_url or '',
+                    'cover_url': t.cover_url or a.cover_url or '', 'price': t.price or 0,
+                    'duration': t.duration or '', 'album_title': a.title
+                } for t in tracks]
+            })
+    return render_template('index.html', beats=beats, credits=credits,
+                           music=music, music_data=music_data, singles=singles)
+
+
+@main_bp.route('/music/play/<int:track_id>', methods=['POST'])
+def music_play(track_id):
+    t = Track.query.get(track_id)
+    if t:
+        t.play_count = (t.play_count or 0) + 1
+        db.session.commit()
+    return jsonify({'ok': True})
 
 
 @main_bp.route('/subscribe', methods=['POST'])
