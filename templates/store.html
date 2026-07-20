@@ -230,8 +230,12 @@
   .store-wrap{padding:48px 24px 72px}
   .store-hero{padding:72px 24px 48px}
   .ebook-card{grid-template-columns:1fr}
-  .ebook-stage{min-height:360px;padding:44px 24px 32px}
-  .b3d-scene{transform:scale(.78);transform-origin:center top;margin-bottom:-52px}
+  .ebook-stage{min-height:0;padding:44px 24px 36px}
+  /* Flatten the 3D book to a clean straight cover on tablet/mobile — avoids clipping and overflow */
+  .b3d-scene{perspective:none;transform:none;margin:0}
+  .b3d-book{transform:none;animation:none;margin:0 auto}
+  .b3d-spine{display:none}
+  .b3d-floor{display:none}
   .ebook-info{padding:36px 28px}
   .ebook-chapters{grid-template-columns:1fr}
   .ebook-title{font-size:38px}
@@ -245,10 +249,9 @@
   .store-wrap{padding:28px 0 56px}
   .section-label{padding:0 16px;font-size:7px}
   .ebook-card{border-left:none;border-right:none;border-radius:0}
-  .ebook-stage{min-height:300px;padding:36px 16px 20px}
-  .b3d-scene{transform:scale(.62);transform-origin:center top;margin-bottom:-88px}
-  .b3d-reflection{height:36px;opacity:.12}
-  .b3d-stars{margin-top:2px;gap:3px}
+  .ebook-stage{min-height:0;padding:32px 16px 28px}
+  .b3d-book{width:190px;height:266px}
+  .b3d-stars{margin-top:18px;gap:3px}
   .b3d-stars svg{width:11px;height:11px}
   .b3d-caption{font-size:6px;margin-top:4px}
   .stage-badge{font-size:6px;padding:4px 10px;top:14px;left:14px}
@@ -301,14 +304,14 @@
             <span class="b3d-spine-label">The Artist Is The Business &nbsp;·&nbsp; Mac Dylan</span>
           </div>
           <div class="b3d-front">
-            <img class="b3d-cover-img" src="/static/og-store.jpg" alt="The Artist Is The Business">
+            <img class="b3d-cover-img" src="/static/book-cover.png" alt="The Artist Is The Business">
           </div>
         </div>
       </div>
 
       <div class="b3d-floor">
         <div class="b3d-reflection">
-          <img src="/static/og-store.jpg" alt="">
+          <img src="/static/book-cover.png" alt="">
         </div>
       </div>
 

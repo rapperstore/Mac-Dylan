@@ -70,7 +70,20 @@ tr:last-child td{border-bottom:none} tr:hover td{background:var(--card2)}
   .topbar-title{font-size:17px}
   th,td{padding:7px 8px;font-size:11px}
 }
-
+.edit-modal{display:none;position:fixed;inset:0;z-index:1000;background:rgba(0,0,0,.82);backdrop-filter:blur(6px);align-items:center;justify-content:center;padding:20px;overflow-y:auto}
+.edit-modal.open{display:flex}
+.edit-box{background:var(--card);border:1px solid var(--borderl);width:100%;max-width:560px;max-height:90vh;display:flex;flex-direction:column;box-shadow:0 24px 80px rgba(0,0,0,.7)}
+.edit-hdr{display:flex;align-items:center;justify-content:space-between;padding:18px 22px;border-bottom:1px solid var(--border);font-family:'Bebas Neue',sans-serif;font-size:22px;letter-spacing:.05em;color:var(--white)}
+.edit-x{background:none;border:none;color:var(--muted);font-size:26px;line-height:1;cursor:pointer;padding:0 4px;transition:color .2s}.edit-x:hover{color:var(--fire)}
+.edit-body{padding:20px 22px;overflow-y:auto;display:grid;grid-template-columns:1fr 1fr;gap:14px}
+.edit-body .ef-full{grid-column:1/-1}
+.edit-foot{display:flex;gap:10px;padding:16px 22px;border-top:1px solid var(--border)}
+@media(max-width:560px){
+  .edit-modal{padding:0}
+  .edit-box{max-width:100%;max-height:100vh;height:100vh}
+  .edit-body{grid-template-columns:1fr}
+  .edit-foot{flex-direction:column}.edit-foot .btn{width:100%;justify-content:center}
+}
 </style>
 </head>
 <body>
@@ -131,19 +144,68 @@ tr:last-child td{border-bottom:none} tr:hover td{background:var(--card2)}
     </div>
   </div>
 </div>
+
+<!-- EDIT MODAL -->
+<div class="edit-modal" id="edit-modal" onclick="if(event.target===this)closeContentEdit()">
+  <div class="edit-box">
+    <div class="edit-hdr"><span>Edit Content</span><button class="edit-x" onclick="closeContentEdit()" aria-label="Close">×</button></div>
+    <input type="hidden" id="ec-id">
+    <div class="edit-body">
+      <div class="ef-full"><label class="lbl">Title *</label><input class="fi" id="ec-title"></div>
+      <div><label class="lbl">Type</label><select class="fi" id="ec-type"><option value="video">Video</option><option value="post">Post</option><option value="announcement">Announcement</option></select></div>
+      <div><label class="lbl">Embed URL</label><input class="fi" id="ec-embed" placeholder="https://youtube.com/embed/..."></div>
+      <div class="ef-full"><label class="lbl">Body</label><textarea class="fi" id="ec-body" rows="3" style="resize:vertical;font-family:inherit;font-size:13px"></textarea></div>
+      <div><label class="lbl">Published</label><select class="fi" id="ec-pub"><option value="1">Yes</option><option value="0">No</option></select></div>
+      <div><label class="lbl">Featured</label><select class="fi" id="ec-feat"><option value="0">No</option><option value="1">Yes</option></select></div>
+    </div>
+    <div class="edit-foot"><button class="btn btn-f" onclick="saveContent()">Save Changes</button><button class="btn btn-g" onclick="closeContentEdit()">Cancel</button></div>
+  </div>
+</div>
 <script>
 function toggleSidebar(){document.querySelector('.sb').classList.toggle('open');document.querySelector('.sb-backdrop').classList.toggle('show');}
 function ca(t,m){var a=document.getElementById('a-cont');a.textContent=m;a.className='alert '+(t==='ok'?'a-ok':'a-err');setTimeout(function(){a.className='alert';},4000)}
 function loadContent(){
   fetch('/admin/content/list').then(r=>r.json()).then(function(cs){
+    window._content=cs;
     var tb=document.getElementById('ctbody');
     if(!cs||!cs.length){tb.innerHTML='<tr><td colspan="4" class="empty">No content yet</td></tr>';return;}
     tb.innerHTML=cs.map(function(c){
       return '<tr><td class="td-t" style="font-size:13px">'+c.title+'</td><td class="td-m">'+c.content_type+'</td>'+
       '<td><span class="badge '+(c.is_published?'b-on':'b-off')+'">'+(c.is_published?'Live':'Draft')+'</span></td>'+
-      '<td><button class="btn btn-d btn-sm" onclick="delContent('+c.id+',this)">Delete</button></td></tr>';
+      '<td><button class="btn btn-g btn-sm" onclick="editContent('+c.id+')">Edit</button> <button class="btn btn-g btn-sm" onclick="toggleContent('+c.id+',this)">'+(c.is_published?'Hide':'Show')+'</button> <button class="btn btn-d btn-sm" onclick="delContent('+c.id+',this)">Delete</button></td></tr>';
     }).join('');
   }).catch(function(){document.getElementById('ctbody').innerHTML='<tr><td colspan="4" class="empty">No content yet</td></tr>';});
+}
+function toggleContent(id,btn){
+  fetch('/admin/content/'+id+'/toggle',{method:'POST'}).then(r=>r.json()).then(function(d){
+    var badge=btn.closest('tr').querySelector('.badge');
+    badge.className='badge '+(d.is_published?'b-on':'b-off');badge.textContent=d.is_published?'Live':'Draft';
+    btn.textContent=d.is_published?'Hide':'Show';
+  });
+}
+function editContent(id){
+  var c=(window._content||[]).find(function(x){return x.id===id;});if(!c)return;
+  document.getElementById('ec-id').value=c.id;
+  document.getElementById('ec-title').value=c.title;
+  document.getElementById('ec-type').value=c.content_type;
+  document.getElementById('ec-body').value=c.body||'';
+  document.getElementById('ec-embed').value=c.embed_url||'';
+  document.getElementById('ec-pub').value=c.is_published?'1':'0';
+  document.getElementById('ec-feat').value=c.is_featured?'1':'0';
+  document.getElementById('edit-modal').classList.add('open');
+}
+function closeContentEdit(){document.getElementById('edit-modal').classList.remove('open');}
+function saveContent(){
+  var id=document.getElementById('ec-id').value;
+  var data={title:document.getElementById('ec-title').value.trim(),
+    content_type:document.getElementById('ec-type').value,
+    body:document.getElementById('ec-body').value,
+    embed_url:document.getElementById('ec-embed').value.trim(),
+    is_published:document.getElementById('ec-pub').value==='1',
+    is_featured:document.getElementById('ec-feat').value==='1'};
+  if(!data.title){ca('err','Title required');return;}
+  fetch('/admin/content/'+id+'/edit',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(data)})
+    .then(r=>r.json()).then(function(d){if(d.success){closeContentEdit();ca('ok','Saved!');loadContent();}else{ca('err',d.error||'Save failed');}});
 }
 function addContent(){
   var n=document.getElementById('cn').value.trim();

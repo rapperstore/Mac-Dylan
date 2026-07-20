@@ -75,7 +75,10 @@ def create_app():
         except Exception:
             db.session.rollback()
         try:
-            if Beat.query.count() == 0:
+            # Only seed the demo catalog when explicitly enabled (SEED_BEATS=1).
+            # This prevents the 146 demo beats from reappearing after they've
+            # been cleared from the admin. Set SEED_BEATS=1 to restore them.
+            if os.environ.get("SEED_BEATS") == "1" and Beat.query.count() == 0:
                 seed = [
                     ("Afterlife",117,"A# Min","https://pub-3d8b1c7a5e63475b90c0044ca074cba8.r2.dev/Afterlife%20%5B117BPM%20A%23%20Min%5D.mp3"),
                     ("All that pain",99,"A Maj","https://pub-3d8b1c7a5e63475b90c0044ca074cba8.r2.dev/All%20that%20pain%20%5B99BPM%20A%20Maj%5D.mp3"),

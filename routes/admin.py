@@ -141,6 +141,12 @@ def delete_beat(bid):
     b=Beat.query.get_or_404(bid);db.session.delete(b);db.session.commit()
     return jsonify({"deleted":True})
 
+@admin_bp.route("/beats/delete-all",methods=["POST"])
+@admin_required
+def delete_all_beats():
+    n=Beat.query.delete();db.session.commit()
+    return jsonify({"deleted":n})
+
 @admin_bp.route("/beats/<int:bid>/edit",methods=["POST"])
 @admin_required
 def edit_beat(bid):
@@ -228,6 +234,7 @@ def content():
 @admin_required
 def content_list_api():
     return jsonify([{"id":c.id,"title":c.title,"content_type":c.content_type,
+        "body":c.body or "","embed_url":c.embed_url or "",
         "is_published":c.is_published,"is_featured":c.is_featured}
         for c in Content.query.order_by(Content.created_at.desc()).all()])
 
@@ -242,6 +249,28 @@ def add_content():
         is_featured=request.form.get("featured")=="on")
     db.session.add(c);db.session.commit()
     return jsonify({"success":True,"content_id":c.id})
+
+@admin_bp.route("/content/<int:cid>/edit",methods=["POST"])
+@admin_required
+def edit_content(cid):
+    c=Content.query.get_or_404(cid);d=request.get_json() or {}
+    title=(d.get("title") or c.title).strip()
+    if not title:
+        return jsonify({"success":False,"error":"Title required"})
+    c.title=title
+    c.content_type=d.get("content_type",c.content_type)
+    c.body=(d.get("body",c.body) or "").strip()
+    c.embed_url=(d.get("embed_url",c.embed_url) or "").strip()
+    c.is_published=bool(d.get("is_published",c.is_published))
+    c.is_featured=bool(d.get("is_featured",c.is_featured))
+    db.session.commit()
+    return jsonify({"success":True})
+
+@admin_bp.route("/content/<int:cid>/toggle",methods=["POST"])
+@admin_required
+def toggle_content(cid):
+    c=Content.query.get_or_404(cid);c.is_published=not c.is_published;db.session.commit()
+    return jsonify({"is_published":c.is_published})
 
 @admin_bp.route("/content/<int:cid>/delete",methods=["POST"])
 @admin_required
@@ -299,6 +328,22 @@ def add_credit():
         video_url=d.get("video_url","").strip(),
         is_active=bool(d.get("is_active",True)),sort_order=int(d.get("sort_order",0) or 0))
     db.session.add(c);db.session.commit()
+    return jsonify({"success":True,"id":c.id})
+
+@admin_bp.route("/credits/<int:cid>/update",methods=["POST"])
+@admin_required
+def update_credit(cid):
+    c=Credit.query.get_or_404(cid)
+    d=request.get_json() or {}
+    artist=d.get("artist","").strip()
+    if not artist:
+        return jsonify({"success":False,"error":"Artist name required"})
+    c.artist=artist
+    c.role=d.get("role","").strip()
+    c.track_name=d.get("track_name","").strip()
+    c.year=d.get("year","").strip()
+    c.video_url=d.get("video_url","").strip()
+    db.session.commit()
     return jsonify({"success":True,"id":c.id})
 
 @admin_bp.route("/credits/<int:cid>/toggle",methods=["POST"])
