@@ -80,7 +80,7 @@
         "Recording Sessions"
       ],
       "sameAs": [
-        "https://soundcloud.com/macdylan4ever",
+        "https://soundcloud.com/macdylan/albums",
         "https://instagram.com/macdylan4ever",
         "https://facebook.com/macdylan4ever",
         "https://youtube.com/@macdylan",
@@ -130,7 +130,7 @@
       },
       "knowsAbout": ["Music Production", "Hip Hop", "Beat Making", "Mix Engineering", "Audio Mastering", "Artist Development", "Music Business"],
       "sameAs": [
-        "https://soundcloud.com/macdylan4ever",
+        "https://soundcloud.com/macdylan/albums",
         "https://instagram.com/macdylan4ever",
         "https://facebook.com/macdylan4ever",
         "https://youtube.com/@macdylan"
@@ -270,23 +270,23 @@
 .svc-price{font-family:'Bebas Neue',sans-serif;font-size:24px;color:var(--fire)}
 .svc-price small{font-size:11px;color:var(--muted);font-family:'Space Mono',monospace;margin-left:4px}
 
-/* ── CREDITS ── */
+/* ── WORK / VIDEO GALLERY ── */
 .credits-section{padding:0 48px 80px}
-.credits-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(200px,1fr));gap:2px;background:var(--border);border:1px solid var(--border)}
-.credit-card{background:var(--card);padding:18px 20px;transition:background .2s;position:relative;overflow:hidden}
-.credit-card:hover{background:var(--card2)}
-.credit-card::before{content:'';position:absolute;left:0;top:0;bottom:0;width:2px;background:var(--ember);transform:scaleY(0);transform-origin:bottom;transition:transform .3s}.credit-card:hover::before{transform:scaleY(1)}
-.credit-artist{font-family:'Bebas Neue',sans-serif;font-size:17px;color:var(--white);letter-spacing:.04em;line-height:1}
-.credit-role{font-family:'Space Mono',monospace;font-size:7px;letter-spacing:.28em;color:var(--ember);text-transform:uppercase;margin-top:4px}
-.credit-track{font-size:12px;color:var(--muted);font-style:italic;margin-top:4px}
-.credits-empty{padding:28px;font-family:'Space Mono',monospace;font-size:9px;letter-spacing:.2em;color:var(--muted);text-transform:uppercase;background:var(--card);text-align:center;border:1px solid var(--border)}
-.credit-card.has-video{grid-column:span 2}
-.credit-video{position:relative;margin-top:12px;aspect-ratio:16/9;background:#0a0705 center/cover no-repeat;cursor:pointer;overflow:hidden;border:1px solid var(--border)}
-.credit-video iframe{position:absolute;inset:0;width:100%;height:100%;border:0}
-.cv-play{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;transition:transform .2s}
-.credit-video:hover .cv-play{transform:scale(1.12)}
-.credit-video::after{content:'';position:absolute;inset:0;background:linear-gradient(180deg,transparent 60%,rgba(5,4,3,.5));pointer-events:none}
-.credit-video.playing::after,.credit-video.playing .cv-play{display:none}
+.vid-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));gap:22px}
+.vid-card{cursor:pointer;background:none;border:none;padding:0;text-align:left}
+.vid-thumb{position:relative;aspect-ratio:16/9;overflow:hidden;background:#0a0705;border:1px solid var(--border);transition:border-color .25s}
+.vid-card:hover .vid-thumb{border-color:rgba(200,75,10,.55)}
+.vid-card:focus-visible .vid-thumb{outline:2px solid var(--ember);outline-offset:2px}
+.vid-thumb img{width:100%;height:100%;object-fit:cover;display:block;transition:transform .45s ease,opacity .25s}
+.vid-card:hover .vid-thumb img{transform:scale(1.05);opacity:.82}
+.vid-thumb iframe{position:absolute;inset:0;width:100%;height:100%;border:0}
+.vid-play{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;transition:transform .22s;pointer-events:none}
+.vid-card:hover .vid-play{transform:scale(1.12)}
+.vid-thumb::after{content:'';position:absolute;inset:0;background:linear-gradient(180deg,transparent 55%,rgba(5,4,3,.6));pointer-events:none}
+.vid-dur{position:absolute;right:8px;bottom:8px;z-index:2;font-family:'Space Mono',monospace;font-size:9px;letter-spacing:.08em;color:var(--white);background:rgba(5,4,3,.82);padding:2px 6px;border-radius:2px}
+.vid-title{font-family:'Bebas Neue',sans-serif;font-size:16px;letter-spacing:.03em;color:var(--white);margin-top:10px;line-height:1.25;transition:color .2s}
+.vid-card:hover .vid-title{color:var(--fire)}
+.vid-thumb.playing::after,.vid-thumb.playing .vid-play,.vid-thumb.playing .vid-dur{display:none}
 
 /* ── MUSIC PLAYER (streaming-app style, distinct from beat player) ── */
 .music-tagline{font-family:'Cormorant Garamond',serif;font-style:italic;font-size:15px;color:var(--muted)}
@@ -743,28 +743,33 @@
   </div>
 </section>
 
-<!-- CREDITS -->
-<section class="credits-section" data-reveal>
-  <div class="sec-hdr"><div class="sec-lbl">Credits</div></div>
-  {% if credits %}
-    <div class="credits-grid">
-      {% for c in credits %}
-      <div class="credit-card{% if c.video_url %} has-video{% endif %}">
-        <div class="credit-artist">{{ c.artist }}</div>
-        <div class="credit-role">{{ c.role }}</div>
-        {% if c.track_name %}<div class="credit-track">{{ c.track_name }}</div>{% endif %}
-        {% if c.video_url %}
-        <div class="credit-video" data-video="{{ c.video_url }}" role="button" tabindex="0" aria-label="Play video: {{ c.artist }}{% if c.track_name %} — {{ c.track_name }}{% endif %}">
-          <div class="cv-play"><svg viewBox="0 0 24 24" width="34" height="34"><circle cx="12" cy="12" r="11" fill="rgba(5,4,3,.75)" stroke="rgba(232,114,12,.9)" stroke-width="1"/><path d="M9.5 7.5v9l7-4.5z" fill="#e8720c"/></svg></div>
+<!-- WORK / VIDEO GALLERY -->
+{% if videos %}
+<section class="credits-section" id="work" data-reveal>
+  <div class="sec-hdr">
+    <div class="sec-lbl">The Work</div>
+    <a href="https://www.youtube.com/playlist?list=PLHYHkTNHYFjE" target="_blank" rel="noopener noreferrer" class="sec-link">Full Playlist &rarr;</a>
+  </div>
+  <div class="vid-grid">
+    {% for v in videos %}
+    <div class="vid-card" data-vid="{{ v.id }}" role="button" tabindex="0"
+         aria-label="Play video: {{ v.title }}">
+      <div class="vid-thumb">
+        <img src="https://i.ytimg.com/vi/{{ v.id }}/hqdefault.jpg" alt="{{ v.title }}" loading="lazy" width="480" height="360">
+        <div class="vid-play">
+          <svg viewBox="0 0 24 24" width="46" height="46" aria-hidden="true">
+            <circle cx="12" cy="12" r="11" fill="rgba(5,4,3,.72)" stroke="rgba(232,114,12,.95)" stroke-width="1"/>
+            <path d="M9.5 7.5v9l7-4.5z" fill="#e8720c"/>
+          </svg>
         </div>
-        {% endif %}
+        {% if v.duration %}<span class="vid-dur">{{ v.duration }}</span>{% endif %}
       </div>
-      {% endfor %}
+      <div class="vid-title">{{ v.title }}</div>
     </div>
-  {% else %}
-    <div class="credits-empty" style="display:none"></div>
-  {% endif %}
+    {% endfor %}
+  </div>
 </section>
+{% endif %}
 
 <!-- SERVICES -->
 <section class="section" data-reveal>
@@ -911,7 +916,7 @@
     <a href="https://instagram.com/macdylan4ever" target="_blank" rel="noopener noreferrer" class="sb-btn" title="Instagram"><svg viewBox="0 0 24 24"><path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zM12 0C8.741 0 8.333.014 7.053.072 2.695.272.273 2.69.073 7.052.014 8.333 0 8.741 0 12c0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98C8.333 23.986 8.741 24 12 24c3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98C15.668.014 15.259 0 12 0zm0 5.838a6.162 6.162 0 100 12.324 6.162 6.162 0 000-12.324zM12 16a4 4 0 110-8 4 4 0 010 8zm6.406-11.845a1.44 1.44 0 100 2.881 1.44 1.44 0 000-2.881z"/></svg></a>
     <a href="https://facebook.com/macdylan4ever" target="_blank" rel="noopener noreferrer" class="sb-btn" title="Facebook"><svg viewBox="0 0 24 24"><path d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z"/></svg></a>
     <a href="https://youtube.com/@macdylan" target="_blank" rel="noopener noreferrer" class="sb-btn" title="YouTube"><svg viewBox="0 0 24 24"><path d="M23.498 6.186a3.016 3.016 0 00-2.122-2.136C19.505 3.545 12 3.545 12 3.545s-7.505 0-9.377.505A3.017 3.017 0 00.502 6.186C0 8.07 0 12 0 12s0 3.93.502 5.814a3.016 3.016 0 002.122 2.136c1.871.505 9.376.505 9.376.505s7.505 0 9.377-.505a3.015 3.015 0 002.122-2.136C24 15.93 24 12 24 12s0-3.93-.502-5.814zM9.545 15.568V8.432L15.818 12l-6.273 3.568z"/></svg></a>
-    <a href="https://soundcloud.com/macdylan4ever" target="_blank" rel="noopener noreferrer" class="sb-btn" title="SoundCloud"><svg viewBox="0 0 24 24"><path d="M1.175 12.225c-.051 0-.094.046-.101.1l-.233 2.154.233 2.105c.007.058.05.098.101.098.05 0 .09-.04.099-.098l.255-2.105-.27-2.154c-.009-.06-.05-.1-.1-.1m-.899.828c-.06 0-.091.037-.104.094L0 14.479l.172 1.282c.013.06.045.094.104.094.057 0 .09-.035.104-.094l.194-1.282-.194-1.332c-.014-.057-.047-.094-.104-.094m1.835-1.585c-.067 0-.12.06-.12.132l-.208 2.879.208 2.746c0 .07.053.127.12.127.063 0 .117-.057.12-.127l.235-2.746-.235-2.879c-.003-.072-.057-.132-.12-.132m.862-.107c-.076 0-.14.07-.145.15l-.193 2.986.193 2.809c.005.08.069.148.145.148.076 0 .14-.068.148-.148l.217-2.809-.217-2.986c-.008-.08-.072-.15-.148-.15m.882-.172c-.086 0-.157.078-.163.17l-.178 3.159.178 2.839c.006.09.077.166.163.166.085 0 .157-.076.165-.166l.2-2.839-.2-3.159c-.008-.092-.08-.17-.165-.17m.885-.2c-.095 0-.174.088-.18.19l-.163 3.36.163 2.85c.006.1.085.186.18.186.095 0 .174-.086.182-.186l.184-2.85-.184-3.36c-.008-.102-.087-.19-.182-.19m.887-.236c-.105 0-.19.098-.196.21l-.148 3.596.148 2.85c.006.112.091.206.196.206.104 0 .19-.094.198-.206l.167-2.85-.167-3.596c-.008-.112-.094-.21-.198-.21m.891-.183c-.115 0-.207.108-.211.232l-.134 3.778.134 2.843c.004.122.096.228.211.228.114 0 .207-.106.213-.228l.151-2.843-.151-3.778c-.006-.124-.099-.232-.213-.232m.894-.133c-.124 0-.224.118-.226.252l-.12 3.91.12 2.833c.002.132.102.244.226.244.123 0 .224-.112.228-.244l.136-2.833-.136-3.91c-.004-.134-.105-.252-.228-.252m.893-.037c-.134 0-.24.128-.241.27l-.105 3.948.105 2.825c.001.14.107.256.241.256.132 0 .24-.116.244-.256l.118-2.825-.118-3.948c-.004-.142-.112-.27-.244-.27m.897.012c-.14 0-.253.138-.257.29l-.09 3.936.09 2.81c.004.15.117.273.257.273.138 0 .253-.122.259-.273l.102-2.81-.102-3.936c-.006-.152-.121-.29-.259-.29m3.854.578c-.186 0-.353.1-.441.252-.249-.164-.547-.256-.869-.268-.035-.001-.067.013-.067.05v6.078c0 .038.03.07.067.074.62.035 4.268.035 4.268.035 1.026 0 1.858-.832 1.858-1.858 0-1.027-.832-1.858-1.858-1.858-.175 0-.345.028-.507.074-.162-.906-.955-1.579-1.892-1.579"/></svg></a>
+    <a href="https://soundcloud.com/macdylan/albums" target="_blank" rel="noopener noreferrer" class="sb-btn" title="SoundCloud"><svg viewBox="0 0 24 24"><path d="M1.175 12.225c-.051 0-.094.046-.101.1l-.233 2.154.233 2.105c.007.058.05.098.101.098.05 0 .09-.04.099-.098l.255-2.105-.27-2.154c-.009-.06-.05-.1-.1-.1m-.899.828c-.06 0-.091.037-.104.094L0 14.479l.172 1.282c.013.06.045.094.104.094.057 0 .09-.035.104-.094l.194-1.282-.194-1.332c-.014-.057-.047-.094-.104-.094m1.835-1.585c-.067 0-.12.06-.12.132l-.208 2.879.208 2.746c0 .07.053.127.12.127.063 0 .117-.057.12-.127l.235-2.746-.235-2.879c-.003-.072-.057-.132-.12-.132m.862-.107c-.076 0-.14.07-.145.15l-.193 2.986.193 2.809c.005.08.069.148.145.148.076 0 .14-.068.148-.148l.217-2.809-.217-2.986c-.008-.08-.072-.15-.148-.15m.882-.172c-.086 0-.157.078-.163.17l-.178 3.159.178 2.839c.006.09.077.166.163.166.085 0 .157-.076.165-.166l.2-2.839-.2-3.159c-.008-.092-.08-.17-.165-.17m.885-.2c-.095 0-.174.088-.18.19l-.163 3.36.163 2.85c.006.1.085.186.18.186.095 0 .174-.086.182-.186l.184-2.85-.184-3.36c-.008-.102-.087-.19-.182-.19m.887-.236c-.105 0-.19.098-.196.21l-.148 3.596.148 2.85c.006.112.091.206.196.206.104 0 .19-.094.198-.206l.167-2.85-.167-3.596c-.008-.112-.094-.21-.198-.21m.891-.183c-.115 0-.207.108-.211.232l-.134 3.778.134 2.843c.004.122.096.228.211.228.114 0 .207-.106.213-.228l.151-2.843-.151-3.778c-.006-.124-.099-.232-.213-.232m.894-.133c-.124 0-.224.118-.226.252l-.12 3.91.12 2.833c.002.132.102.244.226.244.123 0 .224-.112.228-.244l.136-2.833-.136-3.91c-.004-.134-.105-.252-.228-.252m.893-.037c-.134 0-.24.128-.241.27l-.105 3.948.105 2.825c.001.14.107.256.241.256.132 0 .24-.116.244-.256l.118-2.825-.118-3.948c-.004-.142-.112-.27-.244-.27m.897.012c-.14 0-.253.138-.257.29l-.09 3.936.09 2.81c.004.15.117.273.257.273.138 0 .253-.122.259-.273l.102-2.81-.102-3.936c-.006-.152-.121-.29-.259-.29m3.854.578c-.186 0-.353.1-.441.252-.249-.164-.547-.256-.869-.268-.035-.001-.067.013-.067.05v6.078c0 .038.03.07.067.074.62.035 4.268.035 4.268.035 1.026 0 1.858-.832 1.858-1.858 0-1.027-.832-1.858-1.858-1.858-.175 0-.345.028-.507.074-.162-.906-.955-1.579-1.892-1.579"/></svg></a>
   </div>
 </section>
 {% endblock %}
@@ -1042,28 +1047,32 @@
 })();
 
 /* All existing functions */
-/* Credit video embeds — lazy click-to-play */
+/* Work video gallery — lazy click-to-play (no YouTube load until clicked) */
 (function(){
-  function ytId(url){
-    var m = url.match(/(?:youtu\.be\/|youtube\.com\/(?:watch\?v=|embed\/|shorts\/|live\/))([\w-]{11})/);
-    return m ? m[1] : null;
-  }
-  document.querySelectorAll('.credit-video').forEach(function(el){
-    var id = ytId(el.getAttribute('data-video')||'');
-    if(!id){ el.style.display='none'; return; }
-    el.style.backgroundImage = "url('https://i.ytimg.com/vi/"+id+"/hqdefault.jpg')";
+  document.querySelectorAll('.vid-card').forEach(function(card){
+    var id = card.getAttribute('data-vid');
+    if(!id) return;
+    var thumb = card.querySelector('.vid-thumb');
     function play(){
-      if(el.classList.contains('playing')) return;
-      el.classList.add('playing');
+      if(thumb.classList.contains('playing')) return;
+      // Stop any other playing video so only one plays at a time
+      document.querySelectorAll('.vid-thumb.playing').forEach(function(t){
+        t.classList.remove('playing');
+        var f = t.querySelector('iframe'); if(f) f.remove();
+        var img = t.querySelector('img'); if(img) img.style.display='';
+      });
+      thumb.classList.add('playing');
+      var img = thumb.querySelector('img'); if(img) img.style.display='none';
       var f = document.createElement('iframe');
       f.src = 'https://www.youtube-nocookie.com/embed/'+id+'?autoplay=1&rel=0';
       f.allow = 'autoplay; encrypted-media; picture-in-picture';
       f.allowFullscreen = true;
-      el.appendChild(f);
-      trackEvent('credit_video_play', {video_id: id});
+      f.title = card.getAttribute('aria-label') || 'Video';
+      thumb.appendChild(f);
+      if(typeof trackEvent==='function') trackEvent('work_video_play', {video_id: id});
     }
-    el.addEventListener('click', play);
-    el.addEventListener('keydown', function(ev){ if(ev.key==='Enter'||ev.key===' '){ ev.preventDefault(); play(); } });
+    card.addEventListener('click', play);
+    card.addEventListener('keydown', function(ev){ if(ev.key==='Enter'||ev.key===' '){ ev.preventDefault(); play(); } });
   });
 })();
 

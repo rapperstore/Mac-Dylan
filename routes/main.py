@@ -8,6 +8,28 @@ from models import Beat, Credit, Subscriber, PhoneLead, Album, Track
 
 main_bp = Blueprint('main', __name__)
 
+# Videos from the "Mac Dylan Credits" YouTube playlist, in playlist order.
+# To update: edit this list (id = the 11-char YouTube video ID).
+CREDIT_VIDEOS = [
+    {'id': 'NtY2Zs8azMM', 'title': 'On My Momma',                                      'duration': '2:38'},
+    {'id': 'mMGLBQf75jg', 'title': 'LONDON — JWOKK ft. Uffy',                          'duration': '2:29'},
+    {'id': 'NRIf3Tt0uSM', 'title': 'DIE RICH — JWOKK (Official Music Video)',          'duration': '2:16'},
+    {'id': 'aHy8ke4QIo0', 'title': 'Legendary (Official Music Video)',                 'duration': '3:18'},
+    {'id': 'v20DZI7VIs0', 'title': 'Reflect (Official Music Video)',                   'duration': '3:07'},
+    {'id': 'DLIzWG9WBF4', 'title': 'Dreams',                                           'duration': '3:36'},
+    {'id': '6eFsrzzbtUg', 'title': 'Regardless feat. Poontz',                          'duration': '2:47'},
+    {'id': '7GKo-8kT65k', 'title': 'Red Flag',                                          'duration': '3:55'},
+    {'id': 'y4ECD7uWz7k', 'title': 'Ishan Tha Alchemist — Optimal',                    'duration': '3:37'},
+    {'id': 'fyoL2yBeSW8', 'title': 'sngcash — "Bad and Boujee" Remix',                 'duration': '3:59'},
+    {'id': 'UrfwQ4GuwT8', 'title': 'Augi Raps — When Its Cold ft. Pharoh Mind',        'duration': '3:12'},
+    {'id': 'wqqXJgRDp-E', 'title': 'Augi Raps — Future (Official Video)',              'duration': '2:47'},
+    {'id': 'mA8_krpncAY', 'title': '"Where You Been" by J Dixon',                      'duration': '2:22'},
+    {'id': 'cecqgW5VBEg', 'title': '"Sharpen My Craft"',                               'duration': '3:44'},
+    {'id': 'CjDM3AO8neM', 'title': 'J Dixon — "Care Less" (Official Music Video)',     'duration': '3:18'},
+    {'id': 'huiqS9Yw74M', 'title': 'B 4 I Blow 2 (Intro)',                             'duration': '3:03'},
+    {'id': 'm-WIyY3gzmE', 'title': 'J Dixon — "In Dat Mode"',                          'duration': '2:40'},
+]
+
 
 @main_bp.route('/')
 def index():
@@ -40,7 +62,8 @@ def index():
                 } for t in tracks]
             })
     return render_template('index.html', beats=beats, credits=credits,
-                           music=music, music_data=music_data, singles=singles)
+                           music=music, music_data=music_data, singles=singles,
+                           videos=CREDIT_VIDEOS)
 
 
 @main_bp.route('/music/play/<int:track_id>', methods=['POST'])
