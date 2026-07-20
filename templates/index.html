@@ -286,6 +286,36 @@
 .vid-card:hover .vid-title{color:var(--fire)}
 .vid-thumb.playing::after,.vid-thumb.playing .vid-play,.vid-thumb.playing .vid-dur{display:none}
 
+/* ── TIMELINE / ANNOUNCEMENTS ── */
+.tl-feed{display:flex;flex-direction:column;border:1px solid var(--border);border-radius:14px;overflow:hidden;background:var(--card)}
+.tl-post{display:grid;grid-template-columns:auto 1fr;gap:14px;padding:18px 20px;border-bottom:1px solid var(--border);position:relative;transition:background .18s}
+.tl-post:last-child{border-bottom:none}
+.tl-post:hover{background:var(--card2)}
+.tl-post.pinned{background:rgba(200,75,10,.045)}
+.tl-pin{grid-column:1/-1;font-family:'Space Mono',monospace;font-size:7px;letter-spacing:.3em;color:var(--ember);text-transform:uppercase;margin-bottom:-4px}
+.tl-avatar{width:42px;height:42px;border-radius:50%;background:linear-gradient(135deg,var(--ember),#7a2e08);display:flex;align-items:center;justify-content:center;font-family:'Bebas Neue',sans-serif;font-size:16px;color:#fff;letter-spacing:.05em;flex-shrink:0}
+.tl-body{min-width:0}
+.tl-head{display:flex;align-items:baseline;gap:6px;flex-wrap:wrap;margin-bottom:5px}
+.tl-name{font-family:'Bebas Neue',sans-serif;font-size:16px;color:var(--white);letter-spacing:.03em}
+.tl-handle,.tl-dot,.tl-time{font-family:'Space Mono',monospace;font-size:9px;color:var(--muted);letter-spacing:.1em}
+.tl-text{font-size:15.5px;line-height:1.65;color:var(--ash);white-space:pre-wrap;word-wrap:break-word;margin:0}
+.tl-image{margin-top:11px;border-radius:10px;overflow:hidden;border:1px solid var(--border)}
+.tl-image img{width:100%;height:auto;display:block;max-height:420px;object-fit:cover}
+.tl-link{display:inline-block;margin-top:9px;font-family:'Space Mono',monospace;font-size:9px;letter-spacing:.14em;color:var(--fire);word-break:break-all;transition:opacity .2s}
+.tl-link:hover{opacity:.75}
+.tl-actions{margin-top:11px}
+.tl-like{display:inline-flex;align-items:center;gap:7px;background:none;border:1px solid var(--border);border-radius:99px;padding:6px 14px;color:var(--muted);font-family:'Space Mono',monospace;font-size:10px;letter-spacing:.1em;cursor:pointer;transition:all .2s}
+.tl-like svg{fill:none;stroke:currentColor;stroke-width:1.8;stroke-linejoin:round;transition:transform .2s}
+.tl-like:hover{border-color:rgba(200,75,10,.5);color:var(--fire)}
+.tl-like.on{border-color:var(--ember);color:var(--fire);background:rgba(200,75,10,.09)}
+.tl-like.on svg{fill:var(--ember);stroke:var(--ember)}
+.tl-like.pop svg{transform:scale(1.35)}
+@media(max-width:600px){
+  .tl-post{padding:15px 14px;gap:11px}
+  .tl-avatar{width:36px;height:36px;font-size:14px}
+  .tl-text{font-size:14.5px}
+}
+
 /* ── MUSIC PLAYER (streaming-app style, distinct from beat player) ── */
 .music-tagline{font-family:'Cormorant Garamond',serif;font-style:italic;font-size:15px;color:var(--muted)}
 .stream-links{display:flex;gap:8px;flex-wrap:wrap}
@@ -666,6 +696,50 @@
   </div>
 </section>
 
+<!-- TIMELINE / ANNOUNCEMENTS -->
+{% if posts %}
+<section class="section tl-section" id="updates" data-reveal>
+  <div class="sec-hdr">
+    <div class="sec-lbl">Latest</div>
+    <div class="music-tagline">Straight from the studio</div>
+  </div>
+  <div class="tl-feed">
+    {% for p in posts %}
+    <article class="tl-post{% if p.is_pinned %} pinned{% endif %}">
+      {% if p.is_pinned %}<div class="tl-pin">📌 Pinned</div>{% endif %}
+      <div class="tl-avatar" aria-hidden="true">MD</div>
+      <div class="tl-body">
+        <div class="tl-head">
+          <span class="tl-name">Mac Dylan</span>
+          <span class="tl-handle">@macdylan</span>
+          <span class="tl-dot">·</span>
+          <time class="tl-time" datetime="{{ p.created_at.isoformat() }}">{{ p.created_at.strftime('%b %-d') }}</time>
+        </div>
+        <p class="tl-text">{{ p.body }}</p>
+        {% if p.image_url %}
+        <div class="tl-image"><img src="{{ p.image_url }}" alt="" loading="lazy"></div>
+        {% endif %}
+        {% if p.link_url %}
+        <a class="tl-link" href="{{ p.link_url }}" target="_blank" rel="noopener noreferrer">{{ p.link_url }} &rarr;</a>
+        {% endif %}
+        <div class="tl-actions">
+          <button class="tl-like{% if p.id in liked_ids %} on{% endif %}"
+                  data-post="{{ p.id }}" onclick="toggleLike(this)"
+                  aria-pressed="{{ 'true' if p.id in liked_ids else 'false' }}"
+                  aria-label="Like this post">
+            <svg viewBox="0 0 24 24" width="15" height="15" aria-hidden="true">
+              <path d="M12 21s-7.5-4.7-9.5-9A5.2 5.2 0 0 1 12 6.5 5.2 5.2 0 0 1 21.5 12c-2 4.3-9.5 9-9.5 9z"/>
+            </svg>
+            <span class="tl-count">{{ p.like_count }}</span>
+          </button>
+        </div>
+      </div>
+    </article>
+    {% endfor %}
+  </div>
+</section>
+{% endif %}
+
 <!-- STREAM / MUSIC PLAYER -->
 <section class="section music-section" id="music" data-reveal>
   <div class="sec-hdr">
@@ -940,6 +1014,38 @@
 
 {% block extra_scripts %}
 <script>
+/* ── TIMELINE LIKES ── */
+window.toggleLike = function(btn){
+  if(btn.dataset.busy) return;
+  btn.dataset.busy = '1';
+  var id = btn.getAttribute('data-post');
+  var countEl = btn.querySelector('.tl-count');
+  var wasOn = btn.classList.contains('on');
+  // Optimistic flip so it feels instant, reconciled with the server below
+  btn.classList.toggle('on');
+  btn.setAttribute('aria-pressed', String(!wasOn));
+  countEl.textContent = Math.max(0, parseInt(countEl.textContent||'0',10) + (wasOn ? -1 : 1));
+  btn.classList.add('pop');
+  setTimeout(function(){ btn.classList.remove('pop'); }, 200);
+
+  fetch('/timeline/'+id+'/like', {method:'POST'})
+    .then(function(r){ return r.json(); })
+    .then(function(d){
+      if(!d.ok) throw new Error(d.error||'failed');
+      btn.classList.toggle('on', d.liked);
+      btn.setAttribute('aria-pressed', String(d.liked));
+      countEl.textContent = d.count;
+      if(typeof trackEvent==='function' && d.liked) trackEvent('post_like',{post_id:id});
+    })
+    .catch(function(){
+      // Roll back the optimistic change if the request didn't land
+      btn.classList.toggle('on', wasOn);
+      btn.setAttribute('aria-pressed', String(wasOn));
+      countEl.textContent = Math.max(0, parseInt(countEl.textContent||'0',10) + (wasOn ? 1 : -1));
+    })
+    .finally(function(){ delete btn.dataset.busy; });
+};
+
 /* ── PERSONAL MUSIC PLAYER ── */
 (function(){
   var MUSIC = {{ music_data | tojson | safe }};

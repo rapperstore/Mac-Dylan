@@ -196,6 +196,37 @@ class Track(db.Model):
     created_at   = db.Column(db.DateTime, default=datetime.utcnow)
 
 
+class Post(db.Model):
+    """An announcement in the public timeline."""
+    __tablename__ = 'posts'
+    id           = db.Column(db.Integer, primary_key=True)
+    body         = db.Column(db.Text, nullable=False)
+    image_url    = db.Column(db.String(500))   # optional hosted image
+    link_url     = db.Column(db.String(500))   # optional "read more" link
+    is_published = db.Column(db.Boolean, default=True)
+    is_pinned    = db.Column(db.Boolean, default=False)
+    created_at   = db.Column(db.DateTime, default=datetime.utcnow)
+    likes        = db.relationship('PostLike', backref='post', cascade='all, delete-orphan')
+
+    @property
+    def like_count(self):
+        return len(self.likes)
+
+
+class PostLike(db.Model):
+    """One like per visitor per post — no account required.
+
+    `visitor` is an anonymous random token stored in the visitor's cookie, so
+    a like sticks across refreshes without collecting any personal data.
+    """
+    __tablename__ = 'post_likes'
+    id         = db.Column(db.Integer, primary_key=True)
+    post_id    = db.Column(db.Integer, db.ForeignKey('posts.id'), nullable=False)
+    visitor    = db.Column(db.String(64), nullable=False)
+    created_at = db.Column(db.DateTime, default=datetime.utcnow)
+    __table_args__ = (db.UniqueConstraint('post_id', 'visitor', name='uq_post_visitor'),)
+
+
 class PhoneLead(db.Model):
     __tablename__ = 'phone_leads'
     id         = db.Column(db.Integer, primary_key=True)

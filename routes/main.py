@@ -1,10 +1,18 @@
 import re
+import uuid
 import urllib.request
 import urllib.parse
 from datetime import datetime
-from flask import Blueprint, render_template, request, jsonify, Response, current_app
+from flask import Blueprint, render_template, request, jsonify, Response, current_app, make_response
 from database import db
-from models import Beat, Credit, Subscriber, PhoneLead, Album, Track
+from models import Beat, Credit, Subscriber, PhoneLead, Album, Track, Post, PostLike
+
+VISITOR_COOKIE = 'md_visitor'
+
+
+def _visitor_token():
+    """Anonymous per-browser id used to keep likes honest. No PII."""
+    return request.cookies.get(VISITOR_COOKIE) or ''
 
 main_bp = Blueprint('main', __name__)
 
@@ -61,9 +69,54 @@ def index():
                     'duration': t.duration or '', 'album_title': a.title
                 } for t in tracks]
             })
+    # Timeline — pinned first, then newest. Mark which ones this visitor liked.
+    posts = Post.query.filter_by(is_published=True).order_by(
+        Post.is_pinned.desc(), Post.created_at.desc()).limit(10).all()
+    token = _visitor_token()
+    liked_ids = set()
+    if token and posts:
+        liked_ids = {l.post_id for l in PostLike.query.filter(
+            PostLike.visitor == token,
+            PostLike.post_id.in_([p.id for p in posts])).all()}
+
     return render_template('index.html', beats=beats, credits=credits,
                            music=music, music_data=music_data, singles=singles,
-                           videos=CREDIT_VIDEOS)
+                           videos=CREDIT_VIDEOS, posts=posts, liked_ids=liked_ids)
+
+
+@main_bp.route('/timeline/<int:post_id>/like', methods=['POST'])
+def toggle_like(post_id):
+    """Like/unlike a post. Anonymous — identified only by a random cookie."""
+    post = Post.query.get(post_id)
+    if not post or not post.is_published:
+        return jsonify({'ok': False, 'error': 'Post not found'}), 404
+
+    token = _visitor_token()
+    new_token = False
+    if not token:
+        token = uuid.uuid4().hex
+        new_token = True
+
+    existing = PostLike.query.filter_by(post_id=post_id, visitor=token).first()
+    try:
+        if existing:
+            db.session.delete(existing)
+            liked = False
+        else:
+            db.session.add(PostLike(post_id=post_id, visitor=token))
+            liked = True
+        db.session.commit()
+    except Exception:
+        db.session.rollback()
+        liked = existing is None
+
+    count = PostLike.query.filter_by(post_id=post_id).count()
+    resp = make_response(jsonify({'ok': True, 'liked': liked, 'count': count}))
+    if new_token:
+        # 1 year, lax — enough to remember a like without tracking anyone
+        resp.set_cookie(VISITOR_COOKIE, token, max_age=31536000,
+                        samesite='Lax', secure=request.is_secure)
+    return resp
 
 
 @main_bp.route('/music/play/<int:track_id>', methods=['POST'])

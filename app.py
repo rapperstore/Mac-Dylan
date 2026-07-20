@@ -257,7 +257,8 @@ def create_app():
                     or "https://pub-e11b657d879b4e85905f893b132ad300.r2.dev").rstrip("/")
             if os.environ.get("SEED_SHIBUYA") == "1" and base:
                 if not Album.query.filter_by(title="SHIBUYA TRAP").first():
-                    cover = base + "/" + _up.quote("206B498F-E539-4F1F-A869-C72AEB6FE3A8.png")
+                    # Compressed 1000x1000 JPEG (44KB vs the 1MB original PNG)
+                    cover = base + "/" + _up.quote("shibuya-trap-cover.jpg")
                     album = Album(
                         title="SHIBUYA TRAP", year="2026", cover_url=cover, price=0,
                         description="Neon-soaked trap from the streets of Shibuya.",

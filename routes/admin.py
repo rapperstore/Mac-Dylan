@@ -5,7 +5,7 @@ from functools import wraps
 from flask import Blueprint,render_template,request,redirect,url_for,session,jsonify,current_app
 from werkzeug.utils import secure_filename
 from database import db
-from models import Beat,Order,Product,Content,Credit,PhoneLead,Subscriber,Album,Track
+from models import Beat,Order,Product,Content,Credit,PhoneLead,Subscriber,Album,Track,Post,PostLike
 
 admin_bp = Blueprint("admin",__name__)
 
@@ -520,6 +520,73 @@ def toggle_track(tid):
 def delete_track(tid):
     t = Track.query.get_or_404(tid); db.session.delete(t); db.session.commit()
     return jsonify({"deleted":True})
+
+
+# ═══════════════ TIMELINE / ANNOUNCEMENTS ═══════════════
+@admin_bp.route("/timeline")
+@admin_required
+def timeline():
+    return render_template("admin/timeline.html")
+
+@admin_bp.route("/posts")
+@admin_required
+def list_posts():
+    posts = Post.query.order_by(Post.is_pinned.desc(), Post.created_at.desc()).all()
+    return jsonify([{
+        "id": p.id, "body": p.body, "image_url": p.image_url or "",
+        "link_url": p.link_url or "", "is_published": p.is_published,
+        "is_pinned": p.is_pinned, "likes": p.like_count,
+        "created_at": p.created_at.strftime("%Y-%m-%d %H:%M") if p.created_at else "",
+    } for p in posts])
+
+@admin_bp.route("/posts/add", methods=["POST"])
+@admin_required
+def add_post():
+    d = request.get_json() or {}
+    body = (d.get("body") or "").strip()
+    if not body:
+        return jsonify({"success": False, "error": "Post text required"})
+    if len(body) > 1000:
+        return jsonify({"success": False, "error": "Keep posts under 1000 characters"})
+    p = Post(body=body, image_url=(d.get("image_url") or "").strip(),
+             link_url=(d.get("link_url") or "").strip(),
+             is_published=bool(d.get("is_published", True)),
+             is_pinned=bool(d.get("is_pinned", False)))
+    db.session.add(p); db.session.commit()
+    return jsonify({"success": True, "id": p.id})
+
+@admin_bp.route("/posts/<int:pid>/edit", methods=["POST"])
+@admin_required
+def edit_post(pid):
+    p = Post.query.get_or_404(pid); d = request.get_json() or {}
+    body = (d.get("body") or p.body).strip()
+    if not body:
+        return jsonify({"success": False, "error": "Post text required"})
+    p.body = body
+    p.image_url = (d.get("image_url", p.image_url) or "").strip()
+    p.link_url = (d.get("link_url", p.link_url) or "").strip()
+    p.is_published = bool(d.get("is_published", p.is_published))
+    p.is_pinned = bool(d.get("is_pinned", p.is_pinned))
+    db.session.commit()
+    return jsonify({"success": True})
+
+@admin_bp.route("/posts/<int:pid>/toggle", methods=["POST"])
+@admin_required
+def toggle_post(pid):
+    p = Post.query.get_or_404(pid); p.is_published = not p.is_published; db.session.commit()
+    return jsonify({"is_published": p.is_published})
+
+@admin_bp.route("/posts/<int:pid>/pin", methods=["POST"])
+@admin_required
+def pin_post(pid):
+    p = Post.query.get_or_404(pid); p.is_pinned = not p.is_pinned; db.session.commit()
+    return jsonify({"is_pinned": p.is_pinned})
+
+@admin_bp.route("/posts/<int:pid>/delete", methods=["POST"])
+@admin_required
+def delete_post(pid):
+    p = Post.query.get_or_404(pid); db.session.delete(p); db.session.commit()
+    return jsonify({"deleted": True})
 
 
 @admin_bp.route("/leads")
