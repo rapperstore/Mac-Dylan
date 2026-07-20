@@ -236,8 +236,6 @@
 .stat-label{font-family:'Space Mono',monospace;font-size:8px;letter-spacing:.3em;color:var(--muted);text-transform:uppercase}
 
 /* ── WAVEFORM DIVIDER ── */
-.wave-div{padding:0 48px;height:48px;display:flex;align-items:center;gap:1.5px;overflow:hidden;opacity:.35;border-top:1px solid var(--border)}
-.wave-div-b{flex:1;border-radius:1px;background:linear-gradient(to top,rgba(200,75,10,.6),rgba(200,75,10,.15))}
 
 /* ── SECTIONS ── */
 .section{padding:0 48px 100px}
@@ -467,7 +465,6 @@
   .tip-banner{flex-direction:column;align-items:flex-start;gap:20px;padding:24px}
   .tip-banner-art{display:none}
   .tip-amounts{gap:6px}
-  .wave-div{padding:0 20px}
   .modal-overlay{padding:16px;display:flex;align-items:center;justify-content:center}
   .modal-box{width:calc(100vw - 32px);max-width:calc(100vw - 32px);max-height:calc(100vh - 32px);overflow-y:auto;-webkit-overflow-scrolling:touch;margin:0 auto;left:0;right:0}
   .modal-cover{padding:28px 20px;flex-direction:column;gap:16px;text-align:center}
@@ -624,9 +621,6 @@
   </div>
 </section>
 
-<!-- WAVEFORM DIVIDER -->
-<div class="wave-div" id="wave-div-1"></div>
-
 <!-- ABOUT -->
 <section class="about" id="about" data-reveal>
   <div>
@@ -671,9 +665,6 @@
     </div>
   </div>
 </section>
-
-<!-- WAVEFORM DIVIDER 2 -->
-<div class="wave-div" id="wave-div-2"></div>
 
 <!-- STREAM / MUSIC PLAYER -->
 <section class="section music-section" id="music" data-reveal>
@@ -1042,21 +1033,6 @@
 
   // Open first album by default
   openAlbum(MUSIC[0].id, document.querySelector('.mshelf-item'));
-})();
-
-/* Waveform dividers */
-(function(){
-  [1,2].forEach(function(n){
-    var wrap=document.getElementById('wave-div-'+n);
-    if(!wrap)return;
-    for(var i=0;i<90;i++){
-      var b=document.createElement('div');
-      b.className='wave-div-b';
-      var h=Math.floor((Math.sin(i*.22+n)*.5+.5)*80+10);
-      b.style.height=h+'%';
-      wrap.appendChild(b);
-    }
-  });
 })();
 
 /* Quote waveform */
