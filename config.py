@@ -34,6 +34,13 @@ class Config:
     # ── ConvertKit ──
     CONVERTKIT_FORM_ID = os.environ.get('CONVERTKIT_FORM_ID', '9292507')
 
+    # ── Cloudflare R2 (private buckets → presigned download URLs) ──
+    R2_ACCOUNT_ID        = os.environ.get('R2_ACCOUNT_ID')
+    R2_ACCESS_KEY_ID     = os.environ.get('R2_ACCESS_KEY_ID')
+    R2_SECRET_ACCESS_KEY = os.environ.get('R2_SECRET_ACCESS_KEY')
+    R2_DOWNLOADS_BUCKET  = os.environ.get('R2_DOWNLOADS_BUCKET', 'digitaldownloads')
+    R2_LINK_TTL          = int(os.environ.get('R2_LINK_TTL', 900))  # seconds
+
     # ── Twilio (SMS) ──
     TWILIO_ACCOUNT_SID  = os.environ.get('TWILIO_ACCOUNT_SID')
     TWILIO_AUTH_TOKEN   = os.environ.get('TWILIO_AUTH_TOKEN')

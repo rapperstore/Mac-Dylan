@@ -1,0 +1,26 @@
+{% extends "base.html" %}
+{% block title %}Download — Mac Dylan{% endblock %}
+{% block seo_meta %}<meta name="robots" content="noindex">{% endblock %}
+
+{% block extra_styles %}
+.dl-wrap{min-height:66vh;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;padding:80px 24px}
+.dl-eyebrow{font-family:'Space Mono',monospace;font-size:9px;letter-spacing:.5em;color:var(--ember);text-transform:uppercase;margin-bottom:16px}
+.dl-title{font-family:'Bebas Neue',sans-serif;font-size:clamp(34px,6vw,58px);line-height:1;color:var(--white)}
+.dl-msg{font-size:16px;font-style:italic;color:var(--ash);margin:16px 0 30px;max-width:44ch;line-height:1.75}
+.dl-links{display:flex;gap:12px;flex-wrap:wrap;justify-content:center}
+.dl-btn{display:inline-block;padding:13px 28px;font-family:'Space Mono',monospace;font-size:9px;letter-spacing:.3em;text-transform:uppercase;text-decoration:none;transition:all .25s}
+.dl-btn.f{background:var(--ember);color:#f5f0e8}.dl-btn.f:hover{background:var(--fire)}
+.dl-btn.g{background:transparent;color:#b8a898;border:1px solid rgba(200,75,10,.28)}.dl-btn.g:hover{border-color:var(--ember);color:var(--fire)}
+{% endblock %}
+
+{% block content %}
+<div class="dl-wrap">
+  <div class="dl-eyebrow">Download</div>
+  <h1 class="dl-title">Hang tight</h1>
+  <p class="dl-msg">{{ message }}</p>
+  <div class="dl-links">
+    <a href="mailto:macdylan4ever@gmail.com" class="dl-btn f">Email Support</a>
+    <a href="{{ url_for('store.index') }}" class="dl-btn g">Back to Store</a>
+  </div>
+</div>
+{% endblock %}

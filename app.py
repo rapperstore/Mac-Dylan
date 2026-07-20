@@ -60,8 +60,10 @@ def create_app():
             except Exception:
                 db.session.rollback()  # column already exists
         from models import Beat, Product
-        # Cloudflare R2 URL for the full ebook PDF
-        EBOOK_R2_URL = 'https://pub-3d8b1c7a5e63475b90c0044ca074cba8.r2.dev/THE_ARTIST_IS_THE_BUSINESS.pdf'
+        # Object key inside the PRIVATE `digitaldownloads` R2 bucket. Stored as a
+        # bare key (not a public URL) so delivery goes through the purchase-verified
+        # /payments/download route, which mints a short-lived presigned link.
+        EBOOK_R2_KEY = 'the-artist-is-the-business-bundle.zip'
         try:
             existing_ebook = Product.query.filter_by(name="The Artist Is The Business").first()
             if not existing_ebook:
@@ -70,12 +72,12 @@ def create_app():
                     name="The Artist Is The Business",
                     description="The complete independent artist blueprint. 9 chapters covering branding, income streams, organic growth, AI leverage, and a 90-day execution plan.",
                     price=27, tags="ebook,artist development,strategy",
-                    file_path=EBOOK_R2_URL,
+                    file_path=EBOOK_R2_KEY,
                     is_active=True, is_new=True))
                 db.session.commit()
-            elif existing_ebook.file_path and not existing_ebook.file_path.startswith('http'):
-                # Patch old local-path records from previous deploys
-                existing_ebook.file_path = EBOOK_R2_URL
+            elif existing_ebook.file_path != EBOOK_R2_KEY:
+                # Repoint legacy records (dead public PDF URL / old local path)
+                existing_ebook.file_path = EBOOK_R2_KEY
                 db.session.commit()
         except Exception:
             db.session.rollback()
@@ -242,6 +244,44 @@ def create_app():
         except Exception as e:
             db.session.rollback()
             print("[startup] beat seed error:",e)
+
+        # ── SHIBUYA TRAP one-time import ──
+        # Set SEED_SHIBUYA=1 and SHIBUYA_BASE_URL=<public r2.dev URL of the
+        # shibuya-trap-album bucket, no trailing slash>, deploy once, then unset
+        # SEED_SHIBUYA. Tracks 1-15 follow the SoundCloud order; 16-19 are the
+        # bucket-only extras and can be reordered in Admin > Music & Albums.
+        try:
+            import urllib.parse as _up
+            from models import Album, Track
+            base = (os.environ.get("SHIBUYA_BASE_URL") or "").rstrip("/")
+            if os.environ.get("SEED_SHIBUYA") == "1" and base:
+                if not Album.query.filter_by(title="SHIBUYA TRAP").first():
+                    cover = base + "/" + _up.quote("206B498F-E539-4F1F-A869-C72AEB6FE3A8.png")
+                    album = Album(
+                        title="SHIBUYA TRAP", year="2026", cover_url=cover, price=0,
+                        description="Neon-soaked trap from the streets of Shibuya.",
+                        is_active=True, sort_order=0)
+                    db.session.add(album)
+                    db.session.flush()
+                    titles = [
+                        "Floating Lanterns", "Ramen Noodles", "Black Umbrella", "Level Up",
+                        "Concrete Koi", "Siracha", "Neon Silence", "3AM Izakaya",
+                        "Subway Shadows", "Rooftop District", "Shibuya Lights", "Tokyo Static",
+                        "After Curfew", "Ghost Signal", "808 Sakura",
+                        # In the bucket but not on the SoundCloud album:
+                        "Last Train Home", "Midnight Vending Machines", "Neon Crosswalk",
+                        "Rain on Kanji",
+                    ]
+                    for i, t in enumerate(titles, start=1):
+                        db.session.add(Track(
+                            album_id=album.id, title=t,
+                            audio_url=base + "/" + _up.quote(t + ".mp3"),
+                            track_number=i, price=0, is_active=True))
+                    db.session.commit()
+                    print("[startup] seeded SHIBUYA TRAP with", len(titles), "tracks")
+        except Exception as e:
+            db.session.rollback()
+            print("[startup] shibuya seed error:", e)
     return app
 
 

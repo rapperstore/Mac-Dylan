@@ -1,6 +1,6 @@
 import stripe
 import json
-from flask import Blueprint, request, jsonify, render_template, current_app
+from flask import Blueprint, request, jsonify, render_template, current_app, redirect, abort, url_for
 from database import db
 from models import Order, Beat, Product, Album, Track
 
@@ -9,6 +9,92 @@ payments_bp = Blueprint('payments', __name__)
 
 def get_domain():
     return current_app.config.get('DOMAIN', 'http://localhost:5000')
+
+
+def r2_presigned_url(key, bucket=None, ttl=None):
+    """Short-lived download link for an object in a PRIVATE R2 bucket.
+
+    Keeps paid products unreachable by URL-sharing: the link expires and is
+    only ever minted after a purchase has been verified. Returns None when R2
+    credentials aren't configured so callers can degrade gracefully.
+    """
+    cfg = current_app.config
+    account = cfg.get('R2_ACCOUNT_ID')
+    akid = cfg.get('R2_ACCESS_KEY_ID')
+    secret = cfg.get('R2_SECRET_ACCESS_KEY')
+    if not (account and akid and secret):
+        return None
+    try:
+        import boto3
+        from botocore.config import Config as BotoConfig
+        client = boto3.client(
+            's3',
+            endpoint_url='https://%s.r2.cloudflarestorage.com' % account,
+            aws_access_key_id=akid,
+            aws_secret_access_key=secret,
+            config=BotoConfig(signature_version='s3v4'),
+            region_name='auto',
+        )
+        return client.generate_presigned_url(
+            'get_object',
+            Params={'Bucket': bucket or cfg.get('R2_DOWNLOADS_BUCKET'), 'Key': key},
+            ExpiresIn=int(ttl or cfg.get('R2_LINK_TTL', 900)),
+        )
+    except Exception as e:
+        current_app.logger.error('R2 presign failed for %s: %s' % (key, e))
+        return None
+
+
+@payments_bp.route('/download/<session_id>')
+def download(session_id):
+    """Deliver a purchased digital product — only after verifying payment."""
+    order = Order.query.filter_by(stripe_session_id=session_id).first()
+    if not order:
+        abort(404)
+
+    # Re-check with Stripe rather than trusting our own row alone.
+    paid = order.status == 'paid'
+    if not paid:
+        try:
+            sess = stripe.checkout.Session.retrieve(session_id)
+            paid = sess.get('payment_status') == 'paid'
+            if paid:
+                order.status = 'paid'
+                order.amount_paid = order.amount_total
+                order.amount_balance = 0
+                db.session.commit()
+        except Exception as e:
+            current_app.logger.error('Download verify failed: %s' % e)
+    if not paid:
+        return render_template('download_error.html',
+            message='This order has not been paid yet. If you just checked out, '
+                    'give it a moment and refresh.'), 402
+
+    product = None
+    try:
+        sess = stripe.checkout.Session.retrieve(session_id)
+        pid = (sess.get('metadata') or {}).get('product_id')
+        if pid:
+            product = Product.query.get(int(pid))
+    except Exception:
+        pass
+    if product is None and order.product_name:
+        product = Product.query.filter_by(name=order.product_name).first()
+
+    if not product or not product.file_path:
+        return render_template('download_error.html',
+            message='We could not locate your file. Email macdylan4ever@gmail.com '
+                    'with your receipt and it will be sent straight over.'), 404
+
+    # Full URL = public asset; bare key = object in the private R2 bucket.
+    if product.file_path.startswith('http'):
+        return redirect(product.file_path)
+    url = r2_presigned_url(product.file_path)
+    if not url:
+        return render_template('download_error.html',
+            message='Downloads are being set up. Email macdylan4ever@gmail.com '
+                    'with your receipt and your file will be sent right away.'), 503
+    return redirect(url)
 
 
 @payments_bp.route('/beat-checkout', methods=['POST'])
@@ -288,14 +374,12 @@ def success():
                             db.session.commit()
                     except Exception:
                         db.session.rollback()
-            if order_type == 'digital' and meta.get('product_id'):
+            if order_type in ('digital', 'music') and meta.get('product_id'):
                 p = Product.query.get(int(meta['product_id']))
                 if p and p.file_path:
-                    # Support full https:// URLs (e.g. Cloudflare R2) and relative paths
-                    if p.file_path.startswith('http'):
-                        download_url = p.file_path
-                    else:
-                        download_url = '/' + p.file_path
+                    # Always route through the verified-download endpoint so the
+                    # underlying file (private R2 object) is never exposed directly.
+                    download_url = url_for('payments.download', session_id=session_id)
         except Exception as e:
             current_app.logger.error('Success page error: ' + str(e))
     return render_template('success.html',
