@@ -105,6 +105,7 @@ window.trackEvent=function(name,params){gtag('event',name,params||{})};
 <nav>
   <a href="{{ url_for('main.index') }}" class="nav-logo">Mac<span>Dylan</span></a>
   <ul class="nav-links">
+    <li><a href="{{ url_for('main.index') }}#music">Stream</a></li>
     <li><a href="{{ url_for('beats.index') }}" {% if request.endpoint == 'beats.index' %}class="active"{% endif %}>Beats</a></li>
     <li><a href="{{ url_for('store.index') }}" {% if request.endpoint == 'store.index' %}class="active"{% endif %}>Store</a></li>
     <li><a href="{{ url_for('services.index') }}" class="nav-cta">Book Now</a></li>
@@ -120,6 +121,7 @@ window.trackEvent=function(name,params){gtag('event',name,params||{})};
   <button class="mob-menu-close" onclick="toggleMob()" aria-label="Close menu">✕</button>
   <a href="{{ url_for('main.index') }}" class="mob-nav-link" onclick="toggleMob()">Home</a>
   <div class="mob-nav-divider"></div>
+  <a href="{{ url_for('main.index') }}#music" class="mob-nav-link" onclick="toggleMob()">Stream</a>
   <a href="{{ url_for('beats.index') }}" class="mob-nav-link" onclick="toggleMob()">Beats</a>
   <a href="{{ url_for('store.index') }}" class="mob-nav-link" onclick="toggleMob()">Store</a>
   <a href="{{ url_for('services.index') }}" class="mob-nav-link cta" onclick="toggleMob()">Book Now</a>
