@@ -255,10 +255,14 @@ def create_app():
             from models import Album, Track
             base = (os.environ.get("SHIBUYA_BASE_URL")
                     or "https://pub-e11b657d879b4e85905f893b132ad300.r2.dev").rstrip("/")
+            # MP3s live under this prefix (the folder that was dragged in).
+            audio_base = base + "/" + os.environ.get("SHIBUYA_AUDIO_PREFIX", "SHIBUYA-TRAP-MP3")
             if os.environ.get("SEED_SHIBUYA") == "1" and base:
                 if not Album.query.filter_by(title="SHIBUYA TRAP").first():
-                    # Compressed 1000x1000 JPEG (44KB vs the 1MB original PNG)
-                    cover = base + "/" + _up.quote("shibuya-trap-cover.jpg")
+                    # Original PNG at the bucket root. Swap to the 44KB
+                    # shibuya-trap-cover.jpg in Admin once it's uploaded.
+                    cover = base + "/" + _up.quote(
+                        os.environ.get("SHIBUYA_COVER", "206B498F-E539-4F1F-A869-C72AEB6FE3A8.png"))
                     album = Album(
                         title="SHIBUYA TRAP", year="2026", cover_url=cover, price=0,
                         description="Neon-soaked trap from the streets of Shibuya.",
@@ -277,7 +281,7 @@ def create_app():
                     for i, t in enumerate(titles, start=1):
                         db.session.add(Track(
                             album_id=album.id, title=t,
-                            audio_url=base + "/" + _up.quote(t + ".mp3"),
+                            audio_url=audio_base + "/" + _up.quote(t + ".mp3"),
                             track_number=i, price=0, is_active=True))
                     db.session.commit()
                     print("[startup] seeded SHIBUYA TRAP with", len(titles), "tracks")
