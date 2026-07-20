@@ -112,12 +112,12 @@
 {% endblock %}
 {% block extra_styles %}
 .svc-hero{padding:72px 48px 44px;border-bottom:1px solid var(--border);position:relative;overflow:hidden;min-height:320px}
-.svc-hero::after{content:'SERVICES';position:absolute;right:-20px;bottom:-40px;font-family:'Bebas Neue',sans-serif;font-size:200px;color:rgba(200,75,10,.03);pointer-events:none;line-height:1}
+.svc-hero::after{display:none}
 .svc-eyebrow{font-family:'Space Mono',monospace;font-size:9px;letter-spacing:.5em;color:var(--ember);text-transform:uppercase;margin-bottom:12px}
 .svc-heading{font-family:'Bebas Neue',sans-serif;font-size:clamp(48px,8vw,100px);line-height:.88;color:var(--white);margin-bottom:14px}
 .svc-heading em{color:var(--fire);font-style:normal}
 .svc-sub{font-size:15px;color:var(--ash);font-style:italic;line-height:1.7;max-width:520px}
-.svc-hero-art{position:absolute;right:60px;bottom:0;height:340px;opacity:.1;pointer-events:none;filter:drop-shadow(0 0 40px rgba(200,75,10,.6));animation:standSway 10s ease-in-out infinite}
+.svc-hero-art{display:none}
 @keyframes standSway{0%,100%{transform:translateY(0) rotate(-.4deg)}50%{transform:translateY(-6px) rotate(.4deg)}}
 .hero-signal-bar{position:absolute;bottom:0;left:48px;right:280px;height:3px;background:linear-gradient(90deg,var(--ember),var(--flame),transparent);opacity:.25}
 .svc-wrap{max-width:1100px;margin:0 auto;padding:0 48px 80px}
@@ -127,7 +127,7 @@
 .svc-card{background:var(--card);border:1px solid var(--border);padding:28px 32px;position:relative;overflow:hidden}
 .svc-card::before{content:'';position:absolute;top:0;left:0;right:0;height:2px;background:linear-gradient(90deg,var(--ember),var(--flame));transform:scaleX(0);transform-origin:left;transition:transform .35s}
 .svc-card:hover::before{transform:scaleX(1)}
-.svc-card-art{position:absolute;right:0;top:0;bottom:0;width:220px;pointer-events:none;opacity:.07;display:flex;align-items:center;justify-content:center}
+.svc-card-art{display:none}
 .svc-card-head{display:grid;grid-template-columns:1fr auto;gap:20px;align-items:start;margin-bottom:16px}
 .svc-card-name{font-family:'Bebas Neue',sans-serif;font-size:28px;color:var(--white);letter-spacing:.04em;line-height:1;margin-bottom:4px}
 .svc-card-tag{font-family:'Space Mono',monospace;font-size:7px;letter-spacing:.3em;color:var(--ember);text-transform:uppercase}
@@ -412,7 +412,7 @@
           <span class="svc-price-unit">selected tier</span>
         </div>
       </div>
-      <p class="svc-card-desc">Mixing and mastering handled as one cohesive process by the same engineer. Delivery in WAV and MP3 within 5 business days. Upload stems or collaborate live via Session app on Aeralabs.io.</p>
+      <p class="svc-card-desc">Mixing and mastering handled as one cohesive process by the same engineer. Delivery in WAV and MP3 within 5 business days. Send your stems and get a streaming-ready master back.</p>
       <div class="tier-select-row">
         <button class="tier-opt on" onclick="selectMixTier(this,150,'Single Mix and Master')">
           <div class="tier-opt-name">Single</div>
@@ -443,7 +443,6 @@
       <div class="svc-btns">
         <button class="svc-btn svc-btn-primary" onclick="bookService('mixing')">Pay and Book</button>
         <a href="https://calendly.com/macdylanforever/30min" target="_blank" rel="noopener noreferrer" class="svc-btn svc-btn-ghost">Free Discovery Call</a>
-        <a href="https://aeralabs.io" target="_blank" rel="noopener noreferrer" class="svc-btn svc-btn-outline">Session App on Aeralabs</a>
       </div>
     </div>
   </div>
@@ -465,7 +464,7 @@
           <li>Brand direction and identity review</li>
           <li>Release strategy and rollout plan</li>
           <li>Song feedback and A and R notes</li>
-          <li>Aeralabs resources and community</li>
+          <li>Private artist resources and community</li>
           <li class="no">Website development</li>
           <li class="no">Weekly Zoom calls</li>
           <li class="no">Content creation pipeline</li>
@@ -484,7 +483,7 @@
           <li>Priority song feedback and A and R</li>
           <li>Basic website build or redesign</li>
           <li>Social media content calendar</li>
-          <li>Aeralabs resources and community</li>
+          <li>Private artist resources and community</li>
           <li class="no">Advanced website development</li>
         </ul>
       </div>
