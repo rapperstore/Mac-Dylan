@@ -1,12 +1,16 @@
 import os
 import stripe
 from flask import Flask, request, redirect
+from werkzeug.middleware.proxy_fix import ProxyFix
 from database import db
 from config import Config
 
 
 def create_app():
     app = Flask(__name__)
+    # Behind Railway's proxy: trust X-Forwarded-Proto/Host so generated
+    # redirects (e.g. /admin -> /admin/) keep https instead of dropping to http.
+    app.wsgi_app = ProxyFix(app.wsgi_app, x_for=1, x_proto=1, x_host=1)
     app.config.from_object(Config)
     db.init_app(app)
     stripe.api_key = app.config["STRIPE_SECRET_KEY"]
