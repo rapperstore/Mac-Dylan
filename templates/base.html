@@ -15,7 +15,7 @@
 <meta name="geo.position" content="43.6150;-116.2023">
 <meta name="ICBM" content="43.6150, -116.2023">
 {% block seo_meta %}
-<meta name="description" content="Mac Dylan — Boise Idaho's premier music producer, mix engineer &amp; artist developer. 146+ beats to license, professional recording, mixing, mastering and artist development services.">
+<meta name="description" content="Mac Dylan â Boise Idaho's premier music producer, mix engineer &amp; artist developer. 146+ beats to license, professional recording, mixing, mastering and artist development services.">
 <link rel="canonical" href="https://www.macdylan.com{{ request.path }}">
 {% endblock %}
 {% block og_meta %}
@@ -34,7 +34,7 @@
 <meta name="twitter:description" content="Producer. Mix Engineer. Artist Developer.">
 <meta name="twitter:image" content="https://www.macdylan.com/static/og-main.jpg">
 {% endblock %}
-<title>{% block title %}Mac Dylan — Boise Idaho Music Producer & Beat Store{% endblock %}</title>
+<title>{% block title %}Mac Dylan â Boise Idaho Music Producer & Beat Store{% endblock %}</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="dns-prefetch" href="https://pub-3d8b1c7a5e63475b90c0044ca074cba8.r2.dev">
@@ -62,10 +62,10 @@ nav{position:fixed;top:0;left:0;right:0;z-index:200;padding:18px 48px;display:fl
 .nav-links a{font-family:'Space Mono',monospace;font-size:9px;letter-spacing:.35em;color:var(--muted);text-decoration:none;text-transform:uppercase;transition:color .2s}.nav-links a:hover,.nav-links a.active{color:var(--fire)}
 .nav-phone{font-family:'Space Mono',monospace;font-size:9px;letter-spacing:.2em;color:var(--ash);text-decoration:none;transition:color .2s}.nav-phone:hover{color:var(--fire)}
 .nav-cta{padding:8px 18px;border:1px solid var(--ember);color:var(--ember)!important;transition:all .2s!important}.nav-cta:hover{background:var(--ember);color:var(--white)!important}
-/* ── HAMBURGER ── */
+/* ââ HAMBURGER ââ */
 .mob-btn{display:none;background:none;border:none;padding:6px;flex-direction:column;justify-content:center;gap:5px;width:32px;height:32px;flex-shrink:0}
 .mob-btn span{display:block;height:1.5px;background:var(--white);border-radius:1px;transition:all .3s}
-/* ── MOBILE FULLSCREEN MENU ── */
+/* ââ MOBILE FULLSCREEN MENU ââ */
 .mob-menu{position:fixed;inset:0;z-index:500;background:rgba(5,4,3,.98);backdrop-filter:blur(16px);display:flex;flex-direction:column;align-items:center;justify-content:center;gap:0;transform:translateX(100%);transition:transform .38s cubic-bezier(.4,0,.2,1);padding:40px 24px}
 .mob-menu.open{transform:translateX(0)}
 .mob-menu-close{position:absolute;top:18px;right:20px;background:none;border:none;color:var(--muted);font-size:26px;line-height:1;padding:4px 8px;transition:color .2s}
@@ -118,7 +118,7 @@ window.trackEvent=function(name,params){gtag('event',name,params||{})};
 
 <!-- Mobile fullscreen menu -->
 <div class="mob-menu" id="mob-menu">
-  <button class="mob-menu-close" onclick="toggleMob()" aria-label="Close menu">✕</button>
+  <button class="mob-menu-close" onclick="toggleMob()" aria-label="Close menu">â</button>
   <a href="{{ url_for('main.index') }}" class="mob-nav-link" onclick="toggleMob()">Home</a>
   <div class="mob-nav-divider"></div>
   <a href="{{ url_for('main.stream') }}" class="mob-nav-link" onclick="toggleMob()">Stream</a>
@@ -142,7 +142,7 @@ window.trackEvent=function(name,params){gtag('event',name,params||{})};
     <a href="https://distrokid.com/vip/seven/4657053" target="_blank" rel="sponsored noopener noreferrer">DistroKid</a>
   </div>
   <div class="footer-phone"><a href="tel:2083915292">(208) 391-5292</a></div>
-  <div class="footer-copy">© 2026 Mac Dylan LLC · Boise, Idaho</div>
+  <div class="footer-copy">Â© 2026 Mac Dylan LLC Â· Boise, Idaho</div>
   <a href="/admin/" style="font-family:'Space Mono',monospace;font-size:7px;letter-spacing:.35em;color:rgba(200,75,10,.25);text-transform:uppercase;text-decoration:none;transition:color .2s" onmouseover="this.style.color='rgba(200,75,10,.6)'" onmouseout="this.style.color='rgba(200,75,10,.25)'">Admin</a>
 </footer>
 
@@ -187,5 +187,186 @@ function toggleMob(){
 document.getElementById('mob-menu').addEventListener('click',function(e){if(e.target===this)toggleMob()});
 </script>
 {% block extra_scripts %}{% endblock %}
+
+<!-- Admin Quick Access -->
+<a href="/admin/" id="admin-corner-btn" style="
+  position:fixed;
+  bottom:20px;
+  right:20px;
+  z-index:8888;
+  background:rgba(15,15,15,.85);
+  border:1px solid rgba(255,107,26,.4);
+  color:rgba(255,107,26,.7);
+  font-family:'Space Mono',monospace;
+  font-size:8px;
+  letter-spacing:.2em;
+  text-transform:uppercase;
+  text-decoration:none;
+  padding:6px 10px;
+  backdrop-filter:blur(8px);
+  transition:all .2s;
+  border-radius:2px;
+" onmouseover="this.style.borderColor='#ff6b1a';this.style.color='#ff6b1a';this.style.background='rgba(255,107,26,.1)'"
+  onmouseout="this.style.borderColor='rgba(255,107,26,.4)';this.style.color='rgba(255,107,26,.7)';this.style.background='rgba(15,15,15,.85)'">
+  ⚙ Admin
+</a>
+</body>
+</html>
+filter='url(%23n)'/%3E%3C/svg%3E")}
+.page{position:relative;z-index:10}
+nav{position:fixed;top:0;left:0;right:0;z-index:200;padding:18px 48px;display:flex;justify-content:space-between;align-items:center;background:rgba(5,4,3,.96);border-bottom:1px solid var(--border);backdrop-filter:blur(12px)}
+.nav-logo{font-family:'Bebas Neue',sans-serif;font-size:20px;letter-spacing:.1em;color:var(--white);text-decoration:none}.nav-logo span{color:var(--fire)}
+.nav-links{display:flex;gap:28px;list-style:none;align-items:center}
+.nav-links a{font-family:'Space Mono',monospace;font-size:9px;letter-spacing:.35em;color:var(--muted);text-decoration:none;text-transform:uppercase;transition:color .2s}.nav-links a:hover,.nav-links a.active{color:var(--fire)}
+.nav-phone{font-family:'Space Mono',monospace;font-size:9px;letter-spacing:.2em;color:var(--ash);text-decoration:none;transition:color .2s}.nav-phone:hover{color:var(--fire)}
+.nav-cta{padding:8px 18px;border:1px solid var(--ember);color:var(--ember)!important;transition:all .2s!important}.nav-cta:hover{background:var(--ember);color:var(--white)!important}
+/* ââ HAMBURGER ââ */
+.mob-btn{display:none;background:none;border:none;padding:6px;flex-direction:column;justify-content:center;gap:5px;width:32px;height:32px;flex-shrink:0}
+.mob-btn span{display:block;height:1.5px;background:var(--white);border-radius:1px;transition:all .3s}
+/* ââ MOBILE FULLSCREEN MENU ââ */
+.mob-menu{position:fixed;inset:0;z-index:500;background:rgba(5,4,3,.98);backdrop-filter:blur(16px);display:flex;flex-direction:column;align-items:center;justify-content:center;gap:0;transform:translateX(100%);transition:transform .38s cubic-bezier(.4,0,.2,1);padding:40px 24px}
+.mob-menu.open{transform:translateX(0)}
+.mob-menu-close{position:absolute;top:18px;right:20px;background:none;border:none;color:var(--muted);font-size:26px;line-height:1;padding:4px 8px;transition:color .2s}
+.mob-menu-close:hover{color:var(--fire)}
+.mob-nav-link{font-family:'Bebas Neue',sans-serif;font-size:52px;line-height:1.1;color:var(--white);text-decoration:none;letter-spacing:.05em;transition:color .18s;padding:6px 0;display:block;text-align:center}
+.mob-nav-link:hover{color:var(--fire)}
+.mob-nav-link.cta{color:var(--ember);margin-top:8px}
+.mob-nav-divider{width:40px;height:1px;background:rgba(200,75,10,.2);margin:16px auto}
+.mob-nav-admin{font-family:'Space Mono',monospace;font-size:8px;letter-spacing:.4em;color:rgba(200,75,10,.3);text-transform:uppercase;text-decoration:none;margin-top:20px;transition:color .2s;display:block;text-align:center}
+.mob-nav-admin:hover{color:var(--ember)}
+footer{border-top:1px solid var(--border);padding:48px;display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:20px}
+.footer-logo{font-family:'Bebas Neue',sans-serif;font-size:16px;letter-spacing:.1em;color:var(--ash)}.footer-logo span{color:var(--ember)}
+.footer-links{display:flex;gap:20px}.footer-links a{font-family:'Space Mono',monospace;font-size:8px;letter-spacing:.28em;color:var(--muted);text-transform:uppercase;text-decoration:none;transition:color .2s}.footer-links a:hover{color:var(--white)}
+.footer-phone{font-family:'Space Mono',monospace;font-size:8px;letter-spacing:.18em;color:var(--muted)}.footer-phone a{color:var(--ash);text-decoration:none;transition:color .2s}.footer-phone a:hover{color:var(--fire)}
+.footer-copy{font-family:'Space Mono',monospace;font-size:8px;letter-spacing:.2em;color:var(--muted);text-transform:uppercase}
+@keyframes burnIn{from{opacity:0;transform:translateY(20px);filter:blur(3px)}to{opacity:1;transform:translateY(0);filter:blur(0)}}
+{% block extra_styles %}{% endblock %}
+@media(max-width:900px){nav{padding:14px 20px}.nav-links{display:none}.nav-phone{display:none}.mob-btn{display:flex}footer{padding:32px 20px;flex-direction:column;gap:16px;text-align:center}.footer-links{flex-wrap:wrap;justify-content:center}}
+</style>
+{% if config.GA_MEASUREMENT_ID %}
+<script async src="https://www.googletagmanager.com/gtag/js?id={{ config.GA_MEASUREMENT_ID }}"></script>
+<script>
+window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments)}
+gtag('js',new Date());gtag('config','{{ config.GA_MEASUREMENT_ID }}');
+window.trackEvent=function(name,params){gtag('event',name,params||{})};
+</script>
+{% else %}
+<script>window.trackEvent=function(){};</script>
+{% endif %}
+</head>
+<body>
+<canvas id="fire-canvas"></canvas>
+<div class="vignette"></div>
+<div class="grain"></div>
+<div class="page">
+
+<nav>
+  <a href="{{ url_for('main.index') }}" class="nav-logo">Mac<span>Dylan</span></a>
+  <ul class="nav-links">
+    <li><a href="{{ url_for('main.stream') }}" {% if request.endpoint == 'main.stream' %}class="active"{% endif %}>Stream</a></li>
+    <li><a href="{{ url_for('beats.index') }}" {% if request.endpoint == 'beats.index' %}class="active"{% endif %}>Beats</a></li>
+    <li><a href="{{ url_for('store.index') }}" {% if request.endpoint == 'store.index' %}class="active"{% endif %}>Store</a></li>
+    <li><a href="{{ url_for('services.index') }}" class="nav-cta">Book Now</a></li>
+  </ul>
+  <a href="tel:2083915292" class="nav-phone">(208) 391-5292</a>
+  <button class="mob-btn" onclick="toggleMob()" aria-label="Open menu">
+    <span></span><span></span><span></span>
+  </button>
+</nav>
+
+<!-- Mobile fullscreen menu -->
+<div class="mob-menu" id="mob-menu">
+  <button class="mob-menu-close" onclick="toggleMob()" aria-label="Close menu">â</button>
+  <a href="{{ url_for('main.index') }}" class="mob-nav-link" onclick="toggleMob()">Home</a>
+  <div class="mob-nav-divider"></div>
+  <a href="{{ url_for('main.stream') }}" class="mob-nav-link" onclick="toggleMob()">Stream</a>
+  <a href="{{ url_for('beats.index') }}" class="mob-nav-link" onclick="toggleMob()">Beats</a>
+  <a href="{{ url_for('store.index') }}" class="mob-nav-link" onclick="toggleMob()">Store</a>
+  <a href="{{ url_for('services.index') }}" class="mob-nav-link cta" onclick="toggleMob()">Book Now</a>
+  <div class="mob-nav-divider"></div>
+  <a href="tel:2083915292" class="mob-nav-link" style="font-size:28px;color:var(--ash)" onclick="toggleMob()">(208) 391-5292</a>
+  <a href="/admin/" class="mob-nav-admin">Admin</a>
+</div>
+
+{% block content %}{% endblock %}
+
+<footer>
+  <div class="footer-logo">Mac<span>Dylan</span></div>
+  <div class="footer-links">
+    <a href="{{ url_for('beats.index') }}">Beats</a>
+    <a href="{{ url_for('store.index') }}">Store</a>
+    <a href="{{ url_for('services.index') }}">Book</a>
+    <a href="https://soundcloud.com/macdylan/albums" target="_blank" rel="noopener noreferrer">SoundCloud</a>
+    <a href="https://distrokid.com/vip/seven/4657053" target="_blank" rel="sponsored noopener noreferrer">DistroKid</a>
+  </div>
+  <div class="footer-phone"><a href="tel:2083915292">(208) 391-5292</a></div>
+  <div class="footer-copy">Â© 2026 Mac Dylan LLC Â· Boise, Idaho</div>
+  <a href="/admin/" style="font-family:'Space Mono',monospace;font-size:7px;letter-spacing:.35em;color:rgba(200,75,10,.25);text-transform:uppercase;text-decoration:none;transition:color .2s" onmouseover="this.style.color='rgba(200,75,10,.6)'" onmouseout="this.style.color='rgba(200,75,10,.25)'">Admin</a>
+</footer>
+
+</div>
+
+<script>
+(function(){
+  var canvas=document.getElementById('fire-canvas'),ctx=canvas.getContext('2d'),W,H;
+  function resize(){W=canvas.width=window.innerWidth;H=canvas.height=window.innerHeight}resize();
+  var rt;window.addEventListener('resize',function(){clearTimeout(rt);rt=setTimeout(resize,120)});
+  var particles=[];
+  [[100,[.88,1.05],[1.8,3.5],[3,12],false,.6],[60,[.7,1],[2.5,5],[6,18],false,.3],[20,[.5,.9],[1.5,3],[15,35],false,.12],[35,[.6,1],[.8,2],[20,60],true,.07]].forEach(function(L){
+    for(var i=0;i<L[0];i++)particles.push({x:Math.random(),y:L[1][0]+Math.random()*(L[1][1]-L[1][0]),vx:(Math.random()-.5)*.003,vy:-(L[2][0]+Math.random()*(L[2][1]-L[2][0]))*.004,life:Math.random(),decay:.0025+Math.random()*.005,size:L[3][0]+Math.random()*(L[3][1]-L[3][0]),smoke:L[4],alpha:L[5],phase:Math.random()*Math.PI*2})});
+  var PI2=Math.PI*2,last=0;
+  function frame(ts){if(ts-last<12){requestAnimationFrame(frame);return}last=ts;ctx.clearRect(0,0,W,H);var t=ts*.001;
+    particles.forEach(function(p){p.vx+=Math.sin(t*1.3+p.phase+p.y*3)*.0005;p.x+=p.vx;p.y+=p.vy;p.life-=p.decay;
+      if(p.life<=0||p.y<-.15){p.x=Math.random();p.y=1.05+Math.random()*.08;p.life=.6+Math.random()*.4;return}
+      var px=p.x*W,py=p.y*H,a=p.life*p.alpha;
+      if(!p.smoke){var r=p.size*(1+(1-p.life)*.4),br=Math.min(1,p.life/.7),g=ctx.createRadialGradient(px,py,0,px,py,r);
+        g.addColorStop(0,'rgba(252,'+Math.floor(180*br)+','+Math.floor(50*br)+','+(a*1.3)+')');g.addColorStop(.35,'rgba(232,'+Math.floor(114*br)+',12,'+(a*.65)+')');g.addColorStop(.7,'rgba(200,75,10,'+(a*.2)+')');g.addColorStop(1,'transparent');
+        ctx.fillStyle=g;ctx.beginPath();ctx.arc(px,py,r,0,PI2);ctx.fill();
+        if(p.life>.55){var cg=ctx.createRadialGradient(px,py,0,px,py,r*.22);cg.addColorStop(0,'rgba(255,230,130,'+(a*1.2)+')');cg.addColorStop(1,'transparent');ctx.fillStyle=cg;ctx.beginPath();ctx.arc(px,py,r*.22,0,PI2);ctx.fill()}}
+      else{var r=p.size*(1+(1-p.life)*1.8),g=ctx.createRadialGradient(px,py,0,px,py,r);g.addColorStop(0,'rgba(28,18,10,'+a+')');g.addColorStop(.6,'rgba(15,10,5,'+(a*.3)+')');g.addColorStop(1,'transparent');ctx.fillStyle=g;ctx.beginPath();ctx.arc(px,py,r,0,PI2);ctx.fill()}});
+    if(Math.random()<.2){var ex=(Math.random()*.6+.2)*W,ey=(.85+Math.random()*.15)*H,er=.8+Math.random()*2,eg=ctx.createRadialGradient(ex,ey,0,ex,ey,er);eg.addColorStop(0,'rgba(255,240,140,.95)');eg.addColorStop(1,'transparent');ctx.fillStyle=eg;ctx.beginPath();ctx.arc(ex,ey,er,0,PI2);ctx.fill()}
+    requestAnimationFrame(frame)}requestAnimationFrame(frame);
+  document.querySelectorAll('[data-reveal]').forEach(function(el){el.style.cssText+='opacity:0;transform:translateY(28px);transition:opacity .85s ease,transform .85s ease;';new IntersectionObserver(function(entries,obs){entries.forEach(function(e){if(e.isIntersecting){el.style.opacity='1';el.style.transform='translateY(0)';obs.disconnect()}})},{threshold:.1}).observe(el)});
+})();
+</script>
+
+<script>
+function toggleMob(){
+  var m=document.getElementById('mob-menu');
+  var btn=document.querySelector('.mob-btn');
+  var open=m.classList.toggle('open');
+  document.body.style.overflow=open?'hidden':'';
+  // Animate hamburger to X
+  var spans=btn.querySelectorAll('span');
+  if(open){spans[0].style.cssText='transform:translateY(6.5px) rotate(45deg)';spans[1].style.cssText='opacity:0';spans[2].style.cssText='transform:translateY(-6.5px) rotate(-45deg)'}
+  else{spans[0].style.cssText='';spans[1].style.cssText='';spans[2].style.cssText=''}
+}
+// Close on backdrop click
+document.getElementById('mob-menu').addEventListener('click',function(e){if(e.target===this)toggleMob()});
+</script>
+{% block extra_scripts %}{% endblock %}
+
+<!-- Admin Quick Access -->
+<a href="/admin/" id="admin-corner-btn" style="
+  position:fixed;
+  bottom:20px;
+  right:20px;
+  z-index:8888;
+  background:rgba(15,15,15,.85);
+  border:1px solid rgba(255,107,26,.4);
+  color:rgba(255,107,26,.7);
+  font-family:'Space Mono',monospace;
+  font-size:8px;
+  letter-spacing:.2em;
+  text-transform:uppercase;
+  text-decoration:none;
+  padding:6px 10px;
+  backdrop-filter:blur(8px);
+  transition:all .2s;
+  border-radius:2px;
+" onmouseover="this.style.borderColor='#ff6b1a';this.style.color='#ff6b1a';this.style.background='rgba(255,107,26,.1)'"
+  onmouseout="this.style.borderColor='rgba(255,107,26,.4)';this.style.color='rgba(255,107,26,.7)';this.style.background='rgba(15,15,15,.85)'">
+  ⚙ Admin
+</a>
 </body>
 </html>
