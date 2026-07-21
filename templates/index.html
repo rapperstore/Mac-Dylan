@@ -316,86 +316,19 @@
   .tl-text{font-size:14.5px}
 }
 
-/* ── MUSIC PLAYER (streaming-app style, distinct from beat player) ── */
-.music-tagline{font-family:'Cormorant Garamond',serif;font-style:italic;font-size:15px;color:var(--muted)}
-.stream-links{display:flex;gap:8px;flex-wrap:wrap}
-.splat{display:inline-flex;align-items:center;gap:7px;padding:7px 15px;border:1px solid var(--border);border-radius:99px;font-family:'Space Mono',monospace;font-size:8px;letter-spacing:.22em;text-transform:uppercase;color:var(--muted);transition:all .22s}
-.splat svg{flex-shrink:0}
-.splat-sc:hover{border-color:#ff5500;color:#ff7733;background:rgba(255,85,0,.07)}
-.splat-yt:hover{border-color:#ff0033;color:#ff4d66;background:rgba(255,0,51,.07)}
-.stream-empty{background:var(--card);border:1px solid var(--border);border-radius:14px;padding:52px 32px;text-align:center}
-.stream-empty-icon{font-size:34px;color:var(--ember);opacity:.5;line-height:1}
-.stream-empty-title{font-family:'Bebas Neue',sans-serif;font-size:26px;color:var(--white);letter-spacing:.04em;margin-top:12px}
-.stream-empty-sub{font-size:14px;color:var(--muted);font-style:italic;line-height:1.7;margin:8px auto 0;max-width:46ch}
-.music-app{display:grid;grid-template-columns:260px 1fr;gap:2px;background:var(--border);border:1px solid var(--border);border-radius:14px;overflow:hidden}
-.music-shelf{background:var(--card);padding:10px;display:flex;flex-direction:column;gap:4px;overflow-y:auto;max-height:520px}
-.mshelf-item{display:flex;align-items:center;gap:12px;padding:9px 10px;background:transparent;border:none;border-radius:9px;cursor:pointer;text-align:left;transition:background .15s;width:100%}
-.mshelf-item:hover{background:var(--card2)}
-.mshelf-item.on{background:rgba(200,75,10,.1)}
-.mshelf-cover{width:48px;height:48px;border-radius:7px;overflow:hidden;flex-shrink:0;background:linear-gradient(135deg,var(--ember),#7a2e08);display:flex;align-items:center;justify-content:center}
-.mshelf-cover img{width:100%;height:100%;object-fit:cover}
-.mshelf-cover span{font-family:'Bebas Neue',sans-serif;font-size:22px;color:#fff}
-.mshelf-meta{min-width:0}
-.mshelf-title{font-family:'Bebas Neue',sans-serif;font-size:15px;color:var(--white);letter-spacing:.03em;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
-.mshelf-sub{font-family:'Space Mono',monospace;font-size:8px;letter-spacing:.14em;color:var(--muted);text-transform:uppercase;margin-top:2px}
-.music-main{background:var(--deep);padding:26px 28px;min-height:360px}
-.malbum-hd{display:flex;gap:22px;align-items:flex-end;margin-bottom:22px;flex-wrap:wrap}
-.malbum-art{width:180px;height:180px;border-radius:12px;overflow:hidden;flex-shrink:0;box-shadow:0 16px 40px rgba(0,0,0,.6);background:linear-gradient(135deg,var(--ember),#5a2206);display:flex;align-items:center;justify-content:center}
-.malbum-art img{width:100%;height:100%;object-fit:cover}
-.malbum-art span{font-family:'Bebas Neue',sans-serif;font-size:64px;color:#fff}
-.malbum-info{flex:1;min-width:200px}
-.malbum-eyebrow{font-family:'Space Mono',monospace;font-size:8px;letter-spacing:.3em;color:var(--ember);text-transform:uppercase;margin-bottom:8px}
-.malbum-name{font-family:'Bebas Neue',sans-serif;font-size:clamp(30px,4vw,46px);line-height:.95;color:var(--white);letter-spacing:.02em}
-.malbum-desc{font-size:14px;color:var(--ash);line-height:1.6;margin:10px 0 16px;max-width:52ch}
-.malbum-cta{display:flex;gap:10px;flex-wrap:wrap;align-items:center}
-.malbum-playall{display:inline-flex;align-items:center;gap:8px;padding:11px 22px;background:var(--ember);color:#fff;border:none;border-radius:99px;font-family:'Space Mono',monospace;font-size:9px;letter-spacing:.25em;text-transform:uppercase;cursor:pointer;transition:background .2s}
-.malbum-playall:hover{background:var(--fire)}
-.malbum-buyalbum{padding:11px 20px;background:transparent;color:var(--white);border:1px solid var(--borderl);border-radius:99px;font-family:'Space Mono',monospace;font-size:9px;letter-spacing:.25em;text-transform:uppercase;cursor:pointer;transition:all .2s}
-.malbum-buyalbum:hover{border-color:var(--ember);color:var(--fire)}
-.mtracks{display:flex;flex-direction:column}
-.mtrack{display:flex;align-items:center;gap:14px;padding:11px 12px;border-radius:8px;cursor:pointer;transition:background .15s}
-.mtrack:hover{background:var(--card)}
-.mtrack.playing{background:rgba(200,75,10,.08)}
-.mtrack-idx{width:22px;text-align:center;font-family:'Space Mono',monospace;font-size:11px;color:var(--muted);flex-shrink:0}
-.mtrack.playing .mtrack-idx{color:var(--fire)}
-.mtrack-pp{display:none;width:22px;text-align:center;color:var(--fire);flex-shrink:0}
-.mtrack:hover .mtrack-idx{display:none}.mtrack:hover .mtrack-pp{display:block}
-.mtrack.playing .mtrack-idx{display:none}.mtrack.playing .mtrack-pp{display:block}
-.mtrack-info{flex:1;min-width:0}
-.mtrack-title{font-size:15px;color:var(--white);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
-.mtrack.playing .mtrack-title{color:var(--fire)}
-.mtrack-dur{font-family:'Space Mono',monospace;font-size:10px;color:var(--muted);flex-shrink:0}
-.mtrack-buy{padding:6px 13px;background:transparent;border:1px solid var(--borderl);border-radius:99px;color:var(--ash);font-family:'Space Mono',monospace;font-size:8px;letter-spacing:.18em;text-transform:uppercase;cursor:pointer;transition:all .2s;flex-shrink:0}
-.mtrack-buy:hover{border-color:var(--ember);color:var(--fire)}
-/* Now playing bar */
-.now-playing{position:fixed;left:0;right:0;bottom:0;z-index:900;background:rgba(12,9,6,.97);backdrop-filter:blur(16px);border-top:1px solid rgba(200,75,10,.3);display:grid;grid-template-columns:minmax(160px,1fr) auto minmax(200px,2fr) auto;align-items:center;gap:18px;padding:12px 24px;transform:translateY(120%);transition:transform .35s cubic-bezier(.4,0,.2,1)}
-.now-playing.show{transform:translateY(0)}
-.np-track{display:flex;align-items:center;gap:12px;min-width:0}
-.np-cover{width:46px;height:46px;border-radius:7px;overflow:hidden;flex-shrink:0;background:linear-gradient(135deg,var(--ember),#5a2206);display:flex;align-items:center;justify-content:center;color:#fff;font-size:18px}
-.np-cover img{width:100%;height:100%;object-fit:cover}
-.np-info{min-width:0}
-.np-name{font-family:'Bebas Neue',sans-serif;font-size:16px;color:var(--white);letter-spacing:.03em;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
-.np-album{font-family:'Space Mono',monospace;font-size:8px;letter-spacing:.16em;color:var(--muted);text-transform:uppercase;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
-.np-controls{display:flex;align-items:center;gap:14px}
-.np-ctrl{background:none;border:none;color:var(--ash);font-size:14px;cursor:pointer;transition:color .2s}.np-ctrl:hover{color:var(--white)}
-.np-play{width:40px;height:40px;border-radius:50%;background:var(--ember);border:none;color:#fff;font-size:15px;cursor:pointer;display:flex;align-items:center;justify-content:center;transition:background .2s}.np-play:hover{background:var(--fire)}
-.np-seek{display:flex;align-items:center;gap:10px}
-.np-time{font-family:'Space Mono',monospace;font-size:9px;color:var(--muted);flex-shrink:0;min-width:30px}
-.np-bar{flex:1;height:5px;background:var(--border);border-radius:99px;cursor:pointer;position:relative;overflow:hidden}
-.np-bar-fill{position:absolute;left:0;top:0;bottom:0;width:0;background:linear-gradient(90deg,var(--ember),var(--flame));border-radius:99px}
-.np-actions{display:flex;align-items:center;gap:10px}
-.np-buy{padding:8px 16px;background:var(--ember);color:#fff;border:none;border-radius:99px;font-family:'Space Mono',monospace;font-size:8px;letter-spacing:.2em;text-transform:uppercase;cursor:pointer;transition:background .2s}.np-buy:hover{background:var(--fire)}
-.np-buy.hidden{display:none}
-.np-close{background:none;border:none;color:var(--muted);font-size:15px;cursor:pointer;transition:color .2s}.np-close:hover{color:var(--fire)}
-@media(max-width:820px){
-  .music-app{grid-template-columns:1fr}
-  .music-shelf{flex-direction:row;overflow-x:auto;max-height:none;padding:10px}
-  .mshelf-item{flex-direction:column;min-width:100px;text-align:center;gap:8px}
-  .mshelf-meta{text-align:center}.mshelf-title{white-space:normal}
-  .now-playing{grid-template-columns:1fr auto;grid-template-areas:'track actions' 'controls controls' 'seek seek';gap:10px 14px;padding:10px 16px}
-  .np-track{grid-area:track}.np-controls{grid-area:controls;justify-content:center}
-  .np-seek{grid-area:seek}.np-actions{grid-area:actions}
-}
+/* ── NEW RELEASE ── */
+.nr-card{display:grid;grid-template-columns:220px 1fr;gap:28px;align-items:center;background:var(--card);border:1px solid rgba(200,75,10,.2);border-radius:14px;padding:26px;text-decoration:none;color:inherit;transition:border-color .25s,background .25s}
+.nr-card:hover{border-color:rgba(200,75,10,.55);background:var(--card2)}
+.nr-art{width:100%;aspect-ratio:1;border-radius:10px;overflow:hidden;background:linear-gradient(135deg,var(--ember),#5a2206);display:flex;align-items:center;justify-content:center;box-shadow:0 16px 40px rgba(0,0,0,.55)}
+.nr-art img{width:100%;height:100%;object-fit:cover;display:block;transition:transform .4s}
+.nr-card:hover .nr-art img{transform:scale(1.04)}
+.nr-art span{font-family:'Bebas Neue',sans-serif;font-size:64px;color:#fff}
+.nr-eyebrow{font-family:'Space Mono',monospace;font-size:8px;letter-spacing:.35em;color:var(--ember);text-transform:uppercase;margin-bottom:8px}
+.nr-title{font-family:'Bebas Neue',sans-serif;font-size:clamp(34px,5vw,52px);line-height:.98;color:var(--white);letter-spacing:.02em}
+.nr-desc{font-size:14.5px;color:var(--ash);font-style:italic;line-height:1.7;margin:10px 0 18px;max-width:52ch}
+.nr-btn{display:inline-flex;align-items:center;gap:8px;padding:12px 26px;background:var(--ember);color:#f5f0e8;border-radius:99px;font-family:'Space Mono',monospace;font-size:9px;letter-spacing:.28em;text-transform:uppercase;transition:background .2s}
+.nr-card:hover .nr-btn{background:var(--fire)}
+@media(max-width:700px){.nr-card{grid-template-columns:1fr;gap:18px;padding:20px}.nr-art{max-width:220px;margin:0 auto}.nr-info{text-align:center}.nr-desc{margin-left:auto;margin-right:auto}}
 
 /* ── TIP JAR ── */
 .tip-section{padding:0 48px 60px}
@@ -740,73 +673,25 @@
 </section>
 {% endif %}
 
-<!-- STREAM / MUSIC PLAYER -->
-<section class="section music-section" id="music" data-reveal>
+<!-- NEW RELEASE -->
+{% if new_release %}
+<section class="section" id="music" data-reveal>
   <div class="sec-hdr">
-    <div class="sec-lbl">Stream</div>
-    <div class="stream-links">
-      <a href="https://soundcloud.com/macdylan/albums" target="_blank" rel="noopener noreferrer" class="splat splat-sc" aria-label="Listen on SoundCloud">
-        <svg viewBox="0 0 24 24" width="14" height="14" aria-hidden="true"><path fill="currentColor" d="M1.175 12.225c-.051 0-.094.046-.101.1l-.233 2.154.233 2.105c.007.058.05.098.101.098.05 0 .09-.04.099-.098l.255-2.105-.27-2.154c-.009-.06-.05-.1-.1-.1m-.899.828c-.06 0-.091.037-.104.094L0 14.479l.172 1.282c.013.06.045.094.104.094.057 0 .09-.035.104-.094l.194-1.282-.194-1.332c-.014-.057-.047-.094-.104-.094m1.835-1.585c-.067 0-.12.06-.12.132l-.208 2.879.208 2.746c0 .07.053.127.12.127.063 0 .117-.057.12-.127l.235-2.746-.235-2.879c-.003-.072-.057-.132-.12-.132m.862-.107c-.076 0-.14.07-.145.15l-.193 2.986.193 2.809c.005.08.069.148.145.148.076 0 .14-.068.148-.148l.217-2.809-.217-2.986c-.008-.08-.072-.15-.148-.15m.882-.172c-.086 0-.157.078-.163.17l-.178 3.159.178 2.839c.006.09.077.166.163.166.085 0 .157-.076.165-.166l.2-2.839-.2-3.159c-.008-.092-.08-.17-.165-.17m.885-.2c-.095 0-.174.088-.18.19l-.163 3.36.163 2.85c.006.1.085.186.18.186.095 0 .174-.086.182-.186l.184-2.85-.184-3.36c-.008-.102-.087-.19-.182-.19m.887-.236c-.105 0-.19.098-.196.21l-.148 3.596.148 2.85c.006.112.091.206.196.206.104 0 .19-.094.198-.206l.167-2.85-.167-3.596c-.008-.112-.094-.21-.198-.21m.891-.183c-.115 0-.207.108-.211.232l-.134 3.778.134 2.843c.004.122.096.228.211.228.114 0 .207-.106.213-.228l.151-2.843-.151-3.778c-.006-.124-.099-.232-.213-.232m.894-.133c-.124 0-.224.118-.226.252l-.12 3.91.12 2.833c.002.132.102.244.226.244.123 0 .224-.112.228-.244l.136-2.833-.136-3.91c-.004-.134-.105-.252-.228-.252m.893-.037c-.134 0-.24.128-.241.27l-.105 3.948.105 2.825c.001.14.107.256.241.256.132 0 .24-.116.244-.256l.118-2.825-.118-3.948c-.004-.142-.112-.27-.244-.27m.897.012c-.14 0-.253.138-.257.29l-.09 3.936.09 2.81c.004.15.117.273.257.273.138 0 .253-.122.259-.273l.102-2.81-.102-3.936c-.006-.152-.121-.29-.259-.29m3.854.578c-.186 0-.353.1-.441.252-.249-.164-.547-.256-.869-.268-.035-.001-.067.013-.067.05v6.078c0 .038.03.07.067.074.62.035 4.268.035 4.268.035 1.026 0 1.858-.832 1.858-1.858 0-1.027-.832-1.858-1.858-1.858-.175 0-.345.028-.507.074-.162-.906-.955-1.579-1.892-1.579"/></svg>
-        SoundCloud
-      </a>
-      <a href="https://www.youtube.com/@macdylan" target="_blank" rel="noopener noreferrer" class="splat splat-yt" aria-label="Watch on YouTube">
-        <svg viewBox="0 0 24 24" width="14" height="14" aria-hidden="true"><path fill="currentColor" d="M23.498 6.186a3.016 3.016 0 00-2.122-2.136C19.505 3.545 12 3.545 12 3.545s-7.505 0-9.377.505A3.017 3.017 0 00.502 6.186C0 8.07 0 12 0 12s0 3.93.502 5.814a3.016 3.016 0 002.122 2.136c1.871.505 9.376.505 9.376.505s7.505 0 9.377-.505a3.015 3.015 0 002.122-2.136C24 15.93 24 12 24 12s0-3.93-.502-5.814zM9.545 15.568V8.432L15.818 12l-6.273 3.568z"/></svg>
-        YouTube
-      </a>
+    <div class="sec-lbl">New Release</div>
+    <a href="{{ url_for('main.stream') }}" class="sec-link">Open Player &rarr;</a>
+  </div>
+  <a href="{{ url_for('main.stream') }}" class="nr-card">
+    <div class="nr-art">
+      {% if new_release.cover_url %}<img src="{{ new_release.cover_url }}" alt="{{ new_release.title }} album cover" loading="lazy">{% else %}<span>{{ new_release.title[0] }}</span>{% endif %}
     </div>
-  </div>
-  {% if music %}
-  <div class="music-app">
-    <aside class="music-shelf" id="music-shelf">
-      {% for m in music %}
-      <button class="mshelf-item{% if loop.first %} on{% endif %}" onclick="openAlbum({{ m.album.id }},this)">
-        <div class="mshelf-cover">
-          {% if m.album.cover_url %}<img src="{{ m.album.cover_url }}" alt="{{ m.album.title }}" loading="lazy">{% else %}<span>{{ m.album.title[0] }}</span>{% endif %}
-        </div>
-        <div class="mshelf-meta">
-          <div class="mshelf-title">{{ m.album.title }}</div>
-          <div class="mshelf-sub">{{ m.album.year }}{% if m.album.year %} · {% endif %}{{ m.tracks|length }} track{{ 's' if m.tracks|length != 1 else '' }}</div>
-        </div>
-      </button>
-      {% endfor %}
-    </aside>
-    <div class="music-main" id="music-main"><!-- album detail rendered by JS --></div>
-  </div>
-  {% else %}
-  <div class="stream-empty">
-    <div class="stream-empty-icon">♫</div>
-    <div class="stream-empty-title">New music dropping soon</div>
-    <p class="stream-empty-sub">Full releases will stream right here. In the meantime, catch the catalog on SoundCloud and the visuals on YouTube.</p>
-  </div>
-  {% endif %}
+    <div class="nr-info">
+      <div class="nr-eyebrow">{{ new_release.year }}{% if new_release.year %} · {% endif %}{{ new_release_tracks }} tracks · Album</div>
+      <div class="nr-title">{{ new_release.title }}</div>
+      {% if new_release.description %}<p class="nr-desc">{{ new_release.description }}</p>{% endif %}
+      <span class="nr-btn">&#9654; Stream Now</span>
+    </div>
+  </a>
 </section>
-
-{% if music %}
-<!-- NOW PLAYING BAR -->
-<div class="now-playing" id="now-playing" aria-hidden="true">
-  <div class="np-track">
-    <div class="np-cover" id="np-cover"><span id="np-cover-ph">♪</span></div>
-    <div class="np-info">
-      <div class="np-name" id="np-name">—</div>
-      <div class="np-album" id="np-album">—</div>
-    </div>
-  </div>
-  <div class="np-controls">
-    <button class="np-ctrl" id="np-prev" onclick="npPrev()" aria-label="Previous">⏮</button>
-    <button class="np-play" id="np-play" onclick="npToggle()" aria-label="Play/Pause">▶</button>
-    <button class="np-ctrl" id="np-next" onclick="npNext()" aria-label="Next">⏭</button>
-  </div>
-  <div class="np-seek">
-    <span class="np-time" id="np-cur">0:00</span>
-    <div class="np-bar" id="np-bar" onclick="npSeek(event)"><div class="np-bar-fill" id="np-bar-fill"></div></div>
-    <span class="np-time" id="np-dur">0:00</span>
-  </div>
-  <div class="np-actions">
-    <button class="np-buy" id="np-buy" onclick="npBuy()">Buy</button>
-    <button class="np-close" onclick="npStop()" aria-label="Close player">✕</button>
-  </div>
-  <audio id="np-audio" preload="none"></audio>
-</div>
 {% endif %}
 
 <!-- FEATURED BEATS -->
@@ -1046,100 +931,6 @@ window.toggleLike = function(btn){
     .finally(function(){ delete btn.dataset.busy; });
 };
 
-/* ── PERSONAL MUSIC PLAYER ── */
-(function(){
-  var MUSIC = {{ music_data | tojson | safe }};
-  if(!MUSIC || !MUSIC.length) return;
-  var audio = document.getElementById('np-audio');
-  var np = document.getElementById('now-playing');
-  var curAlbum = null, queue = [], curIdx = -1;
-
-  function fmt(s){ s=Math.floor(s||0); var m=Math.floor(s/60); var ss=s%60; return m+':'+(ss<10?'0':'')+ss; }
-  function esc(s){ return String(s==null?'':s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/"/g,'&quot;'); }
-
-  window.openAlbum = function(id, btn){
-    var a = MUSIC.find(function(x){return x.id===id;}); if(!a) return;
-    curAlbum = a;
-    document.querySelectorAll('.mshelf-item').forEach(function(e){e.classList.remove('on')});
-    if(btn) btn.classList.add('on');
-    var cover = a.cover_url
-      ? '<img src="'+esc(a.cover_url)+'" alt="'+esc(a.title)+'">'
-      : '<span>'+esc(a.title.charAt(0))+'</span>';
-    var buyAlbum = a.price ? '<button class="malbum-buyalbum" onclick="buyMusic(\'album\','+a.id+')">Buy Album · $'+a.price+'</button>' : '';
-    var rows = a.tracks.map(function(t,i){
-      var buy = t.price ? '<button class="mtrack-buy" onclick="event.stopPropagation();buyMusic(\'track\','+t.id+')">$'+t.price+'</button>' : '';
-      return '<div class="mtrack" data-tid="'+t.id+'" onclick="playTrack('+a.id+','+i+')">'+
-        '<div class="mtrack-idx">'+(i+1)+'</div><div class="mtrack-pp">▶</div>'+
-        '<div class="mtrack-info"><div class="mtrack-title">'+esc(t.title)+'</div></div>'+
-        '<div class="mtrack-dur">'+esc(t.duration||'')+'</div>'+buy+'</div>';
-    }).join('');
-    document.getElementById('music-main').innerHTML =
-      '<div class="malbum-hd"><div class="malbum-art">'+cover+'</div>'+
-      '<div class="malbum-info"><div class="malbum-eyebrow">'+(a.year?esc(a.year)+' · ':'')+a.tracks.length+' track'+(a.tracks.length!==1?'s':'')+'</div>'+
-      '<div class="malbum-name">'+esc(a.title)+'</div>'+
-      (a.description?'<p class="malbum-desc">'+esc(a.description)+'</p>':'')+
-      '<div class="malbum-cta"><button class="malbum-playall" onclick="playTrack('+a.id+',0)">▶ Play</button>'+buyAlbum+'</div></div></div>'+
-      '<div class="mtracks">'+rows+'</div>';
-    highlightPlaying();
-  };
-
-  window.playTrack = function(albumId, idx){
-    var a = MUSIC.find(function(x){return x.id===albumId;}); if(!a) return;
-    var t = a.tracks[idx]; if(!t || !t.audio_url){ alert('This track has no audio yet.'); return; }
-    queue = a.tracks; curIdx = idx;
-    audio.src = t.audio_url; audio.play();
-    np.classList.add('show'); np.setAttribute('aria-hidden','false');
-    document.getElementById('np-name').textContent = t.title;
-    document.getElementById('np-album').textContent = t.album_title || a.title;
-    var npc = document.getElementById('np-cover');
-    npc.innerHTML = t.cover_url ? '<img src="'+esc(t.cover_url)+'" alt="">' : '<span>♪</span>';
-    var buy = document.getElementById('np-buy');
-    if(t.price){ buy.classList.remove('hidden'); buy.textContent='Buy · $'+t.price; buy.dataset.tid=t.id; }
-    else buy.classList.add('hidden');
-    document.getElementById('np-play').textContent='❚❚';
-    highlightPlaying();
-    if(typeof trackEvent==='function') trackEvent('music_play',{track:t.title});
-    fetch('/music/play/'+t.id,{method:'POST'}).catch(function(){});
-  };
-  function highlightPlaying(){
-    var tid = queue[curIdx] ? queue[curIdx].id : null;
-    document.querySelectorAll('.mtrack').forEach(function(r){
-      r.classList.toggle('playing', parseInt(r.dataset.tid)===tid);
-    });
-  }
-  window.npToggle = function(){
-    if(audio.paused){ audio.play(); document.getElementById('np-play').textContent='❚❚'; }
-    else { audio.pause(); document.getElementById('np-play').textContent='▶'; }
-  };
-  window.npNext = function(){ if(curIdx<queue.length-1) playTrack(curAlbum.id,curIdx+1); };
-  window.npPrev = function(){ if(audio.currentTime>3){audio.currentTime=0;} else if(curIdx>0) playTrack(curAlbum.id,curIdx-1); };
-  window.npStop = function(){ audio.pause(); np.classList.remove('show'); np.setAttribute('aria-hidden','true'); };
-  window.npSeek = function(e){ var b=document.getElementById('np-bar'); var r=b.getBoundingClientRect(); if(audio.duration) audio.currentTime=(e.clientX-r.left)/r.width*audio.duration; };
-  window.npBuy = function(){ var tid=document.getElementById('np-buy').dataset.tid; if(tid) buyMusic('track',parseInt(tid)); };
-
-  audio.addEventListener('timeupdate', function(){
-    var pct = audio.duration ? audio.currentTime/audio.duration*100 : 0;
-    document.getElementById('np-bar-fill').style.width = pct+'%';
-    document.getElementById('np-cur').textContent = fmt(audio.currentTime);
-    document.getElementById('np-dur').textContent = fmt(audio.duration);
-  });
-  audio.addEventListener('ended', function(){ npNext(); });
-  audio.addEventListener('pause', function(){ document.getElementById('np-play').textContent='▶'; });
-  audio.addEventListener('play', function(){ document.getElementById('np-play').textContent='❚❚'; });
-
-  window.buyMusic = function(kind, id){
-    fetch('/payments/music-checkout',{method:'POST',headers:{'Content-Type':'application/json'},
-      body:JSON.stringify({kind:kind,id:id})})
-      .then(function(r){return r.json();}).then(function(d){
-        if(d.checkout_url) window.location.href=d.checkout_url;
-        else alert(d.error||'Not available for purchase.');
-      }).catch(function(){alert('Connection error. Please try again.');});
-    if(typeof trackEvent==='function') trackEvent('music_buy_click',{kind:kind});
-  };
-
-  // Open first album by default
-  openAlbum(MUSIC[0].id, document.querySelector('.mshelf-item'));
-})();
 
 /* Quote waveform */
 (function(){

@@ -288,7 +288,7 @@ def music_checkout():
             }],
             mode='payment',
             success_url=domain + '/payments/success?session_id={CHECKOUT_SESSION_ID}',
-            cancel_url=domain + '/#music',
+            cancel_url=domain + '/stream/',
             metadata={'order_type': 'music', 'music_kind': kind, 'item_id': str(item_id), 'item_name': name}
         )
         order = Order(order_type='music', product_name=name,

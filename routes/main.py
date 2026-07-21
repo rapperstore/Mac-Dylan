@@ -47,6 +47,37 @@ def index():
     credits = Credit.query.filter_by(is_active=True).order_by(
         Credit.sort_order.asc(), Credit.created_at.desc()
     ).limit(12).all()
+    # New Release card — latest active album, links to /stream/
+    new_release = Album.query.filter_by(is_active=True).order_by(
+        Album.sort_order.asc(), Album.created_at.desc()).first()
+    new_release_tracks = len([t for t in new_release.tracks if t.is_active]) if new_release else 0
+
+    # Homepage shows a hand-picked 5 from the playlist; full set lives on YouTube
+    home_ids = ['NtY2Zs8azMM',  # On My Momma
+                'NRIf3Tt0uSM',  # DIE RICH
+                'v20DZI7VIs0',  # Reflect
+                'fyoL2yBeSW8',  # Bad and Boujee remix
+                'cecqgW5VBEg']  # Sharpen My Craft
+    by_id = {v['id']: v for v in CREDIT_VIDEOS}
+    home_videos = [by_id[i] for i in home_ids if i in by_id]
+
+    # Timeline — pinned first, then newest. Mark which ones this visitor liked.
+    posts = Post.query.filter_by(is_published=True).order_by(
+        Post.is_pinned.desc(), Post.created_at.desc()).limit(10).all()
+    token = _visitor_token()
+    liked_ids = set()
+    if token and posts:
+        liked_ids = {l.post_id for l in PostLike.query.filter(
+            PostLike.visitor == token,
+            PostLike.post_id.in_([p.id for p in posts])).all()}
+
+    return render_template('index.html', beats=beats, credits=credits,
+                           new_release=new_release, new_release_tracks=new_release_tracks,
+                           videos=home_videos, posts=posts, liked_ids=liked_ids)
+
+
+@main_bp.route('/stream/')
+def stream():
     albums = Album.query.filter_by(is_active=True).order_by(
         Album.sort_order.asc(), Album.created_at.desc()
     ).all()
@@ -69,19 +100,7 @@ def index():
                     'duration': t.duration or '', 'album_title': a.title
                 } for t in tracks]
             })
-    # Timeline — pinned first, then newest. Mark which ones this visitor liked.
-    posts = Post.query.filter_by(is_published=True).order_by(
-        Post.is_pinned.desc(), Post.created_at.desc()).limit(10).all()
-    token = _visitor_token()
-    liked_ids = set()
-    if token and posts:
-        liked_ids = {l.post_id for l in PostLike.query.filter(
-            PostLike.visitor == token,
-            PostLike.post_id.in_([p.id for p in posts])).all()}
-
-    return render_template('index.html', beats=beats, credits=credits,
-                           music=music, music_data=music_data, singles=singles,
-                           videos=CREDIT_VIDEOS, posts=posts, liked_ids=liked_ids)
+    return render_template('stream.html', music=music, music_data=music_data, singles=singles)
 
 
 @main_bp.route('/timeline/<int:post_id>/like', methods=['POST'])
@@ -231,6 +250,7 @@ def sitemap():
     today = datetime.utcnow().strftime('%Y-%m-%d')
     pages = [
         ('https://www.macdylan.com/', '1.0', 'weekly'),
+        ('https://www.macdylan.com/stream/', '0.9', 'weekly'),
         ('https://www.macdylan.com/beats/', '0.9', 'daily'),
         ('https://www.macdylan.com/services/', '0.9', 'monthly'),
         ('https://www.macdylan.com/store/', '0.9', 'weekly'),
