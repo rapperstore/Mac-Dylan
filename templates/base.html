@@ -15,7 +15,7 @@
 <meta name="geo.position" content="43.6150;-116.2023">
 <meta name="ICBM" content="43.6150, -116.2023">
 {% block seo_meta %}
-<meta name="description" content="Mac Dylan â Boise Idaho's premier music producer, mix engineer &amp; artist developer. 146+ beats to license, professional recording, mixing, mastering and artist development services.">
+<meta name="description" content="Mac Dylan Ã¢ÂÂ Boise Idaho's premier music producer, mix engineer &amp; artist developer. 146+ beats to license, professional recording, mixing, mastering and artist development services.">
 <link rel="canonical" href="https://www.macdylan.com{{ request.path }}">
 {% endblock %}
 {% block og_meta %}
@@ -34,7 +34,7 @@
 <meta name="twitter:description" content="Producer. Mix Engineer. Artist Developer.">
 <meta name="twitter:image" content="https://www.macdylan.com/static/og-main.jpg">
 {% endblock %}
-<title>{% block title %}Mac Dylan â Boise Idaho Music Producer & Beat Store{% endblock %}</title>
+<title>{% block title %}Mac Dylan Ã¢ÂÂ Boise Idaho Music Producer & Beat Store{% endblock %}</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="dns-prefetch" href="https://pub-3d8b1c7a5e63475b90c0044ca074cba8.r2.dev">
@@ -62,10 +62,10 @@ nav{position:fixed;top:0;left:0;right:0;z-index:200;padding:18px 48px;display:fl
 .nav-links a{font-family:'Space Mono',monospace;font-size:9px;letter-spacing:.35em;color:var(--muted);text-decoration:none;text-transform:uppercase;transition:color .2s}.nav-links a:hover,.nav-links a.active{color:var(--fire)}
 .nav-phone{font-family:'Space Mono',monospace;font-size:9px;letter-spacing:.2em;color:var(--ash);text-decoration:none;transition:color .2s}.nav-phone:hover{color:var(--fire)}
 .nav-cta{padding:8px 18px;border:1px solid var(--ember);color:var(--ember)!important;transition:all .2s!important}.nav-cta:hover{background:var(--ember);color:var(--white)!important}
-/* ââ HAMBURGER ââ */
+/* Ã¢ÂÂÃ¢ÂÂ HAMBURGER Ã¢ÂÂÃ¢ÂÂ */
 .mob-btn{display:none;background:none;border:none;padding:6px;flex-direction:column;justify-content:center;gap:5px;width:32px;height:32px;flex-shrink:0}
 .mob-btn span{display:block;height:1.5px;background:var(--white);border-radius:1px;transition:all .3s}
-/* ââ MOBILE FULLSCREEN MENU ââ */
+/* Ã¢ÂÂÃ¢ÂÂ MOBILE FULLSCREEN MENU Ã¢ÂÂÃ¢ÂÂ */
 .mob-menu{position:fixed;inset:0;z-index:500;background:rgba(5,4,3,.98);backdrop-filter:blur(16px);display:flex;flex-direction:column;align-items:center;justify-content:center;gap:0;transform:translateX(100%);transition:transform .38s cubic-bezier(.4,0,.2,1);padding:40px 24px}
 .mob-menu.open{transform:translateX(0)}
 .mob-menu-close{position:absolute;top:18px;right:20px;background:none;border:none;color:var(--muted);font-size:26px;line-height:1;padding:4px 8px;transition:color .2s}
@@ -118,7 +118,7 @@ window.trackEvent=function(name,params){gtag('event',name,params||{})};
 
 <!-- Mobile fullscreen menu -->
 <div class="mob-menu" id="mob-menu">
-  <button class="mob-menu-close" onclick="toggleMob()" aria-label="Close menu">â</button>
+  <button class="mob-menu-close" onclick="toggleMob()" aria-label="Close menu">Ã¢ÂÂ</button>
   <a href="{{ url_for('main.index') }}" class="mob-nav-link" onclick="toggleMob()">Home</a>
   <div class="mob-nav-divider"></div>
   <a href="{{ url_for('main.stream') }}" class="mob-nav-link" onclick="toggleMob()">Stream</a>
@@ -142,7 +142,7 @@ window.trackEvent=function(name,params){gtag('event',name,params||{})};
     <a href="https://distrokid.com/vip/seven/4657053" target="_blank" rel="sponsored noopener noreferrer">DistroKid</a>
   </div>
   <div class="footer-phone"><a href="tel:2083915292">(208) 391-5292</a></div>
-  <div class="footer-copy">Â© 2026 Mac Dylan LLC Â· Boise, Idaho</div>
+  <div class="footer-copy">ÃÂ© 2026 Mac Dylan LLC ÃÂ· Boise, Idaho</div>
   <a href="/admin/" style="font-family:'Space Mono',monospace;font-size:7px;letter-spacing:.35em;color:rgba(200,75,10,.25);text-transform:uppercase;text-decoration:none;transition:color .2s" onmouseover="this.style.color='rgba(200,75,10,.6)'" onmouseout="this.style.color='rgba(200,75,10,.25)'">Admin</a>
 </footer>
 
@@ -187,5 +187,8 @@ function toggleMob(){
 document.getElementById('mob-menu').addEventListener('click',function(e){if(e.target===this)toggleMob()});
 </script>
 {% block extra_scripts %}{% endblock %}
+
+<!-- Admin Quick Access -->
+<a href="/admin/" style="position:fixed;bottom:20px;right:20px;z-index:8888;background:rgba(15,15,15,.85);border:1px solid rgba(255,107,26,.4);color:rgba(255,107,26,.7);font-family:'Space Mono',monospace;font-size:8px;letter-spacing:.2em;text-transform:uppercase;text-decoration:none;padding:6px 10px;backdrop-filter:blur(8px);border-radius:2px;transition:all .2s" onmouseover="this.style.borderColor='#ff6b1a';this.style.color='#ff6b1a'" onmouseout="this.style.borderColor='rgba(255,107,26,.4)';this.style.color='rgba(255,107,26,.7)'">⚙ Admin</a>
 </body>
 </html>
