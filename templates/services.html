@@ -232,21 +232,7 @@
 .bogo-msg{width:100%;font-size:11px;margin-top:2px}
 .bogo-msg-ok{color:#3a8a5a}
 .bogo-msg-err{color:var(--ember)}
-.svc-compare{margin-bottom:20px}
-.svc-compare-eyebrow{font-family:'Space Mono',monospace;font-size:9px;letter-spacing:.3em;text-transform:uppercase;color:var(--ember);margin-bottom:10px}
-.svc-compare-table{border:1px solid var(--border)}
-.svc-compare-row{display:grid;grid-template-columns:1.4fr 1fr 1fr 1fr;background:var(--border);gap:1px}
-.svc-compare-cell{background:var(--deep);padding:10px 12px;font-size:11px;color:var(--ash);display:flex;align-items:center}
-.svc-compare-label{color:var(--ash);font-size:11px}
-.svc-compare-head .svc-compare-cell{font-family:'Space Mono',monospace;font-size:9px;letter-spacing:.1em;text-transform:uppercase;color:var(--white);font-weight:700}
-.svc-compare-mac{color:var(--fire)!important;font-weight:700}
-.svc-compare-head .svc-compare-mac{background:rgba(255,107,26,.1)}
-.addon-stepper{display:flex;align-items:center;gap:10px}
-.stepper-ctrl{display:flex;align-items:center;gap:8px;flex-shrink:0}
-.stepper-btn{width:22px;height:22px;background:var(--card);border:1px solid var(--border);color:var(--white);cursor:pointer;font-size:14px;line-height:1;display:flex;align-items:center;justify-content:center;transition:all .15s}
-.stepper-btn:hover{border-color:var(--fire);color:var(--fire)}
-.stepper-val{font-family:'Space Mono',monospace;font-size:12px;color:var(--white);min-width:14px;text-align:center}
-@media(max-width:640px){.svc-compare-row{grid-template-columns:1.1fr 1fr 1fr 1fr;font-size:10px}.svc-compare-cell{padding:8px 6px;font-size:10px}.bogo-form{width:100%}.bogo-input{flex:1}}
+@media(max-width:640px){.bogo-form{width:100%}.bogo-input{flex:1}}
 {% endblock %}
 {% block content %}
 <div class="svc-hero">
@@ -521,57 +507,21 @@
         </div>
       </div>
 
-      <div class="svc-compare">
-        <div class="svc-compare-eyebrow">How Mac Dylan Compares</div>
-        <div class="svc-compare-table">
-          <div class="svc-compare-row svc-compare-head">
-            <div class="svc-compare-cell svc-compare-label"></div>
-            <div class="svc-compare-cell svc-compare-mac">Mac Dylan</div>
-            <div class="svc-compare-cell">Freelance Engineer</div>
-            <div class="svc-compare-cell">Big Studio</div>
-          </div>
-          <div class="svc-compare-row">
-            <div class="svc-compare-cell svc-compare-label">Starting price / song</div>
-            <div class="svc-compare-cell svc-compare-mac">$99</div>
-            <div class="svc-compare-cell">$120 &ndash; $200</div>
-            <div class="svc-compare-cell">$250 &ndash; $500+</div>
-          </div>
-          <div class="svc-compare-row">
-            <div class="svc-compare-cell svc-compare-label">Turnaround time</div>
-            <div class="svc-compare-cell svc-compare-mac">5 business days</div>
-            <div class="svc-compare-cell">1&ndash;3 weeks</div>
-            <div class="svc-compare-cell">2&ndash;4 weeks</div>
-          </div>
-          <div class="svc-compare-row">
-            <div class="svc-compare-cell svc-compare-label">Direct engineer access</div>
-            <div class="svc-compare-cell svc-compare-mac">Yes, always</div>
-            <div class="svc-compare-cell">Varies</div>
-            <div class="svc-compare-cell">Rarely</div>
-          </div>
-          <div class="svc-compare-row">
-            <div class="svc-compare-cell svc-compare-label">New client deal</div>
-            <div class="svc-compare-cell svc-compare-mac">BOGO free</div>
-            <div class="svc-compare-cell">Rare</div>
-            <div class="svc-compare-cell">None</div>
-          </div>
-        </div>
-      </div>
-
       <div class="tier-select-row">
         <button class="tier-opt on" onclick="selectMixTier(this,99,'Single Mix and Master')">
           <div class="tier-opt-name">Single</div>
           <div class="tier-opt-desc">1 song</div>
           <div class="tier-opt-price">$99</div>
         </button>
-        <button class="tier-opt" onclick="selectMixTier(this,199,'EP Mix and Master')">
+        <button class="tier-opt" onclick="selectMixTier(this,249,'EP Mix and Master')">
           <div class="tier-opt-name">EP</div>
-          <div class="tier-opt-desc">3 to 5 songs</div>
-          <div class="tier-opt-price">$199</div>
+          <div class="tier-opt-desc">5 tracks</div>
+          <div class="tier-opt-price">$249</div>
         </button>
-        <button class="tier-opt" onclick="selectMixTier(this,379,'Album Mix and Master')">
+        <button class="tier-opt" onclick="selectMixTier(this,449,'Album Mix and Master')">
           <div class="tier-opt-name">Album</div>
-          <div class="tier-opt-desc">6 plus songs</div>
-          <div class="tier-opt-price">$379</div>
+          <div class="tier-opt-desc">10 tracks</div>
+          <div class="tier-opt-price">$449</div>
         </button>
       </div>
       <div class="svc-addons-row">
