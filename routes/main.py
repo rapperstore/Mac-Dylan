@@ -5,7 +5,7 @@ import urllib.parse
 from datetime import datetime
 from flask import Blueprint, render_template, request, jsonify, Response, current_app, make_response
 from database import db
-from models import Beat, Credit, Subscriber, PhoneLead, Album, Track, Post, PostLike
+from models import Beat, Credit, Subscriber, PhoneLead, PromoLead, Album, Track, Post, PostLike
 
 VISITOR_COOKIE = 'md_visitor'
 
@@ -242,6 +242,54 @@ def free_beat():
         'sms_sent': sms_sent,
         'beat_title': beat.title,
         'beat_url': beat.mp3_path,
+    })
+
+
+@main_bp.route('/promo/bogo-signup', methods=['POST'])
+def bogo_signup():
+    data = request.get_json() or {}
+    raw_phone = (data.get('phone') or '').strip()
+
+    digits = re.sub(r'\D', '', raw_phone)
+    if len(digits) == 10:
+        digits = '1' + digits
+    if len(digits) != 11 or digits[0] != '1':
+        return jsonify({'ok': False, 'error': 'Enter a valid US phone number'}), 400
+    phone = '+' + digits
+
+    existing = PromoLead.query.filter_by(phone=phone).first()
+    if existing:
+        return jsonify({'ok': False, 'error': 'This number has already claimed the BOGO deal'}), 400
+
+    lead = PromoLead(phone=phone, promo_code='BOGO2026')
+    db.session.add(lead)
+
+    sms_sent = False
+    sid = current_app.config.get('TWILIO_ACCOUNT_SID')
+    token = current_app.config.get('TWILIO_AUTH_TOKEN')
+    from_num = current_app.config.get('TWILIO_FROM_NUMBER')
+
+    if sid and token and from_num:
+        try:
+            from twilio.rest import Client
+            msg = (
+                f"Mac Dylan here! You're locked in for the BOGO deal \u2014 "
+                f"buy one mix and master, get your second one FREE.\n\n"
+                f"Your code: BOGO2026\n\n"
+                f"Mention this code when you book at macdylan.com/services \ud83d\udd25"
+            )
+            Client(sid, token).messages.create(body=msg, from_=from_num, to=phone)
+            lead.sms_sent = True
+            sms_sent = True
+        except Exception as e:
+            current_app.logger.error(f'Twilio error: {e}')
+
+    db.session.commit()
+
+    return jsonify({
+        'ok': True,
+        'sms_sent': sms_sent,
+        'promo_code': lead.promo_code,
     })
 
 
