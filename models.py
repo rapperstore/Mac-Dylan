@@ -236,3 +236,13 @@ class PhoneLead(db.Model):
     beat_url   = db.Column(db.String(500))
     sms_sent   = db.Column(db.Boolean, default=False)
     created_at = db.Column(db.DateTime, default=datetime.utcnow)
+
+
+class PromoLead(db.Model):
+    __tablename__ = 'promo_leads'
+    id         = db.Column(db.Integer, primary_key=True)
+    phone      = db.Column(db.String(20), unique=True, nullable=False)
+    promo_code = db.Column(db.String(40), default='BOGO2026')
+    sms_sent   = db.Column(db.Boolean, default=False)
+    redeemed   = db.Column(db.Boolean, default=False)
+    created_at = db.Column(db.DateTime, default=datetime.utcnow)
