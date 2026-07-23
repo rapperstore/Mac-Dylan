@@ -33,6 +33,7 @@ class Config:
 
     # ── ConvertKit ──
     CONVERTKIT_FORM_ID = os.environ.get('CONVERTKIT_FORM_ID', '9292507')
+    CONVERTKIT_API_KEY = os.environ.get('CONVERTKIT_API_KEY', '')
 
     # ── Cloudflare R2 (private buckets → presigned download URLs) ──
     R2_ACCOUNT_ID        = os.environ.get('R2_ACCOUNT_ID')
