@@ -310,6 +310,30 @@ def bogo_signup():
     })
 
 
+@main_bp.route('/debug-ck-key')
+def debug_ck_key():
+    api_key = current_app.config.get('CONVERTKIT_API_KEY') or ''
+    form_id = current_app.config.get('CONVERTKIT_FORM_ID') or ''
+    info = {
+        'key_len': len(api_key),
+        'key_first4': api_key[:4],
+        'key_last4': api_key[-4:] if len(api_key) >= 4 else api_key,
+        'has_whitespace': api_key != api_key.strip(),
+        'form_id': form_id
+    }
+    try:
+        req = urllib.request.Request(
+            'https://api.kit.com/v4/account',
+            headers={'X-Kit-Api-Key': api_key.strip()}
+        )
+        with urllib.request.urlopen(req, timeout=5) as resp:
+            info['account_check_status'] = resp.status
+            info['account_check_body'] = resp.read().decode('utf-8')[:300]
+    except Exception as e:
+        info['account_check_error'] = str(e)
+    return jsonify(info)
+
+
 @main_bp.route('/sitemap.xml')
 def sitemap():
     today = datetime.utcnow().strftime('%Y-%m-%d')
