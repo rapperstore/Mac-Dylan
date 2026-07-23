@@ -165,33 +165,31 @@ def subscribe():
     except Exception:
         db.session.rollback()
 
-    # Post to ConvertKit (Kit) via official v3 API
+    # Post to Kit (formerly ConvertKit) via official v4 API
     ck_ok = False
     try:
         form_id = current_app.config.get('CONVERTKIT_FORM_ID')
         api_key = current_app.config.get('CONVERTKIT_API_KEY')
         if form_id and api_key:
-            ck_payload = json.dumps({'api_key': api_key, 'email': email}).encode('utf-8')
+            ck_payload = json.dumps({'email_address': email}).encode('utf-8')
             req = urllib.request.Request(
-                f'https://api.convertkit.com/v3/forms/{form_id}/subscribe',
+                f'https://api.kit.com/v4/forms/{form_id}/subscribers',
                 data=ck_payload,
-                headers={'Content-Type': 'application/json; charset=utf-8'}
+                headers={
+                    'Content-Type': 'application/json',
+                    'X-Kit-Api-Key': api_key
+                }
             )
             with urllib.request.urlopen(req, timeout=5) as ck_resp:
                 if ck_resp.status in (200, 201):
                     ck_ok = True
         else:
-            current_app.logger.warning('ConvertKit not configured: missing form_id or api_key')
+            current_app.logger.warning('Kit not configured: missing form_id or api_key')
     except Exception as e:
-        current_app.logger.error(f'ConvertKit subscribe failed: {e}')
-        ck_error_debug = str(e)
-    else:
-        ck_error_debug = None
+        current_app.logger.error(f'Kit subscribe failed: {e}')
 
     return jsonify({
         'ok': True,
-        'ck_ok': ck_ok,
-        'ck_error_debug': locals().get('ck_error_debug'),
         'code': 'MACDYLAN15',
         'beat_url': 'https://pub-3d8b1c7a5e63475b90c0044ca074cba8.r2.dev/Afterlife%20%5B117BPM%20A%23%20Min%5D.mp3',
         'beat_title': 'Afterlife'
