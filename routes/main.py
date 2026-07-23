@@ -187,9 +187,14 @@ def subscribe():
             current_app.logger.warning('Kit not configured: missing form_id or api_key')
     except Exception as e:
         current_app.logger.error(f'Kit subscribe failed: {e}')
+        ck_error_debug = str(e)
+    else:
+        ck_error_debug = None
 
     return jsonify({
         'ok': True,
+        'ck_ok': ck_ok,
+        'ck_error_debug': locals().get('ck_error_debug'),
         'code': 'MACDYLAN15',
         'beat_url': 'https://pub-3d8b1c7a5e63475b90c0044ca074cba8.r2.dev/Afterlife%20%5B117BPM%20A%23%20Min%5D.mp3',
         'beat_title': 'Afterlife'
