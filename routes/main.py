@@ -1,5 +1,6 @@
 import re
 import uuid
+import json
 import urllib.request
 import urllib.parse
 from datetime import datetime
@@ -164,17 +165,25 @@ def subscribe():
     except Exception:
         db.session.rollback()
 
-    # Post to ConvertKit
+    # Post to ConvertKit (Kit) via official v3 API
+    ck_ok = False
     try:
-        ck_data = urllib.parse.urlencode({'email_address': email}).encode('utf-8')
-        req = urllib.request.Request(
-            'https://mac-dylan.kit.com/b5923233e5/subscriptions',
-            data=ck_data,
-            headers={'Content-Type': 'application/x-www-form-urlencoded'}
-        )
-        urllib.request.urlopen(req, timeout=5)
-    except Exception:
-        pass  # Don't fail the whole request if CK is down
+        form_id = current_app.config.get('CONVERTKIT_FORM_ID')
+        api_key = current_app.config.get('CONVERTKIT_API_KEY')
+        if form_id and api_key:
+            ck_payload = json.dumps({'api_key': api_key, 'email': email}).encode('utf-8')
+            req = urllib.request.Request(
+                f'https://api.convertkit.com/v3/forms/{form_id}/subscribe',
+                data=ck_payload,
+                headers={'Content-Type': 'application/json; charset=utf-8'}
+            )
+            with urllib.request.urlopen(req, timeout=5) as ck_resp:
+                if ck_resp.status in (200, 201):
+                    ck_ok = True
+        else:
+            current_app.logger.warning('ConvertKit not configured: missing form_id or api_key')
+    except Exception as e:
+        current_app.logger.error(f'ConvertKit subscribe failed: {e}')
 
     return jsonify({
         'ok': True,
