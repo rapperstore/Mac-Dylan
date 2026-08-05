@@ -849,7 +849,7 @@
 </section>
 
 <!-- NEWSLETTER -->
-<section class="newsletter" data-reveal>
+<section class="newsletter" id="stay-in-the-loop" data-reveal>
   <div>
     <h2 class="nl-heading">Stay in the <em>Loop</em></h2>
     <p class="nl-sub">New beats, session availability, exclusive drops, and industry insights. No spam &mdash; just signal.</p>
@@ -872,6 +872,11 @@
         <div style="font-family:'Space Mono',monospace;font-size:7px;letter-spacing:.4em;color:rgba(58,138,90,.7);text-transform:uppercase;margin-bottom:8px">Free Beat Download</div>
         <a id="reward-beat-link" href="#" target="_blank" rel="noopener noreferrer" style="font-family:'Bebas Neue',sans-serif;font-size:18px;color:#3a8a5a;letter-spacing:.06em;text-decoration:none" id="reward-beat-title">Afterlife</a>
         <div style="font-size:11px;color:rgba(200,180,150,.5);margin-top:4px;font-style:italic">Yours free · No strings</div>
+      </div>
+      <div id="reward-ebook-block" style="background:rgba(255,107,26,.06);border:1px solid rgba(255,107,26,.25);padding:14px 20px;margin-top:12px;display:none">
+        <div style="font-family:'Space Mono',monospace;font-size:7px;letter-spacing:.4em;color:rgba(255,107,26,.8);text-transform:uppercase;margin-bottom:8px">Free Ebook</div>
+        <a id="reward-ebook-link" href="#" target="_blank" rel="noopener noreferrer" style="font-family:'Bebas Neue',sans-serif;font-size:18px;color:var(--fire);letter-spacing:.06em;text-decoration:none">The Artist Is The Business</a>
+        <div style="font-size:11px;color:rgba(200,180,150,.5);margin-top:4px;font-style:italic">9 chapters · Yours free</div>
       </div>
     </div>
     <div class="nl-note" id="nl-note">NO SPAM. UNSUBSCRIBE ANYTIME.</div>
@@ -992,6 +997,12 @@ window.subCK = function(e) {
         var beatLink = document.getElementById('reward-beat-link');
         if (beatLink && d.beat_url) beatLink.href = d.beat_url;
         if (beatLink && d.beat_title) beatLink.textContent = d.beat_title;
+        if (d.ebook_url) {
+          var ebookLink = document.getElementById('reward-ebook-link');
+          var ebookBlock = document.getElementById('reward-ebook-block');
+          if (ebookLink) ebookLink.href = d.ebook_url;
+          if (ebookBlock) ebookBlock.style.display = 'block';
+        }
         document.getElementById('nl-ok').style.display = 'block';
       } else {
         document.getElementById('nl-note').textContent = 'SOMETHING WENT WRONG. PLEASE TRY AGAIN.';
