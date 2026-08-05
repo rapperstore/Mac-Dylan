@@ -6,9 +6,25 @@ import urllib.parse
 from datetime import datetime
 from flask import Blueprint, render_template, request, jsonify, Response, current_app, make_response
 from database import db
-from models import Beat, Credit, Subscriber, PhoneLead, PromoLead, Album, Track, Post, PostLike
+from models import Beat, Credit, Subscriber, PhoneLead, PromoLead, Album, Track, Post, PostLike, Product
 
 VISITOR_COOKIE = 'md_visitor'
+
+EBOOK_PRODUCT_ID = 1
+
+def _free_ebook_url():
+    """Presigned link to the ebook, now given away free on signup."""
+    try:
+        from routes.payments import r2_presigned_url
+        product = Product.query.get(EBOOK_PRODUCT_ID)
+        if not product or not product.file_path:
+            return None
+        if product.file_path.startswith('http'):
+            return product.file_path
+        return r2_presigned_url(product.file_path, ttl=604800)  # 7 days
+    except Exception as e:
+        current_app.logger.error(f'Free ebook link failed: {e}')
+        return None
 
 
 def _visitor_token():
@@ -193,11 +209,10 @@ def subscribe():
 
     return jsonify({
         'ok': True,
-        'ck_ok': ck_ok,
-        'ck_error_debug': locals().get('ck_error_debug'),
         'code': 'MACDYLAN15',
         'beat_url': 'https://pub-3d8b1c7a5e63475b90c0044ca074cba8.r2.dev/Afterlife%20%5B117BPM%20A%23%20Min%5D.mp3',
-        'beat_title': 'Afterlife'
+        'beat_title': 'Afterlife',
+        'ebook_url': _free_ebook_url()
     })
 
 
@@ -307,6 +322,7 @@ def bogo_signup():
         'ok': True,
         'sms_sent': sms_sent,
         'promo_code': lead.promo_code,
+        'ebook_url': _free_ebook_url()
     })
 
 
